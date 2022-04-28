@@ -4,7 +4,7 @@ import Image from 'next/image'
 const NavLinks = ({ className }: { className: string }) => {
   return (
     <div className={className}>
-      <Link href="/login">
+      <Link href="/docs">
         <a>Docs</a>
       </Link>
       <Link href="/pricing">
@@ -22,15 +22,17 @@ const Header = () => {
     <header className="flex w-full justify-center border-b border-gray-700">
       <nav className="flex w-full max-w-5xl flex-col items-center gap-2 p-4">
         <div className="flex h-10 w-full items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Image
-              src="/spotify-icon.png"
-              alt="Spotify Icon"
-              width={28}
-              height={28}
-            />
-            <p className="text-lg font-bold text-green-500">Spotiparty</p>
-          </div>
+          <Link href="/">
+            <a className="flex items-center space-x-2 hover:animate-pulse">
+              <Image
+                src="/spotify-icon.png"
+                alt="Spotify Icon"
+                width={28}
+                height={28}
+              />
+              <p className="text-lg font-bold text-green-500">Spotiparty</p>
+            </a>
+          </Link>
           <NavLinks className="hidden gap-16 md:flex" />
           <div>
             <Link href="/login">
