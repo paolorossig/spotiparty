@@ -1,3 +1,4 @@
+import type { GetServerSideProps } from 'next'
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -44,7 +45,7 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
 
 export default Login
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async () => {
   const providers = await getProviders()
   return {
     props: {
