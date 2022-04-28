@@ -1,32 +1,30 @@
 import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Head>
-        <title>Spotiparty - Login</title>
+        <title>Spotiparty | Login</title>
         <link rel="icon" href="/icon.png" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-12 text-center">
+        <h1 className="text-5xl font-bold lg:text-6xl">
           Welcome to{' '}
-          <a
-            className="text-green-500 hover:animate-pulse"
-            href="https://github.com/paolorossig/spotiparty"
-          >
-            Spotiparty!
-          </a>
+          <Link href="/">
+            <a className="text-green-500 hover:animate-pulse">Spotiparty!</a>
+          </Link>
         </h1>
-        <p className="mt-3 text-2xl">
+        <h3 className="my-4 text-lg text-gray-300 lg:text-2xl">
           Get started by login with your Spotify account
-        </p>
+        </h3>
         {Object.values(providers).map((provider) => (
-          <div key={provider.id} className="mt-6">
+          <div key={provider.id} className="mt-4">
             <button
-              onClick={() => signIn(provider.id, { callbackUrl: '/' })}
+              onClick={() => signIn(provider.id, { callbackUrl: '/app' })}
               className="flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
             >
               <Image
