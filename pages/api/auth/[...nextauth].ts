@@ -1,9 +1,12 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
-import { refreshAccessToken } from '../../../lib/auth'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
+import clientPromise from '../../../lib/mongodb'
 import { LOGIN_URL } from '../../../lib/spotify'
+import { refreshAccessToken } from '../../../lib/auth'
 
 export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -11,9 +14,11 @@ export default NextAuth({
       authorization: LOGIN_URL,
     }),
   ],
-  secret: process.env.JWT_SECRET,
   pages: {
     signIn: '/login',
+  },
+  session: {
+    strategy: 'jwt',
   },
   callbacks: {
     async jwt({ token, account, user }) {

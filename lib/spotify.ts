@@ -1,7 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 
 const params = {
-  scopes: [
+  scope: [
     'user-read-email',
     'user-read-private',
     'user-library-read',
