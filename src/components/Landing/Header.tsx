@@ -34,13 +34,11 @@ const Header = () => {
             </a>
           </Link>
           <NavLinks className="hidden gap-16 md:flex" />
-          <div>
-            <Link href="/login">
-              <a className="rounded-xl border-2 border-gray-700 py-2 px-4">
-                Login
-              </a>
-            </Link>
-          </div>
+          <Link href="/login">
+            <a className="rounded-xl border-2 border-gray-700 py-2 px-4">
+              Login
+            </a>
+          </Link>
         </div>
         <NavLinks className="flex h-10 items-center gap-16 md:hidden" />
       </nav>
