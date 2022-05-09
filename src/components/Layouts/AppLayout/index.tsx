@@ -2,9 +2,9 @@ import type { FC } from 'react'
 import Head from 'next/head'
 import { useSession } from 'next-auth/react'
 import Header from './Header'
-import Spinner from '../Spinner'
+import Spinner from '../../Spinner'
 
-const Layout: FC = ({ children }) => {
+const AppLayout: FC = ({ children }) => {
   const { data: session, status } = useSession()
 
   return (
@@ -14,7 +14,7 @@ const Layout: FC = ({ children }) => {
         <link rel="icon" href="/icon.png" />
       </Head>
       <Header />
-      <main className="flex w-full flex-1 flex-col p-4 md:px-20">
+      <main className="flex w-full max-w-5xl flex-1 flex-col p-4">
         {status === 'loading' ? (
           <Spinner />
         ) : !session ? (
@@ -27,4 +27,4 @@ const Layout: FC = ({ children }) => {
   )
 }
 
-export default Layout
+export default AppLayout

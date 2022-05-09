@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import ProfileMenu from '../ProfileMenu'
+import ProfileMenu from '../../ProfileMenu'
 
 const Header = () => {
   return (

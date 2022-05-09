@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Footer from './Footer'
 import Header from './Header'
 
-const Layout: FC = ({ children }) => {
+const LandingLayout: FC = ({ children }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Head>
@@ -18,4 +18,4 @@ const Layout: FC = ({ children }) => {
   )
 }
 
-export default Layout
+export default LandingLayout

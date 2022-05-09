@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
 import { RiFolderAddLine } from 'react-icons/ri'
-import Layout from '../../components/App/Layout'
+import AppLayout from '../../components/Layouts/AppLayout'
 
 const App: NextPage = () => {
   return (
-    <Layout>
+    <AppLayout>
       <h1 className="my-10 text-center text-5xl font-bold">
         Welcome to{' '}
         <a
@@ -20,7 +20,7 @@ const App: NextPage = () => {
           <RiFolderAddLine className="rounded-full bg-white p-2 text-4xl text-gray-900" />
         </article>
       </section>
-    </Layout>
+    </AppLayout>
   )
 }
 
