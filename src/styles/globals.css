@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  [type='text'],
+  [type='email'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full rounded-lg border-white shadow-sm focus:border-green-500 focus:ring-green-500;
+  }
+  [type='radio'] {
+    @apply text-green-500 focus:border-green-500 focus:ring-green-500;
+  }
+}
+
 @layer utilities {
   .bg-circle-gradient {
     background: radial-gradient(
