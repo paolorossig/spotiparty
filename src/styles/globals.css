@@ -16,6 +16,9 @@
   [type='radio'] {
     @apply text-green-500 focus:border-green-500 focus:ring-green-500;
   }
+  textarea {
+    @apply resize-none;
+  }
 }
 
 @layer utilities {
