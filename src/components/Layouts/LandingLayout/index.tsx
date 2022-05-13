@@ -1,9 +1,12 @@
-import type { FC } from 'react'
 import Head from 'next/head'
 import Footer from './Footer'
 import Header from './Header'
 
-const LandingLayout: FC = ({ children }) => {
+interface Props {
+  children?: React.ReactNode
+}
+
+const LandingLayout = ({ children }: Props) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Head>
