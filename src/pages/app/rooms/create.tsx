@@ -5,6 +5,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import { MdErrorOutline } from 'react-icons/md'
 import { Transition } from '@headlessui/react'
 import AppLayout from '../../../components/Layouts/AppLayout'
+import { useCreateRoomMutation } from '../../../features/rooms/roomApi'
 
 export interface FormValues {
   name: string
@@ -13,6 +14,7 @@ export interface FormValues {
 
 const Create = () => {
   const router = useRouter()
+  const [createRoom] = useCreateRoomMutation()
   const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
@@ -27,16 +29,12 @@ const Create = () => {
   }, [apiError])
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const response = await fetch('/api/rooms', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    const res = await response.json()
-    if (res.success) return router.push('/app')
-    setApiError(res?.error.message.split(': ').pop())
+    try {
+      const response = await createRoom(data).unwrap()
+      if (response.success) return router.push('/app')
+    } catch (error: any) {
+      setApiError(error.data.error.message.split(': ').pop() ?? '')
+    }
   }
 
   return (
