@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { Fragment } from 'react'
 import Image from 'next/image'
 import { Menu, Transition } from '@headlessui/react'
@@ -41,9 +42,10 @@ const ProfileMenu = () => {
                   href="https://www.spotify.com/account/overview"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${
-                    active && 'bg-green-500'
-                  } group flex w-full items-center gap-2 rounded-md p-2 text-sm`}
+                  className={clsx(
+                    active && 'bg-green-500',
+                    'group flex w-full items-center gap-2 rounded-md p-2 text-sm'
+                  )}
                 >
                   <RiShareForwardLine />
                   Account
@@ -56,9 +58,10 @@ const ProfileMenu = () => {
               {({ active }) => (
                 <button
                   onClick={() => signOut()}
-                  className={`${
-                    active && 'bg-green-500'
-                  } group flex w-full items-center gap-2 rounded-md p-2 text-sm`}
+                  className={clsx(
+                    active && 'bg-green-500',
+                    'group flex w-full items-center gap-2 rounded-md p-2 text-sm'
+                  )}
                 >
                   <RiLogoutBoxLine />
                   Log out
