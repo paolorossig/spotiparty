@@ -1,10 +1,13 @@
-import type { FC } from 'react'
 import Head from 'next/head'
 import { useSession } from 'next-auth/react'
 import Header from './Header'
 import Spinner from '../../Spinner'
 
-const AppLayout: FC = ({ children }) => {
+interface Props {
+  children?: React.ReactNode
+}
+
+const AppLayout = ({ children }: Props) => {
   const { data: session, status } = useSession()
 
   return (
