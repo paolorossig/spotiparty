@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const RoomSchema = new mongoose.Schema(
   {
@@ -6,8 +7,16 @@ const RoomSchema = new mongoose.Schema(
       /* The name of the room */
 
       type: String,
+      unique: [true, 'You already created a room with this name'],
       required: [true, 'Please provide a name for this room.'],
       maxlength: [20, 'Name cannot be more than 20 characters'],
+    },
+    description: {
+      /* The description of the room */
+
+      type: String,
+      required: [true, 'Please provide a description for this room.'],
+      maxlength: [150, 'Description cannot be more than 150 characters'],
     },
     owner: {
       /* The owner's name of the room */
@@ -35,5 +44,9 @@ const RoomSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+RoomSchema.plugin(uniqueValidator, {
+  message: "MongoServerError: Room's {PATH} has to be unique.",
+})
 
 export default mongoose.models.Room || mongoose.model('Room', RoomSchema)

@@ -23,11 +23,12 @@ const roomsHandler: NextApiHandler = async (req, res) => {
 
     case 'POST':
       try {
-        const { name } = req.body
+        const { name, description } = req.body
         const room = await Room.create({
           name,
           owner,
           accountId,
+          description,
           members: [accountId],
         })
         return res.status(201).json({ success: true, data: room })

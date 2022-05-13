@@ -10,7 +10,7 @@ const ProfileMenu = () => {
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75">
-        <div className="flex items-center space-x-2 rounded-full bg-gray-700/80 p-2 pr-4 shadow-lg shadow-gray-900/60 hover:bg-gray-700/70">
+        <div className="flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60 hover:bg-gray-800">
           <Image
             src={
               session?.user.image ||
@@ -33,7 +33,7 @@ const ProfileMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-1 mt-2 flex origin-top-right flex-col divide-y divide-gray-500 rounded-md bg-gray-700/60 shadow-lg shadow-gray-900/60 ring-1 ring-black focus:outline-none">
+        <Menu.Items className="absolute right-1 mt-2 flex flex-col divide-y divide-gray-500 rounded-md bg-gray-700 shadow-lg shadow-gray-900/60 ring-1 ring-black focus:outline-none">
           <div className="p-1">
             <Menu.Item>
               {({ active }) => (
