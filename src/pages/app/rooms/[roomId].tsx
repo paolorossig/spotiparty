@@ -1,11 +1,13 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { toast } from 'react-hot-toast'
 import { BsClipboard, BsClipboardCheck } from 'react-icons/bs'
 import { IoMdMicrophone } from 'react-icons/io'
 import { useGetRoombyIdQuery } from '../../../features/rooms/roomApi'
 import useCopyToClipboard from '../../../hooks/useCopyToClipboard'
 import { getSingleRoomResponse } from '../../../types/rooms'
 import AppLayout from '../../../components/Layouts/AppLayout'
+import Toaster from '../../../components/Toaster'
 
 const Room = () => {
   const router = useRouter()
@@ -15,7 +17,10 @@ const Room = () => {
     // { pollingInterval: 3000 }
   )
   const [copiedText, copy] = useCopyToClipboard()
-  const copyLink = () => copy(response?.data?.linkUrl ?? '')
+  const copyLink = () => {
+    copy(response?.data?.linkUrl ?? '')
+    toast.success('Link copied succesfully.')
+  }
 
   return (
     <AppLayout>
@@ -93,6 +98,7 @@ const Room = () => {
               ))}
             </ul>
           </div>
+          <Toaster />
         </>
       )}
     </AppLayout>

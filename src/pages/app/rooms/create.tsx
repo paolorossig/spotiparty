@@ -1,11 +1,10 @@
-import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
-import { MdErrorOutline } from 'react-icons/md'
-import { Transition } from '@headlessui/react'
+import { toast } from 'react-hot-toast'
 import AppLayout from '../../../components/Layouts/AppLayout'
 import { useCreateRoomMutation } from '../../../features/rooms/roomApi'
+import Toaster from '../../../components/Toaster'
 
 export interface FormValues {
   name: string
@@ -18,22 +17,14 @@ const Create = () => {
   const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
-  const [apiError, setApiError] = useState('')
-
-  useEffect(() => {
-    if (apiError) {
-      setTimeout(() => {
-        setApiError('')
-      }, 3000)
-    }
-  }, [apiError])
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const response = await createRoom(data).unwrap()
       if (response.success) return router.push('/app')
     } catch (error: any) {
-      setApiError(error.data.error.message.split(': ').pop() ?? '')
+      toast.error(error.data.error.message.split(': ').pop() ?? '', {
+        duration: 3000,
+      })
     }
   }
 
@@ -80,22 +71,8 @@ const Create = () => {
         >
           Create
         </button>
-        <Transition
-          as={Fragment}
-          show={apiError !== ''}
-          enter="transition transform ease-out duration-300"
-          enterFrom="opacity-0 translate-x-4"
-          enterTo="opacity-100 translate-x-0"
-          leave="transition transform ease-in duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="my-2 flex origin-top-right items-center self-end rounded-t border-b-4 border-b-red-600 bg-red-100 p-4 text-red-600 md:w-1/2">
-            <MdErrorOutline className="mr-2 text-2xl" />
-            <p>{apiError}</p>
-          </div>
-        </Transition>
       </form>
+      <Toaster />
     </AppLayout>
   )
 }
