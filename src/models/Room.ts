@@ -1,8 +1,14 @@
-import mongoose from 'mongoose'
+import { model, models, Model, Schema } from 'mongoose'
+import { nanoid } from '@reduxjs/toolkit'
 import uniqueValidator from 'mongoose-unique-validator'
+import { Room } from '../types/rooms'
 
-const RoomSchema = new mongoose.Schema(
+const RoomSchema: Schema = new Schema(
   {
+    _id: {
+      type: String,
+      default: () => nanoid(8),
+    },
     name: {
       /* The name of the room */
 
@@ -30,8 +36,13 @@ const RoomSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide the account Id'],
     },
+    linkUrl: {
+      /* The url of the room */
+
+      type: String,
+    },
     qrCodeImageUrl: {
-      /* The url of the room with the QR Code image */
+      /* The QR Code image url */
 
       type: String,
     },
@@ -49,4 +60,6 @@ RoomSchema.plugin(uniqueValidator, {
   message: "MongoServerError: Room's {PATH} has to be unique.",
 })
 
-export default mongoose.models.Room || mongoose.model('Room', RoomSchema)
+const RoomModel: Model<Room> = models.Room || model('Room', RoomSchema)
+
+export default RoomModel

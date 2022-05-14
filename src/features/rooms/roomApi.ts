@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import type {
   createRoomResponse,
   getRoomsResponse,
+  getSingleRoomResponse,
   inputsRoomCreation,
 } from '../../types/rooms'
 
@@ -22,7 +23,14 @@ export const roomApi = createApi({
       }),
       invalidatesTags: ['Room'],
     }),
+    getRoombyId: builder.query<getSingleRoomResponse, string>({
+      query: (roomId) => `/${roomId}`,
+    }),
   }),
 })
 
-export const { useGetUserRoomsQuery, useCreateRoomMutation } = roomApi
+export const {
+  useGetUserRoomsQuery,
+  useCreateRoomMutation,
+  useGetRoombyIdQuery,
+} = roomApi
