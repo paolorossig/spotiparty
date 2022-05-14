@@ -9,8 +9,8 @@ const Rooms = () => {
       {userRooms?.data?.map((room) => (
         <Link href={`/app/rooms/${room._id}`} key={room._id}>
           <a>
-            <article className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-white hover:bg-white/10">
-              <p>{room.name}</p>
+            <article className="flex h-44 flex-col items-center justify-center rounded-xl border border-white hover:bg-white/10">
+              <p className="text-xl font-bold">{room.name}</p>
             </article>
           </a>
         </Link>

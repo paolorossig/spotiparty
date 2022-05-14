@@ -76,7 +76,7 @@ const Create = () => {
         </div>
         <button
           type="submit"
-          className="my-4 h-[42px] rounded-full bg-green-500 text-white hover:bg-green-800"
+          className="my-4 rounded-full bg-green-500 py-2 text-white hover:bg-green-800"
         >
           Create
         </button>
