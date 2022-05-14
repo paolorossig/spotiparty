@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ProfileMenu from '../../ProfileMenu'
@@ -15,7 +16,7 @@ const Header = () => {
                 width={28}
                 height={28}
               />
-              <p className="text-lg font-bold text-green-500">Spotiparty</p>   
+              <p className="text-lg font-bold text-green-500">Spotiparty</p>
             </a>
           </Link>
           <ProfileMenu />
@@ -25,4 +26,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default memo(Header)
