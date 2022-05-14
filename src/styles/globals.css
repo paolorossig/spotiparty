@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  [type='text'],
+  [type='email'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [multiple],
+  textarea,
+  select {
+    @apply w-full rounded-lg border-white shadow-sm focus:border-green-500 focus:ring-green-500;
+  }
+  [type='radio'] {
+    @apply text-green-500 focus:border-green-500 focus:ring-green-500;
+  }
+  textarea {
+    @apply resize-none;
+  }
+}
+
+@layer utilities {
+  .bg-circle-gradient {
+    background: radial-gradient(
+      circle at calc(60%),
+      #61f78e 0,
+      #61f77d7f 0,
+      transparent 45%
+    );
+  }
+}

@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import Layout from '../components/Layout'
+import LandingLayout from '../components/Layouts/LandingLayout'
 
 const Home: NextPage = () => {
   return (
-    <Layout>
+    <LandingLayout>
       <section className="bg-circle-gradient flex w-full flex-col items-center px-4 py-8 md:flex-row lg:py-16">
         <div className="w-full text-center md:w-2/5 md:text-left">
           <h1 className="text-5xl font-bold">Best app for Karaoke</h1>
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
           />
         </div>
       </section>
-    </Layout>
+    </LandingLayout>
   )
 }
 

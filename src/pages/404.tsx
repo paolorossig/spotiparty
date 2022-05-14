@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Layout from '../components/Layout'
+import LandingLayout from '../components/Layouts/LandingLayout'
 
 const Custom404 = () => {
   return (
-    <Layout>
+    <LandingLayout>
       <section className="flex flex-1 flex-col items-center justify-center p-4">
         <h1 className="text-center text-4xl font-bold">404 - Page Not Found</h1>
         <h3 className="text-xl text-gray-300">We are working on it</h3>
@@ -14,7 +14,7 @@ const Custom404 = () => {
           height={500}
         />
       </section>
-    </Layout>
+    </LandingLayout>
   )
 }
 
