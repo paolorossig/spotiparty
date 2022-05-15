@@ -1,7 +1,7 @@
 import type { NextApiHandler } from 'next'
 import { getSession } from 'next-auth/react'
-import dbConnect from '../../../lib/mongoose'
-import Room from '../../../models/Room'
+import dbConnect from '@lib/mongoose'
+import Room from '@models/Room'
 
 const roomsHandler: NextApiHandler = async (req, res) => {
   await dbConnect()

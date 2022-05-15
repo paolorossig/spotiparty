@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import ProfileMenu from '../../ProfileMenu'
+import ProfileMenu from '@components/ProfileMenu'
 
 const Header = () => {
   return (

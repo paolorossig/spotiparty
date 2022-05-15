@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-hot-toast'
 import { BsClipboard, BsClipboardCheck } from 'react-icons/bs'
 import { IoMdMicrophone } from 'react-icons/io'
-import { useGetRoombyIdQuery } from '../../../features/rooms/roomApi'
-import useCopyToClipboard from '../../../hooks/useCopyToClipboard'
-import { getSingleRoomResponse } from '../../../types/rooms'
-import AppLayout from '../../../components/Layouts/AppLayout'
-import Toaster from '../../../components/Toaster'
+import useCopyToClipboard from '@hooks/useCopyToClipboard'
+import { useGetRoombyIdQuery } from '@features/rooms/roomApi'
+import { getSingleRoomResponse } from '@definitions/rooms'
+import Toaster from '@components/Toaster'
+import AppLayout from '@components/Layouts/AppLayout'
 
 const Room = () => {
   const router = useRouter()

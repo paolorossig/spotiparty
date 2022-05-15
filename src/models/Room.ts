@@ -1,7 +1,7 @@
 import { model, models, Model, Schema } from 'mongoose'
 import { nanoid } from '@reduxjs/toolkit'
 import uniqueValidator from 'mongoose-unique-validator'
-import { Room } from '../types/rooms'
+import type { Room } from '@definitions/rooms'
 
 const RoomSchema: Schema = new Schema(
   {

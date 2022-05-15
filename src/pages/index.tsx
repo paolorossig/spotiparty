@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import LandingLayout from '../components/Layouts/LandingLayout'
+import LandingLayout from '@components/Layouts/LandingLayout'
 
 const Home: NextPage = () => {
   return (
