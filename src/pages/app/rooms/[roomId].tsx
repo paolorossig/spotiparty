@@ -1,8 +1,11 @@
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { toast } from 'react-hot-toast'
-import { BsClipboard, BsClipboardCheck } from 'react-icons/bs'
+import { QRCodeSVG } from 'qrcode.react'
 import { IoMdMicrophone } from 'react-icons/io'
+import { BsClipboard, BsClipboardCheck, BsChevronDown } from 'react-icons/bs'
+import useToggle from '@hooks/useToggle'
 import useCopyToClipboard from '@hooks/useCopyToClipboard'
 import { useGetRoombyIdQuery } from '@features/rooms/roomApi'
 import { getSingleRoomResponse } from '@definitions/rooms'
@@ -12,15 +15,19 @@ import AppLayout from '@components/Layouts/AppLayout'
 const Room = () => {
   const router = useRouter()
   const { roomId } = router.query
+
   const { data: response, error } = useGetRoombyIdQuery(
     (roomId as string) || ''
     // { pollingInterval: 3000 }
   )
+
   const [copiedText, copy] = useCopyToClipboard()
   const copyLink = () => {
     copy(response?.data?.linkUrl ?? '')
     toast.success('Link copied succesfully.')
   }
+
+  const [showQrCode, toggleQrCode] = useToggle(true)
 
   return (
     <AppLayout>
@@ -36,15 +43,32 @@ const Room = () => {
         </div>
       ) : (
         <>
-          <section className="flex flex-col-reverse items-center rounded-lg border-2 border-gray-700 lg:flex-row">
-            <div className="my-2 flex flex-1 items-center justify-center gap-4 text-sm md:my-4 md:text-base">
+          <section className="relative flex flex-col-reverse items-center rounded-lg border-2 border-gray-700 lg:flex-row">
+            <button
+              onClick={toggleQrCode}
+              className={clsx(
+                'absolute right-2 top-2 grid h-8 w-8 transform place-content-center rounded-full bg-gray-700 transition duration-300 hover:bg-gray-800',
+                showQrCode ? 'rotate-180' : 'rotate-0',
+                'lg:hidden'
+              )}
+            >
+              <BsChevronDown className="text-xl text-white" />
+            </button>
+            <div
+              className={clsx(
+                'm-2 flex-1 items-center justify-center gap-2 text-sm md:my-4 md:text-base',
+                showQrCode ? 'flex' : 'hidden'
+              )}
+            >
               <div className="flex flex-col items-center">
-                <p>Join at spotiparty.vercel.app/app/room/join</p>
+                <p className="text-center">
+                  Join at spotiparty.vercel.app/app/room/join
+                </p>
                 <p>or scan the QR Code</p>
               </div>
-              <div className="h-20 w-20 bg-white" />
+              <QRCodeSVG value={response.data.linkUrl} size={120} />
             </div>
-            <div className="my-2 grid flex-1 place-content-center md:my-4">
+            <div className="m-2 grid flex-1 place-content-center md:my-4">
               <div className="flex flex-col items-center">
                 <h3 className="">Room ID:</h3>
                 <div className="flex items-center gap-2">

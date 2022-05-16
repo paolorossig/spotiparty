@@ -41,11 +41,6 @@ const RoomSchema: Schema = new Schema(
 
       type: String,
     },
-    qrCodeImageUrl: {
-      /* The QR Code image url */
-
-      type: String,
-    },
     members: {
       /* The members of the room */
 

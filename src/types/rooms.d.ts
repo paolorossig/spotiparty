@@ -14,7 +14,6 @@ export interface Room {
   owner: string
   accountId: string
   linkUrl: string
-  qrCodeImageUrl: string
   members: RoomMember[]
   createdAt: string
   updatedAt: string

@@ -33,7 +33,6 @@ const roomsHandler: NextApiHandler = async (req, res) => {
         })
 
         const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
-        // TODO: Generate the QR Code image url
         const roomUpdated = await Room.findByIdAndUpdate(
           room._id,
           { linkUrl },
