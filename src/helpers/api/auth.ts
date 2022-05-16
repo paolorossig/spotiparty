@@ -1,5 +1,5 @@
 import type { JWT } from 'next-auth/jwt'
-import spotifyApi from './spotify'
+import spotifyApi from '@lib/spotify'
 
 export const refreshAccessToken: any = async (token: JWT) => {
   try {

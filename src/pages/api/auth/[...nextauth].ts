@@ -3,7 +3,7 @@ import SpotifyProvider from 'next-auth/providers/spotify'
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import clientPromise from '@lib/mongodb'
 import { LOGIN_URL } from '@lib/spotify'
-import { refreshAccessToken } from '@lib/auth'
+import { refreshAccessToken } from '@helpers/api/auth'
 
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
