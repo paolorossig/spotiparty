@@ -1,16 +1,15 @@
-import type { NextApiHandler } from 'next'
-import { getSession } from 'next-auth/react'
-import dbConnect from '@lib/mongoose'
+import type { NextApiResponse } from 'next'
 import Room from '@models/Room'
+import dbConnect from '@lib/mongoose'
+import authMiddleware, { CustomApiReq } from '@helpers/api/authMiddleware'
 
-const roomsHandler: NextApiHandler = async (req, res) => {
+const roomsHandler = async (req: CustomApiReq, res: NextApiResponse) => {
+  await authMiddleware(req, res)
   await dbConnect()
 
-  const { method } = req
-  const session = await getSession({ req })
-
-  if (!session) return res.status(401).json({ success: false })
-  const { name: owner, accountId, image } = session.user
+  const { method, session } = req
+  if (!session) return null // TODO: figure out why this runs even if session is null
+  const { name: owner, accountId, image } = session
 
   switch (method) {
     case 'GET':
