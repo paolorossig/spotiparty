@@ -1,7 +1,7 @@
 import { model, models, Model, Schema } from 'mongoose'
 import { nanoid } from '@reduxjs/toolkit'
 import uniqueValidator from 'mongoose-unique-validator'
-import type { Room } from '@definitions/rooms'
+import type { Room as IRoom } from '@definitions/rooms'
 
 const RoomSchema: Schema = new Schema(
   {
@@ -55,6 +55,6 @@ RoomSchema.plugin(uniqueValidator, {
   message: "MongoServerError: Room's {PATH} has to be unique.",
 })
 
-const RoomModel: Model<Room> = models.Room || model('Room', RoomSchema)
+const Room: Model<IRoom> = models.Room || model('Room', RoomSchema)
 
-export default RoomModel
+export default Room

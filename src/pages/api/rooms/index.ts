@@ -1,5 +1,5 @@
 import type { NextApiResponse } from 'next'
-import Room from '@models/Room'
+import Room from '@models/room'
 import dbConnect from '@lib/mongoose'
 import authMiddleware, { CustomApiReq } from '@helpers/api/authMiddleware'
 

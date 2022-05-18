@@ -1,5 +1,5 @@
 import type { NextApiResponse } from 'next'
-import Room from '@models/Room'
+import Room from '@models/room'
 import dbConnect from '@lib/mongoose'
 import authMiddleware, { CustomApiReq } from '@helpers/api/authMiddleware'
 
@@ -19,7 +19,7 @@ const roomHandler = async (req: CustomApiReq, res: NextApiResponse) => {
   switch (method) {
     case 'GET':
       try {
-        let room = await Room.findOne({ _id: roomId })
+        let room = await Room.findOne({ _id: roomId }).lean()
         if (!room) {
           return res
             .status(404)
@@ -31,7 +31,7 @@ const roomHandler = async (req: CustomApiReq, res: NextApiResponse) => {
             roomId,
             { $push: { members: { accountId, name, image, role: 'member' } } },
             { new: true }
-          )
+          ).lean()
         }
 
         return res.status(200).json({ success: true, data: room })
