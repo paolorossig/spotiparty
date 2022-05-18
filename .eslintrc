@@ -1,4 +1,25 @@
 {
   "extends": "next",
-  "root": true
+  "root": true,
+  "rules": {
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./src/core",
+            "from": "./src/lib"
+          },
+          {
+            "target": "./src/core",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/lib",
+            "from": "./src/pages"
+          }
+        ]
+      }
+    ]
+  }
 }
