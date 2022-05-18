@@ -4,7 +4,7 @@ import type {
   getRoomsResponse,
   getSingleRoomResponse,
   inputsRoomCreation,
-} from '@definitions/rooms'
+} from 'types/rooms'
 
 export const roomApi = createApi({
   reducerPath: 'roomApi',

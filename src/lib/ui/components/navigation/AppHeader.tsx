@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import ProfileMenu from '@components/ProfileMenu'
+import ProfileMenu from './ProfileMenu'
 
-const Header = () => {
+const AppHeader = () => {
   return (
     <header className="flex w-full justify-center">
       <nav className="flex w-full max-w-5xl flex-col items-center gap-2 p-4">
@@ -26,4 +26,4 @@ const Header = () => {
   )
 }
 
-export default memo(Header)
+export default memo(AppHeader)

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useGetUserRoomsQuery } from './roomApi'
+import { useGetUserRoomsQuery } from '../services/roomApi'
 
 const Rooms = () => {
   const { data: userRooms } = useGetUserRoomsQuery('')

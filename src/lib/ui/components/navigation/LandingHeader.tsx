@@ -1,39 +1,24 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-
-const AUTH_STATES = {
-  unauthenticated: {
-    pathname: '/login',
-    value: 'Login',
-  },
-  authenticated: {
-    pathname: '/app',
-    value: 'Go to App',
-  },
-}
+import { LANDING_PATHS, NAVIGATION_STATES } from 'lib/ui/constants/navigation'
 
 const NavLinks = ({ className }: { className: string }) => {
   return (
     <div className={className}>
-      <Link href="/docs">
-        <a>Docs</a>
-      </Link>
-      <Link href="/pricing">
-        <a>Pricing</a>
-      </Link>
-      <Link href="/blog">
-        <a>Blog</a>
-      </Link>
+      {LANDING_PATHS.map((path) => (
+        <Link href={path.href} key={path.href}>
+          <a>{path.label}</a>
+        </Link>
+      ))}
     </div>
   )
 }
 
-const Header = () => {
+const LandingHeader = () => {
   const { data } = useSession()
-  const button = data?.user
-    ? AUTH_STATES.authenticated
-    : AUTH_STATES.unauthenticated
+  const { authenticated, unauthenticated } = NAVIGATION_STATES
+  const button = data?.user ? authenticated : unauthenticated
 
   return (
     <header className="flex w-full justify-center border-b border-gray-700">
@@ -51,9 +36,9 @@ const Header = () => {
             </a>
           </Link>
           <NavLinks className="hidden gap-16 md:flex" />
-          <Link href={button.pathname}>
+          <Link href={button.href}>
             <a className="rounded-xl border-2 border-gray-700 py-2 px-4">
-              {button.value}
+              {button.label}
             </a>
           </Link>
         </div>
@@ -63,4 +48,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default LandingHeader

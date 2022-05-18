@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import { RiFolderAddLine } from 'react-icons/ri'
-import AppLayout from '@components/Layouts/AppLayout'
-import Rooms from '@features/rooms/Rooms'
+import AppLayout from 'lib/ui/layouts/AppLayout'
+import Rooms from 'lib/rooms/components/Rooms'
 
 const App: NextPage = () => {
   return (

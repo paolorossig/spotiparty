@@ -2,9 +2,9 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import Toaster from '@components/Toaster'
-import AppLayout from '@components/Layouts/AppLayout'
-import { useCreateRoomMutation } from '@features/rooms/roomApi'
+import Toaster from 'lib/ui/components/Toaster'
+import AppLayout from 'lib/ui/layouts/AppLayout'
+import { useCreateRoomMutation } from 'lib/rooms/services/roomApi'
 
 export interface FormValues {
   name: string

@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Footer from './Footer'
-import Header from './Header'
+import LandingFooter from '../components/navigation/LandingFooter'
+import LandingHeader from '../components/navigation/LandingHeader'
 
 interface Props {
   children?: React.ReactNode
@@ -28,9 +28,9 @@ const LandingLayout = ({ children }: Props) => {
         />
       </Head>
 
-      <Header />
+      <LandingHeader />
       <main className="flex w-full flex-1 flex-col md:px-20">{children}</main>
-      <Footer />
+      <LandingFooter />
     </div>
   )
 }
