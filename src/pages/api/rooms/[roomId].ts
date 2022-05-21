@@ -1,7 +1,7 @@
 import type { NextApiResponse } from 'next'
-import Room from '@models/room'
-import dbConnect from '@lib/mongoose'
-import authMiddleware, { CustomApiReq } from '@helpers/api/authMiddleware'
+import dbConnect from 'core/mongoose'
+import Room from 'lib/server/models/room'
+import authMiddleware, { CustomApiReq } from 'lib/server/utils/authMiddleware'
 
 const roomHandler = async (req: CustomApiReq, res: NextApiResponse) => {
   await authMiddleware(req, res)

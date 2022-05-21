@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { IoMdMicrophone } from 'react-icons/io'
-import { useGetRoombyIdQuery } from '@features/rooms/roomApi'
-import { getSingleRoomResponse } from '@definitions/rooms'
-import Toaster from '@components/Toaster'
-import AppLayout from '@components/Layouts/AppLayout'
-import ShareRoom from '@features/rooms/ShareRoom'
+import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+import type { getSingleRoomResponse } from 'types/rooms'
+import Toaster from 'lib/ui/components/Toaster'
+import AppLayout from 'lib/ui/layouts/AppLayout'
+import ShareRoom from 'lib/rooms/components/ShareRoom'
 
 const Room = () => {
   const router = useRouter()

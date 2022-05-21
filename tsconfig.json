@@ -16,8 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@*": ["src/*"],
-      "@definitions/*": ["src/types/*"]
+      "*": ["src/*"]
     },
     "typeRoots": ["node_modules/@types", "src/types"]
   },

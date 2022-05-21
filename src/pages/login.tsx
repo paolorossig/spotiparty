@@ -1,8 +1,8 @@
 import type { GetServerSideProps } from 'next'
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
 
 const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
   return (

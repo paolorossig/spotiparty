@@ -2,9 +2,9 @@ import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'
 import { BsChevronDown, BsClipboard, BsClipboardCheck } from 'react-icons/bs'
-import useToggle from '@hooks/useToggle'
-import useCopyToClipboard from '@hooks/useCopyToClipboard'
-import type { Room } from '@definitions/rooms'
+import useToggle from 'lib/ui/hooks/useToggle'
+import useCopyToClipboard from 'lib/ui/hooks/useCopyToClipboard'
+import type { Room } from 'types/rooms'
 
 const ShareRoom = ({ room }: { room: Room }) => {
   const [showQrCode, toggleQrCode] = useToggle(true)
