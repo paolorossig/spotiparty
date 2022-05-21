@@ -45,21 +45,16 @@ const ShareRoom = ({ room }: { room: Room }) => {
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-bold">{room._id}</h1>
-          <div className="rounded-full p-3 hover:cursor-pointer hover:bg-gray-600">
+          <button
+            onClick={copyLink}
+            className="rounded-full p-3 hover:bg-gray-600"
+          >
             {!copiedText ? (
-              <BsClipboard
-                onClick={copyLink}
-                className="text-xl"
-                strokeWidth={'0.5'}
-              />
+              <BsClipboard className="text-xl" strokeWidth={'0.5'} />
             ) : (
-              <BsClipboardCheck
-                onClick={copyLink}
-                className="text-xl"
-                strokeWidth={'0.5'}
-              />
+              <BsClipboardCheck className="text-xl" strokeWidth={'0.5'} />
             )}
-          </div>
+          </button>
         </div>
       </div>
     </section>
