@@ -3,7 +3,6 @@ import type {
   createRoomResponse,
   getRoomsResponse,
   getSingleRoomResponse,
-  inputsRoomCreation,
 } from 'types/rooms'
 
 export const roomApi = createApi({
@@ -15,11 +14,14 @@ export const roomApi = createApi({
       query: () => '',
       providesTags: ['Room'],
     }),
-    createRoom: builder.mutation<createRoomResponse, inputsRoomCreation>({
+    createRoom: builder.mutation<createRoomResponse, FormData>({
       query: (data) => ({
         url: '',
         method: 'POST',
         body: data,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }),
       invalidatesTags: ['Room'],
     }),
