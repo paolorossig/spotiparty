@@ -1,9 +1,14 @@
+import type { NextHandler } from 'next-connect'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
-export type CustomApiReq = NextApiRequest & { session: any }
+export type CustomApiReq = NextApiRequest & { session?: any }
 
-const authMiddleware = async (req: CustomApiReq, res: NextApiResponse) => {
+export const authMiddleware = async (
+  req: CustomApiReq,
+  res: NextApiResponse,
+  next: NextHandler
+) => {
   const session = await getSession({ req })
 
   if (!session) {
@@ -11,6 +16,5 @@ const authMiddleware = async (req: CustomApiReq, res: NextApiResponse) => {
   }
 
   req.session = session.user
+  next()
 }
-
-export default authMiddleware
