@@ -47,6 +47,11 @@ const RoomSchema: Schema = new Schema(
       type: Array,
       maxlength: [30, 'Rooms cannot contain more than 30 members'],
     },
+    imageUrl: {
+      /* The url of the room image */
+
+      type: String,
+    },
   },
   { timestamps: true }
 )

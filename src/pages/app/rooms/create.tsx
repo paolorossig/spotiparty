@@ -26,8 +26,7 @@ const Create = () => {
     const keys = Object.keys(data) as Array<FormKeys>
     keys.forEach((key) => {
       key === 'image'
-        ? data.image.length &&
-          formData.append(key, data[key][0], data[key][0].name)
+        ? data.image.length && formData.append(key, data[key][0])
         : formData.append(key, data[key])
     })
 
@@ -35,7 +34,7 @@ const Create = () => {
       const response = await createRoom(formData).unwrap()
       if (response.success) return router.push('/app')
     } catch (error: any) {
-      toast.error(error.data.error.message.split(': ').pop() ?? '', {
+      toast.error(error.data.error.split(': ').pop() ?? '', {
         duration: 3000,
       })
     }
@@ -81,7 +80,7 @@ const Create = () => {
         <Dropzone
           accept="image/*"
           message="PNG or JPG (Max. 10MB)"
-          register={register('image')}
+          register={register('image', { required: 'Required field' })}
         />
         <button
           type="submit"

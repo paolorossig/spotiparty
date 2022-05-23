@@ -19,9 +19,6 @@ export const roomApi = createApi({
         url: '',
         method: 'POST',
         body: data,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       }),
       invalidatesTags: ['Room'],
     }),
