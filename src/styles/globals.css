@@ -30,4 +30,12 @@
       transparent 45%
     );
   }
+
+  .special-underline {
+    @apply bg-gradient-to-r from-green-400 to-green-400 
+        bg-no-repeat [background-position:0%_110%] [background-size:0%_0.3em]
+        hover:[background-size:100%_0.3em] focus:[background-size:100%_0.3em]
+        group-hover:[background-size:100%_0.3em]
+        motion-safe:transition-all motion-safe:duration-200;
+  }
 }

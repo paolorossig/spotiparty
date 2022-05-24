@@ -19,11 +19,6 @@ export interface Room {
   updatedAt: string
 }
 
-export interface inputsRoomCreation {
-  name: string
-  description: string
-}
-
 export interface getSingleRoomResponse {
   success: boolean
   data?: Room
