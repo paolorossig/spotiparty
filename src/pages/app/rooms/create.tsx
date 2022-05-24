@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import AppLayout from 'lib/ui/layouts/AppLayout'
@@ -18,7 +18,7 @@ type FormKeys = keyof FormValues
 const Create = () => {
   const router = useRouter()
   const [createRoom] = useCreateRoomMutation()
-  const { register, handleSubmit, formState } = useForm<FormValues>()
+  const { register, handleSubmit, control, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -77,10 +77,15 @@ const Create = () => {
             </p>
           )}
         </div>
-        <Dropzone
-          accept="image/*"
-          message="PNG or JPG (Max. 10MB)"
-          register={register('image', { required: 'Required field' })}
+        <Controller
+          render={({ field }) => (
+            <Dropzone
+              message="PNG or JPG (Max. 10MB)"
+              onChange={(e) => field.onChange(e.target.files)}
+            />
+          )}
+          name="image"
+          control={control}
         />
         <button
           type="submit"
