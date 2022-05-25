@@ -15,6 +15,7 @@ export interface Room {
   accountId: string
   linkUrl: string
   members: RoomMember[]
+  imageUrl: string
   createdAt: string
   updatedAt: string
 }
