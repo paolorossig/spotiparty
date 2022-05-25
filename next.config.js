@@ -2,6 +2,10 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['i.scdn.co', 'upload.wikimedia.org'],
+    domains: [
+      'i.scdn.co',
+      'res.cloudinary.com',
+      'scontent-iad3-1.xx.fbcdn.net',
+    ],
   },
 }

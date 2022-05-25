@@ -1,7 +1,7 @@
 import { model, models, Model, Schema } from 'mongoose'
 import { nanoid } from '@reduxjs/toolkit'
 import uniqueValidator from 'mongoose-unique-validator'
-import { Room } from '../types/rooms'
+import type { Room as IRoom } from 'types/rooms'
 
 const RoomSchema: Schema = new Schema(
   {
@@ -41,16 +41,16 @@ const RoomSchema: Schema = new Schema(
 
       type: String,
     },
-    qrCodeImageUrl: {
-      /* The QR Code image url */
-
-      type: String,
-    },
     members: {
       /* The members of the room */
 
       type: Array,
       maxlength: [30, 'Rooms cannot contain more than 30 members'],
+    },
+    imageUrl: {
+      /* The url of the room image */
+
+      type: String,
     },
   },
   { timestamps: true }
@@ -60,6 +60,6 @@ RoomSchema.plugin(uniqueValidator, {
   message: "MongoServerError: Room's {PATH} has to be unique.",
 })
 
-const RoomModel: Model<Room> = models.Room || model('Room', RoomSchema)
+const Room: Model<IRoom> = models.Room || model('Room', RoomSchema)
 
-export default RoomModel
+export default Room

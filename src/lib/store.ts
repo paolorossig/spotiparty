@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { roomApi } from './rooms/roomApi'
+import { roomApi } from './rooms/services/roomApi'
 
 export function makeStore() {
   return configureStore({

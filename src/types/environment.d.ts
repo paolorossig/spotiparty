@@ -6,5 +6,9 @@ declare namespace NodeJS {
     MONGODB_URI: string
     SPOTIFY_CLIENT_ID: string
     SPOTIFY_CLIENT_SECRET: string
+    CLOUDINARY_CLOUD_NAME: string
+    CLOUDINARY_API_KEY: string
+    CLOUDINARY_API_SECRET: string
+    CLOUDINARY_ROOT_FOLDER: string
   }
 }

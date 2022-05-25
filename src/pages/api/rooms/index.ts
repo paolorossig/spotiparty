@@ -1,56 +1,71 @@
-import type { NextApiHandler } from 'next'
-import { getSession } from 'next-auth/react'
-import dbConnect from '../../../lib/mongoose'
-import Room from '../../../models/Room'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import nextConnect from 'next-connect'
+import { parser } from 'core/multer'
+import dbConnect from 'core/mongoose'
+import { removeImage } from 'core/cloudinary'
+import Room from 'lib/server/models/room'
+import { authMiddleware, options } from 'lib/server/utils'
 
-const roomsHandler: NextApiHandler = async (req, res) => {
-  await dbConnect()
-
-  const { method } = req
-  const session = await getSession({ req })
-
-  if (!session) return res.status(401).json({ success: false })
-  const { name: owner, accountId, image } = session.user
-
-  switch (method) {
-    case 'GET':
-      try {
-        const rooms = await Room.find({ accountId })
-        return res.status(200).json({ success: true, data: rooms })
-      } catch (error) {
-        return res.status(400).json({ success: false, error })
-      }
-
-    case 'POST':
-      try {
-        const { name, description } = req.body
-        let room = await Room.create({
-          name,
-          owner,
-          accountId,
-          description,
-          members: [{ accountId, name: owner, image, role: 'owner' }],
-        })
-
-        const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
-        // TODO: Generate the QR Code image url
-        const roomUpdated = await Room.findByIdAndUpdate(
-          room._id,
-          { linkUrl },
-          { new: true }
-        )
-        if (roomUpdated) {
-          room = roomUpdated
-        }
-
-        return res.status(201).json({ success: true, data: room })
-      } catch (error) {
-        return res.status(400).json({ success: false, error })
-      }
-
-    default:
-      return res.status(400).json({ success: false })
-  }
+interface CustomRequest extends NextApiRequest {
+  file: any
+  session?: any
 }
 
-export default roomsHandler
+const handler = nextConnect(options)
+  .use(authMiddleware)
+  .use(parser('rooms').single('image'))
+  .get(async (req: CustomRequest, res: NextApiResponse) => {
+    await dbConnect()
+
+    const { accountId } = req.session
+
+    try {
+      const rooms = await Room.find({ accountId })
+      return res.status(200).json({ success: true, data: rooms })
+    } catch (error) {
+      return res.status(400).json({ success: false, error })
+    }
+  })
+  .post(async (req: CustomRequest, res: NextApiResponse) => {
+    await dbConnect()
+
+    const { path, filename } = req.file
+    const { name, description } = req.body
+    const { name: owner, accountId, image } = req.session
+
+    try {
+      let room = await Room.create({
+        name,
+        owner,
+        accountId,
+        description,
+        members: [{ accountId, name: owner, image, role: 'owner' }],
+        imageUrl: path,
+      })
+
+      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
+      const roomUpdated = await Room.findByIdAndUpdate(
+        room._id,
+        { linkUrl },
+        { new: true }
+      )
+      if (roomUpdated) {
+        room = roomUpdated
+      }
+
+      return res.status(201).json({ success: true, data: room })
+    } catch (error: any) {
+      if (error.message.split(': ').pop() === "Room's name has to be unique.") {
+        await removeImage(filename)
+      }
+      throw new Error(error.message)
+    }
+  })
+
+export default handler
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}

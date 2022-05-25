@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import LandingLayout from '../components/Layouts/LandingLayout'
+import LandingLayout from 'lib/ui/layouts/LandingLayout'
 
 const Custom404 = () => {
   return (

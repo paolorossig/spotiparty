@@ -11,10 +11,10 @@
   [multiple],
   textarea,
   select {
-    @apply w-full rounded-lg border-white shadow-sm focus:border-green-500 focus:ring-green-500;
+    @apply w-full rounded-lg focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
   }
   [type='radio'] {
-    @apply text-green-500 focus:border-green-500 focus:ring-green-500;
+    @apply text-green-500 focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
   }
   textarea {
     @apply resize-none;
@@ -29,5 +29,13 @@
       #61f77d7f 0,
       transparent 45%
     );
+  }
+
+  .special-underline {
+    @apply bg-gradient-to-r from-green-400 to-green-400 
+        bg-no-repeat [background-position:0%_110%] [background-size:0%_0.3em]
+        hover:[background-size:100%_0.3em] focus:[background-size:100%_0.3em]
+        group-hover:[background-size:100%_0.3em]
+        motion-safe:transition-all motion-safe:duration-200;
   }
 }

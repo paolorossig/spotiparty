@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { GoMarkGithub } from 'react-icons/go'
 
-const Footer = () => {
+const LandingFooter = () => {
   return (
     <footer className="flex h-14 w-full items-center justify-center border-t border-gray-700">
       <Link href="https://github.com/paolorossig/spotiparty">
@@ -13,4 +13,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default LandingFooter

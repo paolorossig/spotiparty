@@ -15,7 +15,7 @@ const ProfileMenu = () => {
           <Image
             src={
               session?.user.image ||
-              'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+              'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
             }
             alt="Profile image"
             width={40}
@@ -34,7 +34,7 @@ const ProfileMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-1 mt-2 flex flex-col divide-y divide-gray-500 rounded-md bg-gray-700 shadow-lg shadow-gray-900/60 ring-1 ring-black focus:outline-none">
+        <Menu.Items className="absolute right-1 z-10 mt-2 flex flex-col divide-y divide-gray-500 rounded-md bg-gray-700 shadow-lg shadow-gray-900/60 ring-1 ring-black focus:outline-none">
           <div className="p-1">
             <Menu.Item>
               {({ active }) => (

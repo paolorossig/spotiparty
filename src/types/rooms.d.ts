@@ -14,15 +14,10 @@ export interface Room {
   owner: string
   accountId: string
   linkUrl: string
-  qrCodeImageUrl: string
   members: RoomMember[]
+  imageUrl: string
   createdAt: string
   updatedAt: string
-}
-
-export interface inputsRoomCreation {
-  name: string
-  description: string
 }
 
 export interface getSingleRoomResponse {
