@@ -5,9 +5,11 @@ import Spinner from '../components/Spinner'
 
 interface Props {
   children?: React.ReactNode
+  error?: string
+  isLoading?: boolean
 }
 
-const AppLayout = ({ children }: Props) => {
+const AppLayout = ({ children, error, isLoading }: Props) => {
   const { data: session, status } = useSession()
 
   return (
@@ -18,10 +20,12 @@ const AppLayout = ({ children }: Props) => {
       </Head>
       <AppHeader />
       <main className="flex w-full max-w-5xl flex-1 flex-col p-4">
-        {status === 'loading' ? (
+        {status === 'loading' || isLoading ? (
           <Spinner />
         ) : !session ? (
           <p className="text-3xl font-bold">No session</p>
+        ) : error ? (
+          <p className="text-3xl font-bold">{error}</p>
         ) : (
           children
         )}
