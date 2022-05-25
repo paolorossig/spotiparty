@@ -1,4 +1,6 @@
+import clsx from 'clsx'
 import Link from 'next/link'
+import Image from 'next/image'
 import toast from 'react-hot-toast'
 import Spinner from 'lib/ui/components/Spinner'
 import { useGetUserRoomsQuery } from 'lib/rooms/services/roomApi'
@@ -18,7 +20,17 @@ const Rooms = () => {
       {data.map((room) => (
         <Link href={`/app/rooms/${room._id}`} key={room._id}>
           <a>
-            <article className="flex h-44 flex-col items-center justify-center rounded-xl border border-white hover:bg-white/10">
+            <article className="group flex h-44 flex-row items-center justify-center gap-4 rounded-xl border border-white hover:bg-white/10">
+              <Image
+                src={room.imageUrl}
+                alt="Room image"
+                width={90}
+                height={90}
+                className={clsx(
+                  'rounded-full object-cover brightness-50 grayscale filter transition duration-300',
+                  'group-hover:brightness-100 group-hover:grayscale-0'
+                )}
+              />
               <p className="text-xl font-bold">{room.name}</p>
             </article>
           </a>
