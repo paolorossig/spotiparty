@@ -4,8 +4,8 @@ module.exports = {
   images: {
     domains: [
       'i.scdn.co',
+      'res.cloudinary.com',
       'scontent-iad3-1.xx.fbcdn.net',
-      'upload.wikimedia.org',
     ],
   },
 }

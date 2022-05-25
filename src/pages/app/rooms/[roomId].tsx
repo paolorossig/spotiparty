@@ -42,7 +42,7 @@ const Room = () => {
                     <Image
                       src={
                         member.image ||
-                        'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+                        'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
                       }
                       alt="Profile image"
                       width={40}
