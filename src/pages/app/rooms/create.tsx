@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import AppLayout from 'lib/ui/layouts/AppLayout'
+import Button from 'lib/ui/components/Button'
 import Toaster from 'lib/ui/components/Toaster'
 import Dropzone from 'lib/ui/components/Dropzone'
 import { useCreateRoomMutation } from 'lib/rooms/services/roomApi'
@@ -17,7 +18,7 @@ type FormKeys = keyof FormValues
 
 const Create = () => {
   const router = useRouter()
-  const [createRoom] = useCreateRoomMutation()
+  const [createRoom, { isLoading }] = useCreateRoomMutation()
   const { register, handleSubmit, control, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
@@ -87,12 +88,9 @@ const Create = () => {
           name="image"
           control={control}
         />
-        <button
-          type="submit"
-          className="my-4 rounded-full bg-green-500 py-2 text-white hover:bg-green-800"
-        >
+        <Button type="submit" variant="primary" isLoading={isLoading}>
           Create
-        </button>
+        </Button>
       </form>
       <Toaster />
     </AppLayout>
