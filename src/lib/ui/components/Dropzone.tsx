@@ -42,7 +42,7 @@ const Dropzone = ({ message, onChange, maxFiles = 1 }: Props) => {
         {...getRootProps()}
         className={clsx(
           'group flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300',
-          'hover:bg-[#1d1d1d]',
+          'hover:bg-[#1d1d1d] focus:border-transparent focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90',
           isDragActive && 'bg-[#1d1d1d]',
           files.length > 0 && 'hidden'
         )}

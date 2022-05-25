@@ -11,10 +11,10 @@
   [multiple],
   textarea,
   select {
-    @apply w-full rounded-lg border-white shadow-sm focus:border-green-500 focus:ring-green-500;
+    @apply w-full rounded-lg focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
   }
   [type='radio'] {
-    @apply text-green-500 focus:border-green-500 focus:ring-green-500;
+    @apply text-green-500 focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
   }
   textarea {
     @apply resize-none;

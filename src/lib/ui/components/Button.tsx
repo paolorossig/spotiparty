@@ -11,9 +11,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const classes = {
   variant: {
-    primary: 'bg-green-500 border-green-500 hover:bg-green-800 text-white',
-    light: 'bg-white border-white hover:bg-gray-200',
-    dark: 'bg-black border-black hover:bg-[#1d1d1d] text-white',
+    primary: 'bg-green-500 hover:bg-green-800 text-white',
+    light: 'bg-white hover:bg-gray-200',
+    dark: 'bg-black hover:bg-[#1d1d1d] text-white',
   },
 }
 
@@ -26,7 +26,8 @@ const Button = ({
   return (
     <button
       className={clsx(
-        'my-4 rounded-full border py-2 text-base',
+        'my-4 rounded-full py-2 text-base',
+        'focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90',
         classes.variant[variant],
         className
       )}
