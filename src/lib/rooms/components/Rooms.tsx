@@ -1,12 +1,21 @@
 import Link from 'next/link'
-import { useGetUserRoomsQuery } from '../services/roomApi'
+import toast from 'react-hot-toast'
+import Spinner from 'lib/ui/components/Spinner'
+import { useGetUserRoomsQuery } from 'lib/rooms/services/roomApi'
 
 const Rooms = () => {
-  const { data: userRooms } = useGetUserRoomsQuery('')
+  const { data, error, isLoading } = useGetUserRoomsQuery('')
 
-  return (
+  if (error)
+    toast.error(error.message?.split(': ').pop() ?? '', {
+      duration: 3000,
+    })
+
+  return isLoading ? (
+    <Spinner variant="light" size="large" />
+  ) : !data ? null : (
     <>
-      {userRooms?.data?.map((room) => (
+      {data.map((room) => (
         <Link href={`/app/rooms/${room._id}`} key={room._id}>
           <a>
             <article className="flex h-44 flex-col items-center justify-center rounded-xl border border-white hover:bg-white/10">

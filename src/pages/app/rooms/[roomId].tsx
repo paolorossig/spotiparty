@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { IoMdMicrophone } from 'react-icons/io'
 import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
-import type { getSingleRoomResponse } from 'types/rooms'
 import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import ShareRoom from 'lib/rooms/components/ShareRoom'
@@ -11,41 +10,31 @@ const Room = () => {
   const router = useRouter()
   const { roomId } = router.query
 
-  const { data: response, error } = useGetRoombyIdQuery(
+  const { data, error, isLoading } = useGetRoombyIdQuery(
     (roomId as string) || ''
     // { pollingInterval: 3000 }
   )
 
   return (
-    <AppLayout>
-      {error ? (
-        <div className="grid flex-1 place-content-center">
-          <p>
-            {'data' in error && (error.data as getSingleRoomResponse).error}
-          </p>
-        </div>
-      ) : !response?.data ? (
+    <AppLayout error={error?.message} isLoading={isLoading}>
+      {!data ? (
         <div className="grid flex-1 place-content-center">
           <p>Something went wrong. Please try again later.</p>
         </div>
       ) : (
         <>
-          <ShareRoom room={response.data} />
+          <ShareRoom room={data} />
           <br />
           <section className="flex flex-col gap-6">
             <div>
-              <h1 className="mb-2 text-4xl font-bold">
-                {response.data.name} Room
-              </h1>
-              <p className="text-xl text-gray-300">
-                {response.data.description}
-              </p>
+              <h1 className="mb-2 text-4xl font-bold">{data.name} Room</h1>
+              <p className="text-xl text-gray-300">{data.description}</p>
             </div>
             <div>
               <p className="text-gray-300">Members:</p>
               <hr className="my-1 border-gray-700" />
               <ul className="m-4 flex flex-col gap-4">
-                {response.data.members?.map((member) => (
+                {data.members?.map((member) => (
                   <li
                     key={member.accountId}
                     className="flex items-center gap-4"

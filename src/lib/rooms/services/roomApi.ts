@@ -1,29 +1,35 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type {
-  createRoomResponse,
-  getRoomsResponse,
-  getSingleRoomResponse,
-} from 'types/rooms'
+import type { Room } from 'types/rooms'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { axiosBaseQuery } from 'lib/server/utils'
 
 export const roomApi = createApi({
   reducerPath: 'roomApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/rooms' }),
+  baseQuery: axiosBaseQuery({ baseUrl: '/api/rooms' }),
   tagTypes: ['Room'],
   endpoints: (builder) => ({
-    getUserRooms: builder.query<getRoomsResponse, string>({
-      query: () => '',
+    getUserRooms: builder.query<Room[], string>({
+      query: () => ({
+        url: '',
+        method: 'GET',
+      }),
       providesTags: ['Room'],
     }),
-    createRoom: builder.mutation<createRoomResponse, FormData>({
+    createRoom: builder.mutation<Room, FormData>({
       query: (data) => ({
         url: '',
         method: 'POST',
-        body: data,
+        data,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }),
       invalidatesTags: ['Room'],
     }),
-    getRoombyId: builder.query<getSingleRoomResponse, string>({
-      query: (roomId) => `/${roomId}`,
+    getRoombyId: builder.query<Room, string>({
+      query: (roomId) => ({
+        url: `/${roomId}`,
+        method: 'GET',
+      }),
     }),
   }),
 })

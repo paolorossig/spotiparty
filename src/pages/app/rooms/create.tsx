@@ -32,10 +32,10 @@ const Create = () => {
     })
 
     try {
-      const response = await createRoom(formData).unwrap()
-      if (response.success) return router.push('/app')
+      await createRoom(formData).unwrap()
+      return router.push('/app')
     } catch (error: any) {
-      toast.error(error.data.error.split(': ').pop() ?? '', {
+      toast.error(error.message.split(': ').pop() ?? '', {
         duration: 3000,
       })
     }
