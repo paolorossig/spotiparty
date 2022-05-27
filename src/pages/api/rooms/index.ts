@@ -30,6 +30,8 @@ const handler = nextConnect(options)
   .post(async (req: CustomRequest, res: NextApiResponse) => {
     await dbConnect()
 
+    if (!req.file) throw new Error('Uploading an Image for room is required')
+
     const { path, filename } = req.file
     const { name, description } = req.body
     const { name: owner, accountId, image } = req.session

@@ -27,7 +27,7 @@ const Create = () => {
     const keys = Object.keys(data) as Array<FormKeys>
     keys.forEach((key) => {
       key === 'image'
-        ? data.image.length && formData.append(key, data[key][0])
+        ? data.image?.length && formData.append(key, data[key][0])
         : formData.append(key, data[key])
     })
 
