@@ -1,12 +1,20 @@
-import type { Room } from 'types/rooms'
+import type { Room, Track } from 'types/rooms'
 import Image from 'next/image'
 
 const Tracks = ({ room }: { room: Room }) => {
-  const tracks = [...room.tracks]
+  const setObj = new Set()
+
+  const uniqueTracks = room.tracks?.reduce<Track[]>((acc, track) => {
+    if (!setObj.has(track.id)) {
+      setObj.add(track.id)
+      acc.push(track)
+    }
+    return acc
+  }, [])
 
   return (
     <div className="my-4 flex flex-col gap-4">
-      {tracks
+      {uniqueTracks
         ?.sort((a, b) => b.popularity - a.popularity)
         .map((track) => (
           <li key={track.id} className="flex items-center gap-4">
