@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { BsChevronLeft } from 'react-icons/bs'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Button from 'lib/ui/components/Button'
 import Toaster from 'lib/ui/components/Toaster'
@@ -43,7 +44,15 @@ const Create = () => {
 
   return (
     <AppLayout>
-      <h2 className="mb-8 text-2xl font-bold">Create a new Room</h2>
+      <div className="mb-8 flex items-center">
+        <button
+          onClick={() => router.back()}
+          className="mr-2 grid h-8 w-8 place-content-center rounded-full hover:bg-gray-800"
+        >
+          <BsChevronLeft className="mr-[2px] text-xl" />
+        </button>
+        <h2 className="text-2xl font-bold">Create a new Room</h2>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-2 text-black"
