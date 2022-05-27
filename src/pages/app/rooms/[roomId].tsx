@@ -1,10 +1,17 @@
-import Image from 'next/image'
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import { IoMdMicrophone } from 'react-icons/io'
-import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+import { Tab } from '@headlessui/react'
 import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
+import Tracks from 'lib/rooms/components/Tracks'
+import Members from 'lib/rooms/components/Members'
 import ShareRoom from 'lib/rooms/components/ShareRoom'
+import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+
+const TABS = {
+  Members: 'Members',
+  Playlist: 'Playlist',
+}
 
 const Room = () => {
   const router = useRouter()
@@ -31,31 +38,34 @@ const Room = () => {
               <p className="text-xl text-gray-300">{data.description}</p>
             </div>
             <div>
-              <p className="text-gray-300">Members:</p>
-              <hr className="my-1 border-gray-700" />
-              <ul className="m-4 flex flex-col gap-4">
-                {data.members?.map((member) => (
-                  <li
-                    key={member.accountId}
-                    className="flex items-center gap-4"
-                  >
-                    <Image
-                      src={
-                        member.image ||
-                        'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
+              <Tab.Group>
+                <Tab.List className="flex space-x-1 rounded-xl bg-gray-700/30 p-1">
+                  {Object.keys(TABS).map((state) => (
+                    <Tab
+                      key={state}
+                      className={({ selected }) =>
+                        clsx(
+                          'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                          'ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black',
+                          selected
+                            ? 'bg-green-800 text-white shadow'
+                            : 'text-gray-300 hover:bg-white/[0.12] hover:text-white'
+                        )
                       }
-                      alt="Profile image"
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
-                    />
-                    <h3>{member.name}</h3>
-                    {member.role === 'owner' && (
-                      <IoMdMicrophone className="text-2xl text-yellow-400" />
-                    )}
-                  </li>
-                ))}
-              </ul>
+                    >
+                      {state}
+                    </Tab>
+                  ))}
+                </Tab.List>
+                <Tab.Panels>
+                  <Tab.Panel>
+                    <Members room={data} />
+                  </Tab.Panel>
+                  <Tab.Panel>
+                    <Tracks room={data} />
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
             </div>
           </section>
           <Toaster />
