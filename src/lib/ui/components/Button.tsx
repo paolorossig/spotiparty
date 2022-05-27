@@ -27,7 +27,7 @@ const Button = ({
     <button
       className={clsx(
         'my-4 rounded-full py-2 text-base',
-        'focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90',
+        'ring-offset-2 ring-offset-black focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90',
         classes.variant[variant],
         className
       )}

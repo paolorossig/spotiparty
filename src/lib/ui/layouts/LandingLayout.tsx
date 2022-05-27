@@ -12,7 +12,7 @@ const LandingLayout = ({ children }: Props) => {
       <Head>
         <title>Spotiparty</title>
         <link rel="icon" href="/icon.png" />
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@paolo_rossi_g" />
         <meta name="twitter:creator" content="@paolo_rossi_g" />
         <meta property="og:url" content="https://spotiparty.vercel.app/" />

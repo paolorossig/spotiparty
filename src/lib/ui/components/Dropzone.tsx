@@ -85,7 +85,7 @@ const Dropzone = ({ message, onChange, maxFiles = 1 }: Props) => {
                 onLoad={() => {
                   URL.revokeObjectURL(file.preview)
                 }}
-                className="rounded-lg"
+                className="rounded-lg object-cover"
               />
             </picture>
           </li>
