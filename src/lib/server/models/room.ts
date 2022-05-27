@@ -52,6 +52,11 @@ const RoomSchema: Schema = new Schema(
 
       type: String,
     },
+    tracks: {
+      /* The tracks of the members of the room */
+
+      type: Array,
+    },
   },
   { timestamps: true }
 )

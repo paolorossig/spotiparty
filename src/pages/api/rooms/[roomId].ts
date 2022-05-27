@@ -2,6 +2,7 @@ import type { NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
 import dbConnect from 'core/mongoose'
 import Room from 'lib/server/models/room'
+import { getUserTopTracks } from 'lib/server/services/spotify'
 import { authMiddleware, CustomApiReq, options } from 'lib/server/utils'
 
 const handler = nextConnect(options)
@@ -9,10 +10,8 @@ const handler = nextConnect(options)
   .get(async (req: CustomApiReq, res: NextApiResponse) => {
     await dbConnect()
 
-    const {
-      session: { accountId, name, image },
-      query: { roomId },
-    } = req
+    const { accountId, name, image } = req.session
+    const { roomId } = req.query
 
     let room = await Room.findOne({ _id: roomId }).lean()
     if (!room) {
@@ -22,9 +21,16 @@ const handler = nextConnect(options)
     }
 
     if (!room.members.find((member) => member.accountId === accountId)) {
+      const memberTopTracks = await getUserTopTracks(req.session)
+
       room = await Room.findByIdAndUpdate(
         roomId,
-        { $push: { members: { accountId, name, image, role: 'member' } } },
+        {
+          $push: {
+            members: { accountId, name, image, role: 'member' },
+            tracks: { $each: memberTopTracks },
+          },
+        },
         { new: true }
       ).lean()
     }

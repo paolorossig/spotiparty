@@ -4,6 +4,7 @@ import { parser } from 'core/multer'
 import dbConnect from 'core/mongoose'
 import { removeImage } from 'core/cloudinary'
 import Room from 'lib/server/models/room'
+import { getUserTopTracks } from 'lib/server/services/spotify'
 import { authMiddleware, options } from 'lib/server/utils'
 
 interface CustomRequest extends NextApiRequest {
@@ -44,9 +45,16 @@ const handler = nextConnect(options)
       })
 
       const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
+      const ownerTopTracks = await getUserTopTracks(req.session)
+
       const roomUpdated = await Room.findByIdAndUpdate(
         room._id,
-        { linkUrl },
+        {
+          linkUrl,
+          $push: {
+            tracks: { $each: ownerTopTracks },
+          },
+        },
         { new: true }
       )
       if (roomUpdated) {
