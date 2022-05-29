@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Playlist, Room } from 'types/rooms'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from 'lib/server/utils'
 
@@ -31,6 +31,13 @@ export const roomApi = createApi({
         method: 'GET',
       }),
     }),
+    generatePlaylist: builder.mutation<Playlist, any>({
+      query: ({ roomId, ...rest }) => ({
+        url: `/${roomId}`,
+        method: 'POST',
+        data: { ...rest },
+      }),
+    }),
   }),
 })
 
@@ -38,4 +45,5 @@ export const {
   useGetUserRoomsQuery,
   useCreateRoomMutation,
   useGetRoombyIdQuery,
+  useGeneratePlaylistMutation,
 } = roomApi

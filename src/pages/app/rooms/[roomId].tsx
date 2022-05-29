@@ -1,12 +1,17 @@
 import clsx from 'clsx'
+import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { Tab } from '@headlessui/react'
+import Button from 'lib/ui/components/Button'
 import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Tracks from 'lib/rooms/components/Tracks'
 import Members from 'lib/rooms/components/Members'
 import ShareRoom from 'lib/rooms/components/ShareRoom'
-import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+import {
+  useGeneratePlaylistMutation,
+  useGetRoombyIdQuery,
+} from 'lib/rooms/services/roomApi'
 
 const TABS = {
   Members: 'Members',
@@ -17,10 +22,36 @@ const Room = () => {
   const router = useRouter()
   const { roomId } = router.query
 
+  const [generatePlaylist] = useGeneratePlaylistMutation()
   const { data, error, isLoading } = useGetRoombyIdQuery(
     (roomId as string) || ''
     // { pollingInterval: 3000 }
   )
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const setObj = new Set()
+
+    const uniqueTrackUris = data?.tracks?.reduce<string[]>((acc, track) => {
+      if (!setObj.has(track.id)) {
+        setObj.add(track.id)
+        acc.push(track.uri)
+      }
+      return acc
+    }, [])
+
+    try {
+      const response = await generatePlaylist({
+        roomId: roomId,
+        roomName: data?.name,
+        tracks: uniqueTrackUris,
+      }).unwrap()
+      console.log(response)
+      toast.success('Playlist generated')
+    } catch (error: any) {
+      toast.error(error.message)
+    }
+  }
 
   return (
     <AppLayout error={error?.message} isLoading={isLoading}>
@@ -63,6 +94,9 @@ const Room = () => {
                   </Tab.Panel>
                   <Tab.Panel>
                     <Tracks room={data} />
+                    <div className="mx-auto grid max-w-xs">
+                      <Button onClick={handleClick}>Create Playlist</Button>
+                    </div>
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
