@@ -1,9 +1,8 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import clsx from 'clsx'
 import Spinner from './Spinner'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode
   className?: string
   isLoading?: boolean
   variant?: 'primary' | 'light' | 'dark'
@@ -22,9 +21,11 @@ const Button = ({
   className,
   isLoading = false,
   variant = 'primary',
+  ...props
 }: ButtonProps) => {
   return (
     <button
+      {...props}
       className={clsx(
         'my-4 rounded-full py-2 text-base',
         'ring-offset-2 ring-offset-black focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90',

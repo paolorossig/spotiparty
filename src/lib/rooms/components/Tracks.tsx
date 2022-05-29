@@ -13,7 +13,7 @@ const Tracks = ({ room }: { room: Room }) => {
   }, [])
 
   return (
-    <div className="my-4 flex flex-col gap-4">
+    <ul className="my-4 flex w-full flex-col gap-4">
       {uniqueTracks
         ?.sort((a, b) => b.popularity - a.popularity)
         .map((track) => (
@@ -25,13 +25,13 @@ const Tracks = ({ room }: { room: Room }) => {
               height={60}
               className="rounded-full object-cover"
             />
-            <div>
+            <div className="flex-1">
               <h3 className="text-lg font-bold">{track.title}</h3>
               <p className="text-sm font-light text-gray-300">{track.artist}</p>
             </div>
           </li>
         ))}
-    </div>
+    </ul>
   )
 }
 
