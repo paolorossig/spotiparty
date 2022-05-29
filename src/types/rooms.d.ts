@@ -27,3 +27,9 @@ export interface Room {
   createdAt: string
   updatedAt: string
 }
+
+export interface Playlist {
+  id: string
+  spotifyUrl: string
+  uri: string
+}

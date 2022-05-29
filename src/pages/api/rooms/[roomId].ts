@@ -2,7 +2,11 @@ import type { NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
 import dbConnect from 'core/mongoose'
 import Room from 'lib/server/models/room'
-import { getUserTopTracks } from 'lib/server/services/spotify'
+import {
+  createPlaylist,
+  getUserTopTracks,
+  updatePlaylistItems,
+} from 'lib/server/services/spotify'
 import { authMiddleware, CustomApiReq, options } from 'lib/server/utils'
 
 const handler = nextConnect(options)
@@ -36,6 +40,16 @@ const handler = nextConnect(options)
     }
 
     return res.status(200).json({ success: true, data: room })
+  })
+  .post(async (req: CustomApiReq, res: NextApiResponse) => {
+    await dbConnect()
+
+    const { roomName, tracks } = req.body
+
+    const playlist = await createPlaylist(roomName, req.session)
+    await updatePlaylistItems(playlist.id, tracks, req.session)
+
+    return res.status(200).json({ success: true, data: playlist })
   })
 
 export default handler
