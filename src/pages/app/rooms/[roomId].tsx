@@ -1,19 +1,60 @@
-import Image from 'next/image'
+import clsx from 'clsx'
+import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
-import { IoMdMicrophone } from 'react-icons/io'
-import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+import { Tab } from '@headlessui/react'
+import { useSession } from 'next-auth/react'
+import Button from 'lib/ui/components/Button'
 import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
+import Tracks from 'lib/rooms/components/Tracks'
+import Members from 'lib/rooms/components/Members'
 import ShareRoom from 'lib/rooms/components/ShareRoom'
+import {
+  useGeneratePlaylistMutation,
+  useGetRoombyIdQuery,
+} from 'lib/rooms/services/roomApi'
+
+const TABS = {
+  Members: 'Members',
+  Playlist: 'Playlist',
+}
 
 const Room = () => {
   const router = useRouter()
   const { roomId } = router.query
 
+  const { data: session } = useSession()
+
+  const [generatePlaylist] = useGeneratePlaylistMutation()
   const { data, error, isLoading } = useGetRoombyIdQuery(
-    (roomId as string) || ''
-    // { pollingInterval: 3000 }
+    (roomId as string) || '',
+    { pollingInterval: 3000 }
   )
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const setObj = new Set()
+
+    const uniqueTrackUris = data?.tracks?.reduce<string[]>((acc, track) => {
+      if (!setObj.has(track.id)) {
+        setObj.add(track.id)
+        acc.push(track.uri)
+      }
+      return acc
+    }, [])
+
+    try {
+      const response = await generatePlaylist({
+        roomId: roomId,
+        roomName: data?.name,
+        tracks: uniqueTrackUris,
+      }).unwrap()
+      console.log(response)
+      toast.success('Playlist generated')
+    } catch (error: any) {
+      toast.error(error.message)
+    }
+  }
 
   return (
     <AppLayout error={error?.message} isLoading={isLoading}>
@@ -31,31 +72,39 @@ const Room = () => {
               <p className="text-xl text-gray-300">{data.description}</p>
             </div>
             <div>
-              <p className="text-gray-300">Members:</p>
-              <hr className="my-1 border-gray-700" />
-              <ul className="m-4 flex flex-col gap-4">
-                {data.members?.map((member) => (
-                  <li
-                    key={member.accountId}
-                    className="flex items-center gap-4"
-                  >
-                    <Image
-                      src={
-                        member.image ||
-                        'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
+              <Tab.Group>
+                <Tab.List className="flex space-x-2 rounded-xl bg-gray-700/30 p-1">
+                  {Object.keys(TABS).map((state) => (
+                    <Tab
+                      key={state}
+                      className={({ selected }) =>
+                        clsx(
+                          'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                          'ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black',
+                          selected
+                            ? 'bg-green-800 text-white shadow'
+                            : 'text-gray-300 hover:bg-white/[0.12] hover:text-white'
+                        )
                       }
-                      alt="Profile image"
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
-                    />
-                    <h3>{member.name}</h3>
-                    {member.role === 'owner' && (
-                      <IoMdMicrophone className="text-2xl text-yellow-400" />
+                    >
+                      {state}
+                    </Tab>
+                  ))}
+                </Tab.List>
+                <Tab.Panels>
+                  <Tab.Panel>
+                    <Members room={data} />
+                  </Tab.Panel>
+                  <Tab.Panel>
+                    <Tracks room={data} />
+                    {data.owner === session?.user.name && (
+                      <div className="mx-auto grid max-w-xs">
+                        <Button onClick={handleClick}>Create Playlist</Button>
+                      </div>
                     )}
-                  </li>
-                ))}
-              </ul>
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
             </div>
           </section>
           <Toaster />

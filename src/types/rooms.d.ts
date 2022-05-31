@@ -1,4 +1,11 @@
-import { MongooseError } from 'mongoose'
+export interface Track {
+  id: string
+  uri: string
+  title: string
+  artist: string
+  popularity: number
+  albumImageUrl: string
+}
 
 export interface RoomMember {
   accountId: string
@@ -16,23 +23,13 @@ export interface Room {
   linkUrl: string
   members: RoomMember[]
   imageUrl: string
+  tracks: Track[]
   createdAt: string
   updatedAt: string
 }
 
-export interface getSingleRoomResponse {
-  success: boolean
-  data?: Room
-  error?: string
-}
-
-export interface getRoomsResponse {
-  success: boolean
-  data?: Room[]
-}
-
-export interface createRoomResponse {
-  success: boolean
-  data?: Room
-  error?: MongooseError
+export interface Playlist {
+  id: string
+  spotifyUrl: string
+  uri: string
 }

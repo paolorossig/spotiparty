@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   [type='text'],
   [type='email'],
   [type='password'],
@@ -11,11 +15,13 @@
   [multiple],
   textarea,
   select {
-    @apply w-full rounded-lg focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
+    @apply w-full rounded-lg ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black;
   }
+
   [type='radio'] {
-    @apply text-green-500 focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90;
+    @apply text-green-500 ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black;
   }
+
   textarea {
     @apply resize-none;
   }

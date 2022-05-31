@@ -14,6 +14,7 @@ const params = {
     'playlist-read-private',
     'playlist-read-collaborative',
     'streaming',
+    'playlist-modify-public',
   ].join(','),
 }
 

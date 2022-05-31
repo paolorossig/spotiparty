@@ -40,7 +40,7 @@ const Toaster = () => {
             ) : t.type === 'error' ? (
               <MdErrorOutline className="mr-2 text-2xl" />
             ) : null}
-            <p>{resolveValue(t.message, t)}</p>
+            <p className="flex-1">{resolveValue(t.message, t)}</p>
           </div>
         </Transition>
       )}
