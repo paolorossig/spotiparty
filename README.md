@@ -10,3 +10,23 @@
 ![Redux](https://img.shields.io/badge/-Redux-black?style=flat-square&logo=redux)
 ![Tailwindcss](https://img.shields.io/badge/-Tailwindcss-black?style=flat-square&logo=tailwindcss)
 ![MongoDB](https://img.shields.io/badge/-MongoDB-black?style=flat-square&logo=mongodb)
+
+## Development
+
+- Clone the Repository on your local machine
+
+```bash
+git clone https://github.com/paolorossig/spotiparty.git
+cd spotiparty
+yarn install
+```
+
+- Create the `.env.local` file with the environment variables listed in `.env.example`
+
+- Use the scripts commands
+
+```bash
+yarn dev # To run in Development Mode
+yarn build # To build the app
+yarn start # To run the build
+```
