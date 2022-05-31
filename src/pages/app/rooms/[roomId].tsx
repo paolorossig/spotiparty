@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { Tab } from '@headlessui/react'
+import { useSession } from 'next-auth/react'
 import Button from 'lib/ui/components/Button'
 import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
@@ -22,10 +23,12 @@ const Room = () => {
   const router = useRouter()
   const { roomId } = router.query
 
+  const { data: session } = useSession()
+
   const [generatePlaylist] = useGeneratePlaylistMutation()
   const { data, error, isLoading } = useGetRoombyIdQuery(
-    (roomId as string) || ''
-    // { pollingInterval: 3000 }
+    (roomId as string) || '',
+    { pollingInterval: 3000 }
   )
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +73,7 @@ const Room = () => {
             </div>
             <div>
               <Tab.Group>
-                <Tab.List className="flex space-x-1 rounded-xl bg-gray-700/30 p-1">
+                <Tab.List className="flex space-x-2 rounded-xl bg-gray-700/30 p-1">
                   {Object.keys(TABS).map((state) => (
                     <Tab
                       key={state}
@@ -94,9 +97,11 @@ const Room = () => {
                   </Tab.Panel>
                   <Tab.Panel>
                     <Tracks room={data} />
-                    <div className="mx-auto grid max-w-xs">
-                      <Button onClick={handleClick}>Create Playlist</Button>
-                    </div>
+                    {data.owner === session?.user.name && (
+                      <div className="mx-auto grid max-w-xs">
+                        <Button onClick={handleClick}>Create Playlist</Button>
+                      </div>
+                    )}
                   </Tab.Panel>
                 </Tab.Panels>
               </Tab.Group>
