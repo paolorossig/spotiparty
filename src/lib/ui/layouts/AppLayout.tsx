@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useSession } from 'next-auth/react'
 import AppHeader from '../components/navigation/AppHeader'
 import Spinner from '../components/Spinner'
+import Toaster from '../components/Toaster'
 
 interface Props {
   children?: React.ReactNode
@@ -30,6 +31,7 @@ const AppLayout = ({ children, error, isLoading }: Props) => {
           children
         )}
       </main>
+      <Toaster />
     </div>
   )
 }

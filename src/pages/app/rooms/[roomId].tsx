@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { Tab } from '@headlessui/react'
 import { useSession } from 'next-auth/react'
 import Button from 'lib/ui/components/Button'
-import Toaster from 'lib/ui/components/Toaster'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Tracks from 'lib/rooms/components/Tracks'
 import Members from 'lib/rooms/components/Members'
@@ -107,7 +106,6 @@ const Room = () => {
               </Tab.Group>
             </div>
           </section>
-          <Toaster />
         </>
       )}
     </AppLayout>

@@ -5,7 +5,6 @@ import { toast } from 'react-hot-toast'
 import { BsChevronLeft } from 'react-icons/bs'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Button from 'lib/ui/components/Button'
-import Toaster from 'lib/ui/components/Toaster'
 import Dropzone from 'lib/ui/components/Dropzone'
 import { useCreateRoomMutation } from 'lib/rooms/services/roomApi'
 
@@ -101,7 +100,6 @@ const Create = () => {
           Create
         </Button>
       </form>
-      <Toaster />
     </AppLayout>
   )
 }
