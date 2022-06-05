@@ -20,15 +20,17 @@ const TABS = {
 
 const Room = () => {
   const router = useRouter()
-  const { roomId } = router.query
+  let { roomId } = router.query
+  if (!roomId || typeof roomId !== 'string') {
+    roomId = ''
+  }
 
   const { data: session } = useSession()
 
   const [generatePlaylist] = useGeneratePlaylistMutation()
-  const { data, error, isLoading } = useGetRoombyIdQuery(
-    (roomId as string) || '',
-    { pollingInterval: 3000 }
-  )
+  const { data, error, isLoading } = useGetRoombyIdQuery(roomId, {
+    pollingInterval: 3000,
+  })
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
