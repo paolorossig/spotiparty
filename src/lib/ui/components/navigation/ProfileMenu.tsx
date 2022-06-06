@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import { Fragment } from 'react'
-import Image from 'next/image'
 import { Menu, Transition } from '@headlessui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { RiLogoutBoxLine, RiShareForwardLine } from 'react-icons/ri'
+import { USER_PLACEHOLDER_IMAGE } from 'lib/ui/constants/navigation'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()
@@ -12,15 +12,11 @@ const ProfileMenu = () => {
     <Menu as="div" className="relative">
       <Menu.Button className="focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75">
         <div className="flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60 hover:bg-gray-800">
-          <Image
-            src={
-              session?.user.image ||
-              'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
-            }
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={session?.user.image || USER_PLACEHOLDER_IMAGE}
             alt="Profile image"
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
+            className="h-10 w-10 rounded-full object-cover"
           />
           <p>{session?.user.name}</p>
         </div>
