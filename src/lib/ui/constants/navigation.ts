@@ -23,3 +23,6 @@ export const LANDING_PATHS = [
     label: 'Blog',
   },
 ]
+
+export const USER_PLACEHOLDER_IMAGE =
+  'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
