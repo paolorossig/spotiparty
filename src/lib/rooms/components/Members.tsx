@@ -1,21 +1,17 @@
 import type { Room } from 'types/rooms'
-import Image from 'next/image'
 import { IoMdMicrophone } from 'react-icons/io'
+import { USER_PLACEHOLDER_IMAGE } from 'lib/ui/constants/navigation'
 
 const Members = ({ room }: { room: Room }) => {
   return (
     <ul className="my-4 flex flex-col gap-4">
       {room.members?.map((member) => (
         <li key={member.accountId} className="flex items-center gap-4">
-          <Image
-            src={
-              member.image ||
-              'https://res.cloudinary.com/paolorossi/image/upload/v1652998240/spotiparty/user_placeholder_zpoic6.png'
-            }
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={member.image || USER_PLACEHOLDER_IMAGE}
             alt="Profile image"
-            width={60}
-            height={60}
-            className="rounded-full object-cover"
+            className="h-[60px] w-[60px] rounded-full object-cover"
           />
           <h3>{member.name}</h3>
           {member.role === 'owner' && (
