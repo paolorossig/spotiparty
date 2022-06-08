@@ -6,7 +6,7 @@ import Spinner from 'lib/ui/components/Spinner'
 import { useGetUserRoomsQuery } from 'lib/rooms/services/roomApi'
 
 const Rooms = () => {
-  const { data, error, isLoading } = useGetUserRoomsQuery('')
+  const { data, error, isLoading } = useGetUserRoomsQuery()
 
   if (error)
     toast.error(error.message?.split(': ').pop() ?? '', {
