@@ -11,7 +11,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const classes = {
   variant: {
     primary: 'bg-green-500 hover:bg-green-800 text-white',
-    light: 'bg-white hover:bg-gray-200',
+    light: 'bg-white hover:bg-gray-200 text-black',
     dark: 'bg-black hover:bg-[#1d1d1d] text-white',
   },
 }
@@ -27,8 +27,8 @@ const Button = ({
     <button
       {...props}
       className={clsx(
-        'my-4 rounded-full py-2 text-base',
-        'ring-offset-2 ring-offset-black focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90',
+        'my-4 rounded-full px-4 py-2 text-base ring-offset-2 ring-offset-black',
+        'focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90',
         classes.variant[variant],
         className
       )}
