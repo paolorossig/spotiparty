@@ -1,6 +1,5 @@
 import type { NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
-import dbConnect from 'core/mongoose'
 import Room from 'lib/server/models/room'
 import {
   createPlaylist,
@@ -8,12 +7,12 @@ import {
   updatePlaylistItems,
 } from 'lib/server/services/spotify'
 import { authMiddleware, CustomApiReq, options } from 'lib/server/utils'
+import { roomMiddleware } from 'lib/rooms/utils'
 
 const handler = nextConnect(options)
   .use(authMiddleware)
+  .use(roomMiddleware)
   .get(async (req: CustomApiReq, res: NextApiResponse) => {
-    await dbConnect()
-
     const { accountId, name, image } = req.session
     const { roomId } = req.query
 
@@ -42,14 +41,30 @@ const handler = nextConnect(options)
     return res.status(200).json({ success: true, data: room })
   })
   .post(async (req: CustomApiReq, res: NextApiResponse) => {
-    await dbConnect()
-
     const { roomName, tracks } = req.body
 
     const playlist = await createPlaylist(roomName, req.session)
     await updatePlaylistItems(playlist.id, tracks, req.session)
 
     return res.status(200).json({ success: true, data: playlist })
+  })
+  .put(async (req: CustomApiReq, res: NextApiResponse) => {
+    const { roomId } = req.query
+
+    const room = await Room.findOneAndUpdate(
+      { _id: roomId },
+      { ...req.body },
+      { new: true }
+    )
+
+    return res.status(200).json({ success: true, data: room })
+  })
+  .delete(async (req: CustomApiReq, res: NextApiResponse) => {
+    const { roomId } = req.query
+
+    const response = await Room.findByIdAndDelete(roomId)
+
+    return res.status(200).json({ success: true, data: response })
   })
 
 export default handler
