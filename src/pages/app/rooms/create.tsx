@@ -6,6 +6,7 @@ import { BsChevronLeft } from 'react-icons/bs'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Button from 'lib/ui/components/Button'
 import Dropzone from 'lib/ui/components/Dropzone'
+import IconButton from 'lib/ui/components/IconButton'
 import { useCreateRoomMutation } from 'lib/rooms/services/roomApi'
 
 export interface FormValues {
@@ -43,13 +44,12 @@ const Create = () => {
 
   return (
     <AppLayout>
-      <div className="mb-8 flex items-center">
-        <button
+      <div className="mb-8 flex items-center space-x-2">
+        <IconButton
+          Icon={BsChevronLeft}
           onClick={() => router.back()}
-          className="mr-2 grid h-8 w-8 place-content-center rounded-full hover:bg-gray-800"
-        >
-          <BsChevronLeft className="mr-[2px] text-xl" />
-        </button>
+          className="pr-[2px]"
+        />
         <h2 className="text-2xl font-bold">Create a new Room</h2>
       </div>
       <form
