@@ -1,8 +1,12 @@
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { BsGear } from 'react-icons/bs'
 import AppLayout from 'lib/ui/layouts/AppLayout'
+import IconButton from 'lib/ui/components/IconButton'
+import useToggle from 'lib/ui/hooks/useToggle'
 import RoomTabs from 'lib/rooms/components/RoomTabs'
 import ShareRoom from 'lib/rooms/components/ShareRoom'
+import EditRoomDialog from 'lib/rooms/components/EditRoomDialog'
 import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
 
 const Room = () => {
@@ -13,9 +17,9 @@ const Room = () => {
   }
 
   const { data: session } = useSession()
-
+  const [isModalOpen, toggleModal] = useToggle()
   const { data, error, isLoading } = useGetRoombyIdQuery(roomId, {
-    pollingInterval: 3000,
+    pollingInterval: 15000,
   })
 
   return (
@@ -27,11 +31,21 @@ const Room = () => {
       ) : (
         <>
           <ShareRoom room={data} />
+          <EditRoomDialog
+            room={data}
+            isOpen={isModalOpen}
+            toggle={toggleModal}
+          />
           <br />
           <section className="flex flex-col gap-6">
-            <div>
-              <h1 className="mb-2 text-4xl font-bold">{data.name} Room</h1>
-              <p className="text-xl text-gray-300">{data.description}</p>
+            <div className="flex items-start">
+              <div className="flex-1">
+                <h1 className="mb-2 text-4xl font-bold">{data.name} Room</h1>
+                <p className="text-xl text-gray-300">{data.description}</p>
+              </div>
+              <div className="pt-3">
+                <IconButton Icon={BsGear} onClick={toggleModal} />
+              </div>
             </div>
             <RoomTabs
               room={data}
