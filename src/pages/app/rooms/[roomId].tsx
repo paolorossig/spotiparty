@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { BsGear } from 'react-icons/bs'
+import { FiRefreshCw } from 'react-icons/fi'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import IconButton from 'lib/ui/components/IconButton'
 import useToggle from 'lib/ui/hooks/useToggle'
@@ -18,9 +19,7 @@ const Room = () => {
 
   const { data: session } = useSession()
   const [isModalOpen, toggleModal] = useToggle()
-  const { data, error, isLoading } = useGetRoombyIdQuery(roomId, {
-    pollingInterval: 15000,
-  })
+  const { data, error, isLoading, refetch } = useGetRoombyIdQuery(roomId)
 
   return (
     <AppLayout error={error?.message} isLoading={isLoading}>
@@ -43,7 +42,12 @@ const Room = () => {
                 <h1 className="mb-2 text-4xl font-bold">{data.name} Room</h1>
                 <p className="text-xl text-gray-300">{data.description}</p>
               </div>
-              <div className="pt-3">
+              <div className="flex space-x-2 pt-2">
+                <IconButton
+                  Icon={FiRefreshCw}
+                  onClick={refetch}
+                  strokeWidth={1.6}
+                />
                 <IconButton Icon={BsGear} onClick={toggleModal} />
               </div>
             </div>
