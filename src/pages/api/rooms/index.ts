@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import type { Room as IRoom } from 'types/rooms'
 import nextConnect from 'next-connect'
 import { parser } from 'core/multer'
 import dbConnect from 'core/mongoose'
@@ -44,7 +45,7 @@ const handler = nextConnect(options)
         description,
         members: [{ accountId, name: owner, image, role: 'owner' }],
         imageUrl: path,
-      })
+      } as IRoom)
 
       const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
       const ownerTopTracks = await getUserTopTracks(req.session)
