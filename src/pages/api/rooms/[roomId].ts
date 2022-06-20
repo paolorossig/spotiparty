@@ -54,7 +54,7 @@ const handler = nextConnect(options)
     const room = await Room.findOneAndUpdate(
       { _id: roomId },
       { ...req.body },
-      { new: true }
+      { new: true, runValidators: true, context: 'query' }
     )
 
     return res.status(200).json({ success: true, data: room })

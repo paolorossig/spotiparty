@@ -59,6 +59,7 @@ export const roomApi = createApi({
         url: `/${roomId}`,
         method: 'GET',
       }),
+      providesTags: (result) => [{ type: 'Rooms', id: result?._id }],
     }),
     generatePlaylist: builder.mutation<Playlist, any>({
       query: ({ roomId, ...data }) => ({
