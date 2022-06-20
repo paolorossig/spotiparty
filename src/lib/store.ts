@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query'
 import { roomApi } from './rooms/services/roomApi'
 
 export function makeStore() {
@@ -11,5 +12,7 @@ export function makeStore() {
 }
 
 const store = makeStore()
+
+setupListeners(store.dispatch)
 
 export default store
