@@ -21,6 +21,8 @@ const Room = () => {
   const [isModalOpen, toggleModal] = useToggle()
   const { data, error, isLoading, refetch } = useGetRoombyIdQuery(roomId)
 
+  const isRoomOwner = (data?.accountId ?? false) === session?.user.accountId
+
   return (
     <AppLayout error={error?.message} isLoading={isLoading}>
       {!data ? (
@@ -48,13 +50,14 @@ const Room = () => {
                   onClick={refetch}
                   strokeWidth={1.6}
                 />
-                <IconButton Icon={BsGear} onClick={toggleModal} />
+                <IconButton
+                  Icon={BsGear}
+                  onClick={toggleModal}
+                  disabled={!isRoomOwner}
+                />
               </div>
             </div>
-            <RoomTabs
-              room={data}
-              isRoomOwner={data.accountId === session?.user.accountId}
-            />
+            <RoomTabs room={data} isRoomOwner={isRoomOwner} />
           </section>
         </>
       )}
