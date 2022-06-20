@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'
 import { BsChevronDown, BsClipboard, BsClipboardCheck } from 'react-icons/bs'
+import IconButton from 'lib/ui/components/IconButton'
 import useToggle from 'lib/ui/hooks/useToggle'
 import useCopyToClipboard from 'lib/ui/hooks/useCopyToClipboard'
 
@@ -17,17 +18,16 @@ const ShareRoom = ({ room }: { room: Room }) => {
 
   return (
     <section className="relative flex flex-col-reverse items-center rounded-lg border-2 border-gray-700 lg:flex-row">
-      <button
+      <IconButton
+        Icon={BsChevronDown}
         onClick={toggleQrCode}
+        variant="solid"
         className={clsx(
-          'absolute right-2 top-2 grid h-8 w-8 transform place-content-center rounded-full bg-gray-700 transition duration-300',
+          'absolute right-2 top-2 transform transition duration-300',
           showQrCode ? 'rotate-180' : 'rotate-0 pt-[3px]',
-          'hover:bg-gray-800',
           'lg:hidden'
         )}
-      >
-        <BsChevronDown className="text-xl text-white" />
-      </button>
+      />
       <div
         className={clsx(
           'm-2 flex-1 items-center justify-center gap-2 text-sm md:my-4 md:text-base',
@@ -46,16 +46,12 @@ const ShareRoom = ({ room }: { room: Room }) => {
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-2">
           <h1 className="text-3xl font-semibold">{room._id}</h1>
-          <button
+          <IconButton
+            Icon={!copiedText ? BsClipboard : BsClipboardCheck}
+            size="medium"
             onClick={copyLink}
-            className="rounded-full p-3 hover:bg-gray-600"
-          >
-            {!copiedText ? (
-              <BsClipboard className="text-xl" strokeWidth={'0.5'} />
-            ) : (
-              <BsClipboardCheck className="text-xl" strokeWidth={'0.5'} />
-            )}
-          </button>
+            strokeWidth={0.5}
+          />
         </div>
       </div>
     </section>
