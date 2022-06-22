@@ -36,7 +36,7 @@ export function withImageProxy(passedOptions?: DeepPartial<Options>) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     const url = new URL(req.query.imageUrl as string)
 
-    Object.keys(req.query).map((key) =>
+    Object.keys(req.query).forEach((key) =>
       url.searchParams.append(key, req.query[key] as string)
     )
 
