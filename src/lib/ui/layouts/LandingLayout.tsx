@@ -3,7 +3,7 @@ import LandingFooter from '../components/navigation/LandingFooter'
 import LandingHeader from '../components/navigation/LandingHeader'
 
 interface Props {
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 const LandingLayout = ({ children }: Props) => {
@@ -29,7 +29,11 @@ const LandingLayout = ({ children }: Props) => {
       </Head>
 
       <LandingHeader />
-      <main className="flex w-full flex-1 flex-col md:px-20">{children}</main>
+
+      <main className="flex w-full flex-1 flex-col">
+        <div className="mx-auto max-w-5xl">{children}</div>
+      </main>
+
       <LandingFooter />
     </div>
   )
