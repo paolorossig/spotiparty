@@ -21,11 +21,16 @@ export const roomMiddleware = async (
   }
 
   const room = await Room.findOne({ _id: roomId }).lean()
-  const isRoomOwner = room?.accountId === accountId
+  if (!room) {
+    return res.status(404).json({ success: false, error: 'Room not found' })
+  }
+
+  const owner = room.members.find((member) => member.role === 'owner')
+  const isRoomOwner = owner?.accountId === accountId
 
   if (!isRoomOwner) {
     return res
-      .status(403)
+      .status(401)
       .json({ success: false, error: 'You are not the owner of this room' })
   }
 
