@@ -1,8 +1,10 @@
+import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { BsGear } from 'react-icons/bs'
 import { FiRefreshCw } from 'react-icons/fi'
 import AppLayout from 'lib/ui/layouts/AppLayout'
+import Tooltip from 'lib/ui/components/Tooltip'
 import IconButton from 'lib/ui/components/IconButton'
 import useToggle from 'lib/ui/hooks/useToggle'
 import RoomTabs from 'lib/rooms/components/RoomTabs'
@@ -22,6 +24,10 @@ const Room = () => {
   const { data, error, isLoading, refetch } = useGetRoombyIdQuery(roomId)
 
   const isRoomOwner = (data?.accountId ?? false) === session?.user.accountId
+  const refetchAndNotify = () => {
+    refetch()
+    toast.success('Room refreshed')
+  }
 
   return (
     <AppLayout error={error?.message} isLoading={isLoading}>
@@ -45,16 +51,20 @@ const Room = () => {
                 <p className="text-xl text-gray-300">{data.description}</p>
               </div>
               <div className="flex space-x-2 pt-2">
-                <IconButton
-                  Icon={FiRefreshCw}
-                  onClick={refetch}
-                  strokeWidth={1.6}
-                />
-                <IconButton
-                  Icon={BsGear}
-                  onClick={toggleModal}
-                  disabled={!isRoomOwner}
-                />
+                <Tooltip message="Refresh">
+                  <IconButton
+                    Icon={FiRefreshCw}
+                    onClick={refetchAndNotify}
+                    strokeWidth={1.6}
+                  />
+                </Tooltip>
+                <Tooltip message="Edit">
+                  <IconButton
+                    Icon={BsGear}
+                    onClick={toggleModal}
+                    disabled={!isRoomOwner}
+                  />
+                </Tooltip>
               </div>
             </div>
             <RoomTabs room={data} isRoomOwner={isRoomOwner} />

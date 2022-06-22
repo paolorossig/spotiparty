@@ -33,6 +33,7 @@ const EditRoomDialog = ({ room, isOpen, toggle }: EditRoomDialogProps) => {
     try {
       await updateRoom({ _id: room._id, ...data }).unwrap()
       toggle()
+      toast.success('Room succesfully edited')
     } catch (error: any) {
       toast.error(error.message.split(': ').pop() ?? '', {
         duration: 3000,
