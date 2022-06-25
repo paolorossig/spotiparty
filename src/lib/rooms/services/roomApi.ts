@@ -45,7 +45,7 @@ export const roomApi = createApi({
         method: 'PUT',
         data,
       }),
-      invalidatesTags: (result, error, { _id }) => [{ type: 'Rooms', id: _id }],
+      invalidatesTags: (result, error, { _id: id }) => [{ type: 'Rooms', id }],
     }),
     deleteRoom: builder.mutation<Room, string>({
       query: (roomId) => ({
@@ -67,6 +67,9 @@ export const roomApi = createApi({
         method: 'POST',
         data,
       }),
+      invalidatesTags: (result, error, { roomId: id }) => [
+        { type: 'Rooms', id },
+      ],
     }),
   }),
 })

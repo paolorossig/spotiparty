@@ -3,6 +3,28 @@ import { nanoid } from '@reduxjs/toolkit'
 import uniqueValidator from 'mongoose-unique-validator'
 import type { Room as IRoom } from 'types/rooms'
 
+const memberSchema: Schema = new Schema(
+  {
+    accountId: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    role: { type: String, required: true },
+  },
+  { _id: false }
+)
+
+const trackSchema: Schema = new Schema(
+  {
+    id: { type: String, unique: true, required: true },
+    uri: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
+    artist: { type: String, required: true },
+    popularity: { type: Number, required: true },
+    albumImageUrl: { type: String, required: true },
+  },
+  { _id: false }
+)
+
 const RoomSchema: Schema = new Schema(
   {
     _id: {
@@ -41,21 +63,26 @@ const RoomSchema: Schema = new Schema(
 
       type: String,
     },
-    members: {
-      /* The members of the room */
-
-      type: Array,
-      maxlength: [30, 'Rooms cannot contain more than 30 members'],
-    },
     imageUrl: {
       /* The url of the room image */
 
       type: String,
     },
-    tracks: {
-      /* The tracks of the members of the room */
+    /* The members of the room */
+    members: [memberSchema],
 
-      type: Array,
+    /* The tracks of the members of the room */
+    tracks: [trackSchema],
+
+    playlist: {
+      /* The playlist object of the Room */
+
+      type: {
+        id: String,
+        spotifyUrl: String,
+        uri: String,
+        _id: false,
+      },
     },
   },
   { timestamps: true }

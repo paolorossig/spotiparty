@@ -1,12 +1,3 @@
-export interface Track {
-  id: string
-  uri: string
-  title: string
-  artist: string
-  popularity: number
-  albumImageUrl: string
-}
-
 export interface RoomMember {
   accountId: string
   name: string
@@ -21,11 +12,21 @@ export interface Room {
   owner: string
   accountId: string
   linkUrl: string
-  members: RoomMember[]
   imageUrl: string
+  members: RoomMember[]
   tracks: Track[]
+  playlist: Playlist
   createdAt: string
   updatedAt: string
+}
+
+export interface Track {
+  id: string
+  uri: string
+  title: string
+  artist: string
+  popularity: number
+  albumImageUrl: string
 }
 
 export interface Playlist {

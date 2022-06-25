@@ -41,18 +41,20 @@ const handler = nextConnect(options)
     return res.status(200).json({ success: true, data: room })
   })
   .post(async (req: CustomApiReq, res: NextApiResponse) => {
+    const { roomId } = req.query
     const { roomName, tracks } = req.body
 
     const playlist = await createPlaylist(roomName, req.session)
     await updatePlaylistItems(playlist.id, tracks, req.session)
+    await Room.findByIdAndUpdate(roomId, { playlist })
 
     return res.status(200).json({ success: true, data: playlist })
   })
   .put(async (req: CustomApiReq, res: NextApiResponse) => {
     const { roomId } = req.query
 
-    const room = await Room.findOneAndUpdate(
-      { _id: roomId },
+    const room = await Room.findByIdAndUpdate(
+      roomId,
       { ...req.body },
       { new: true, runValidators: true, context: 'query' }
     )

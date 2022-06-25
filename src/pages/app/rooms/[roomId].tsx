@@ -1,8 +1,9 @@
 import toast from 'react-hot-toast'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { BsGear } from 'react-icons/bs'
 import { FiRefreshCw } from 'react-icons/fi'
+import { BsGear, BsLink45Deg } from 'react-icons/bs'
 import AppLayout from 'lib/ui/layouts/AppLayout'
 import Tooltip from 'lib/ui/components/Tooltip'
 import IconButton from 'lib/ui/components/IconButton'
@@ -47,7 +48,14 @@ const Room = () => {
           <section className="flex flex-col gap-6">
             <div className="flex items-start">
               <div className="flex-1">
-                <h1 className="mb-2 text-4xl font-bold">{data.name} Room</h1>
+                <h1 className="mb-2 flex items-center space-x-2 text-4xl font-bold">
+                  <h1>{data.name} Room</h1>
+                  {data.playlist && (
+                    <Link href={data.playlist.spotifyUrl}>
+                      <BsLink45Deg className="cursor-pointer hover:text-green-500" />
+                    </Link>
+                  )}
+                </h1>
                 <p className="text-xl text-gray-300">{data.description}</p>
               </div>
               <div className="flex space-x-2 pt-2">
