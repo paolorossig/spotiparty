@@ -5,7 +5,7 @@ import type { Room as IRoom } from 'types/rooms'
 
 const memberSchema: Schema = new Schema(
   {
-    accountId: { type: String, unique: true, required: true },
+    accountId: { type: String, required: true },
     name: { type: String, required: true },
     image: { type: String, required: true },
     role: { type: String, required: true },
@@ -15,8 +15,8 @@ const memberSchema: Schema = new Schema(
 
 const trackSchema: Schema = new Schema(
   {
-    id: { type: String, unique: true, required: true },
-    uri: { type: String, unique: true, required: true },
+    id: { type: String, required: true },
+    uri: { type: String, required: true },
     title: { type: String, required: true },
     artist: { type: String, required: true },
     popularity: { type: Number, required: true },

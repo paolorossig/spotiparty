@@ -87,14 +87,12 @@ const Create = () => {
           )}
         </div>
         <Controller
-          render={({ field }) => (
-            <Dropzone
-              message="PNG or JPG (Max. 10MB)"
-              onChange={(e) => field.onChange(e.target.files)}
-            />
-          )}
           name="image"
           control={control}
+          render={({ field: { onChange } }) => (
+            <Dropzone message="PNG or JPG (Max. 10MB)" onChange={onChange} />
+          )}
+          // TODO: add rules={{ required: 'Required field' }}
         />
         <Button type="submit" variant="primary" isLoading={isLoading}>
           Create

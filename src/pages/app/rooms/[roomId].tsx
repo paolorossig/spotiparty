@@ -48,14 +48,16 @@ const Room = () => {
           <section className="flex flex-col gap-6">
             <div className="flex items-start">
               <div className="flex-1">
-                <h1 className="mb-2 flex items-center space-x-2 text-4xl font-bold">
+                <div className="mb-2 flex items-center space-x-2 text-4xl font-bold">
                   <h1>{data.name} Room</h1>
                   {data.playlist && (
                     <Link href={data.playlist.spotifyUrl}>
-                      <BsLink45Deg className="cursor-pointer hover:text-green-500" />
+                      <a>
+                        <BsLink45Deg className="cursor-pointer hover:text-green-500" />
+                      </a>
                     </Link>
                   )}
-                </h1>
+                </div>
                 <p className="text-xl text-gray-300">{data.description}</p>
               </div>
               <div className="flex space-x-2 pt-2">
