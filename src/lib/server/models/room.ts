@@ -25,6 +25,15 @@ const trackSchema: Schema = new Schema(
   { _id: false }
 )
 
+const playlistSchema: Schema = new Schema(
+  {
+    id: { type: String, unique: true, required: true },
+    uri: { type: String, unique: true, required: true },
+    spotifyUrl: { type: String, unique: true, required: true },
+  },
+  { _id: false }
+)
+
 const RoomSchema: Schema = new Schema(
   {
     _id: {
@@ -74,18 +83,10 @@ const RoomSchema: Schema = new Schema(
     /* The tracks of the members of the room */
     tracks: [trackSchema],
 
-    playlist: {
-      /* The playlist object of the Room */
-
-      type: {
-        id: String,
-        spotifyUrl: String,
-        uri: String,
-        _id: false,
-      },
-    },
+    /* The playlist information of the Room */
+    playlist: playlistSchema,
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 )
 
 RoomSchema.plugin(uniqueValidator, {

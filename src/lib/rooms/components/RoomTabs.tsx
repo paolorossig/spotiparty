@@ -71,7 +71,7 @@ const RoomTabs = ({ room, isRoomOwner }: RoomTabsProps) => {
         </Tab.Panel>
         <Tab.Panel>
           <Tracks room={room} />
-          {isRoomOwner && (
+          {isRoomOwner && !room.playlist && (
             <div className="mx-auto grid max-w-xs">
               <Button onClick={handleClick}>Create Playlist</Button>
             </div>
