@@ -3,11 +3,11 @@ import { Controller, useForm } from 'react-hook-form'
 import type { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { BsChevronLeft } from 'react-icons/bs'
-import AppLayout from 'lib/ui/layouts/AppLayout'
-import Button from 'lib/ui/components/Button'
-import Dropzone from 'lib/ui/components/Dropzone'
-import IconButton from 'lib/ui/components/IconButton'
-import { useCreateRoomMutation } from 'lib/rooms/services/roomApi'
+import AppLayout from 'modules/ui/layouts/AppLayout'
+import Button from 'modules/ui/components/Button'
+import Dropzone from 'modules/ui/components/Dropzone'
+import IconButton from 'modules/ui/components/IconButton'
+import { useCreateRoomMutation } from 'modules/rooms/services/roomApi'
 
 export interface FormValues {
   name: string

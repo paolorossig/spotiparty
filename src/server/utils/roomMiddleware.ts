@@ -1,9 +1,8 @@
 import type { NextHandler } from 'next-connect'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from 'core/mongoose'
-import Room from 'lib/server/models/room'
-
-export type CustomApiReq = NextApiRequest & { session?: any }
+import dbConnect from 'lib/mongoose'
+import Room from 'server/models/room'
+import { CustomApiReq } from './authMiddleware'
 
 export const roomMiddleware = async (
   req: CustomApiReq,

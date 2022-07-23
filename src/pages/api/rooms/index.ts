@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { Room as IRoom } from 'types/rooms'
 import nextConnect from 'next-connect'
-import { parser } from 'core/multer'
-import dbConnect from 'core/mongoose'
-import { removeImage } from 'core/cloudinary'
-import Room from 'lib/server/models/room'
-import { getUserTopTracks } from 'lib/server/services/spotify'
-import { authMiddleware, options } from 'lib/server/utils'
+import { parser } from 'lib/multer'
+import dbConnect from 'lib/mongoose'
+import { removeImage } from 'lib/cloudinary'
+import Room from 'server/models/room'
+import { getUserTopTracks } from 'server/services/spotify'
+import { authMiddleware, options } from 'server/utils'
 
 interface CustomRequest extends NextApiRequest {
   file: any

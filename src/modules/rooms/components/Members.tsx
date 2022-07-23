@@ -1,6 +1,6 @@
 import type { Room } from 'types/rooms'
 import { IoMdMicrophone } from 'react-icons/io'
-import { USER_PLACEHOLDER_IMAGE } from 'lib/ui/constants/navigation'
+import { USER_PLACEHOLDER_IMAGE } from 'modules/ui/constants/navigation'
 
 const Members = ({ room }: { room: Room }) => {
   return (

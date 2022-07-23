@@ -2,8 +2,8 @@ import type { Room } from 'types/rooms'
 import toast from 'react-hot-toast'
 import { Dialog } from '@headlessui/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import Button from 'lib/ui/components/Button'
-import { useUpdateRoomMutation } from 'lib/rooms/services/roomApi'
+import Button from 'modules/ui/components/Button'
+import { useUpdateRoomMutation } from 'modules/rooms/services/roomApi'
 
 interface EditRoomDialogProps {
   room: Room

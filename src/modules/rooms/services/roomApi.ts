@@ -1,6 +1,6 @@
 import type { Playlist, Room } from 'types/rooms'
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { axiosBaseQuery } from 'lib/server/utils'
+import { axiosBaseQuery } from 'modules/rooms/utils'
 
 function providesList<R extends { _id: string }[], T extends string>(
   resultsWithIds: R | undefined,

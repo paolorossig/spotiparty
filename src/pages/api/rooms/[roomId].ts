@@ -1,13 +1,17 @@
 import type { NextApiResponse } from 'next'
 import nextConnect from 'next-connect'
-import Room from 'lib/server/models/room'
+import Room from 'server/models/room'
 import {
   createPlaylist,
   getUserTopTracks,
   updatePlaylistItems,
-} from 'lib/server/services/spotify'
-import { authMiddleware, CustomApiReq, options } from 'lib/server/utils'
-import { roomMiddleware } from 'lib/rooms/utils'
+} from 'server/services/spotify'
+import {
+  authMiddleware,
+  CustomApiReq,
+  options,
+  roomMiddleware,
+} from 'server/utils'
 
 const handler = nextConnect(options)
   .use(authMiddleware)

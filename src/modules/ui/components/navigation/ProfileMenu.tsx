@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { RiLogoutBoxLine, RiShareForwardLine } from 'react-icons/ri'
-import { USER_PLACEHOLDER_IMAGE } from 'lib/ui/constants/navigation'
+import { USER_PLACEHOLDER_IMAGE } from 'modules/ui/constants/navigation'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()

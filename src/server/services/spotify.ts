@@ -1,5 +1,5 @@
 import type { Playlist, Track } from 'types/rooms'
-import spotifyApi from 'core/spotify'
+import spotifyApi from 'lib/spotify'
 import { TOP_TRACKS_LIMIT } from '../constants'
 
 export const getUserTopTracks = async (session: any): Promise<Track[]> => {
