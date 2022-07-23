@@ -27,9 +27,9 @@ const trackSchema: Schema = new Schema(
 
 const playlistSchema: Schema = new Schema(
   {
-    id: { type: String, unique: true, required: true },
-    uri: { type: String, unique: true, required: true },
-    spotifyUrl: { type: String, unique: true, required: true },
+    id: { type: String, required: true },
+    uri: { type: String, required: true },
+    spotifyUrl: { type: String, required: true },
   },
   { _id: false }
 )
