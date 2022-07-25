@@ -1,12 +1,12 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-import clientPromise from 'lib/mongodb'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import prisma from 'lib/prisma'
 import { LOGIN_URL } from 'lib/spotify'
 import { refreshAccessToken } from 'server/utils'
 
 export default NextAuth({
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: PrismaAdapter(prisma),
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,

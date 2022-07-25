@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+}
+
+enum Role {
+  owner
+  member
+}
+
+type Member {
+  accountId String
+  name      String
+  image     String
+  role      Role   @default(member)
+}
+
+type Track {
+  id            String
+  uri           String
+  title         String
+  artist        String
+  popularity    Int
+  albumImageUrl String
+}
+
+type Playlist {
+  id         String
+  uri        String
+  spotifyUrl String
+}
+
+model Room {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique()
+  description String
+  owner       String
+  accountId   String
+  linkUrl     String
+  imageUrl    String
+  members     Member[]
+  tracks      Track[]
+  playlist    Playlist
+  createdAt   DateTime @db.Date
+  updatedAt   DateTime @db.Date
+}

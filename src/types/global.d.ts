@@ -1,5 +1,5 @@
-import type { MongoClient } from 'mongodb'
 import type mongoose from 'mongoose'
+import type { PrismaClient } from '@prisma/client'
 
 interface mongooseProps {
   conn?: mongoose
@@ -7,6 +7,6 @@ interface mongooseProps {
 }
 
 declare global {
-  var _mongoClientPromise: Promise<MongoClient>
   var mongoose: mongooseProps
+  var prisma: PrismaClient
 }
