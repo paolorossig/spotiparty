@@ -6,7 +6,7 @@ export interface RoomMember {
 }
 
 export interface Room {
-  _id: string
+  id: string
   name: string
   description: string
   owner: string

@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { Room as IRoom } from 'types/rooms'
+import type { Room } from 'types/rooms'
 import nextConnect from 'next-connect'
 import { parser } from 'lib/multer'
-import dbConnect from 'lib/mongoose'
 import { removeImage } from 'lib/cloudinary'
-import Room from 'server/models/room'
+import { prisma } from 'server/db/client'
 import { getUserTopTracks } from 'server/services/spotify'
 import { authMiddleware, options } from 'server/utils'
 
@@ -17,20 +16,18 @@ const handler = nextConnect(options)
   .use(authMiddleware)
   .use(parser('rooms').single('image'))
   .get(async (req: CustomRequest, res: NextApiResponse) => {
-    await dbConnect()
-
     const { accountId } = req.session
 
     try {
-      const rooms = await Room.find({ accountId })
+      const rooms = await prisma.room.findMany({
+        where: { accountId },
+      })
       return res.status(200).json({ success: true, data: rooms })
     } catch (error) {
       return res.status(400).json({ success: false, error })
     }
   })
   .post(async (req: CustomRequest, res: NextApiResponse) => {
-    await dbConnect()
-
     if (!req.file) throw new Error('Uploading an Image for room is required')
 
     const { path, filename } = req.file
@@ -38,28 +35,28 @@ const handler = nextConnect(options)
     const { name: owner, accountId, image } = req.session
 
     try {
-      let room = await Room.create({
-        name,
-        owner,
-        accountId,
-        description,
-        members: [{ accountId, name: owner, image, role: 'owner' }],
-        imageUrl: path,
-      } as IRoom)
+      let room = await prisma.room.create({
+        data: {
+          name,
+          owner,
+          accountId,
+          description,
+          members: [{ accountId, name: owner, image, role: 'owner' }],
+          imageUrl: path,
+        } as Room,
+      })
 
-      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room._id}`
+      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.id}`
       const ownerTopTracks = await getUserTopTracks(req.session)
 
-      const roomUpdated = await Room.findByIdAndUpdate(
-        room._id,
-        {
+      const roomUpdated = await prisma.room.update({
+        where: { id: room.id },
+        data: {
           linkUrl,
-          $push: {
-            tracks: { $each: ownerTopTracks },
-          },
+          tracks: ownerTopTracks,
         },
-        { new: true }
-      )
+      })
+
       if (roomUpdated) {
         room = roomUpdated
       }

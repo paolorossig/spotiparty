@@ -1,27 +1,26 @@
-import type { NextHandler } from 'next-connect'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from 'lib/mongoose'
-import Room from 'server/models/room'
-import { CustomApiReq } from './authMiddleware'
+import type { ApiHandler } from 'types/utils'
+import { prisma } from 'server/db/client'
 
-export const roomMiddleware = async (
-  req: CustomApiReq,
-  res: NextApiResponse,
-  next: NextHandler
-) => {
-  await dbConnect()
-
-  const { roomId } = req.query
-  const { accountId } = req.session
-
+export const roomMiddleware: ApiHandler = async (req, res, next) => {
   const isPublicMethod = req.method === 'GET'
   if (isPublicMethod) {
     return next()
   }
 
-  const room = await Room.findOne({ _id: roomId }).lean()
+  const { roomId } = req.query
+  const { accountId } = req.session
+
+  if (typeof roomId !== 'string') {
+    return res
+      .status(400)
+      .json({ success: false, error: 'Invalid Room ID format' })
+  }
+
+  const room = await prisma.room.findUnique({ where: { id: roomId } })
   if (!room) {
-    return res.status(404).json({ success: false, error: 'Room not found' })
+    return res
+      .status(404)
+      .json({ success: false, error: `Room ${roomId} do not found` })
   }
 
   const owner = room.members.find((member) => member.role === 'owner')
@@ -32,6 +31,8 @@ export const roomMiddleware = async (
       .status(401)
       .json({ success: false, error: 'You are not the owner of this room' })
   }
+
+  req.info = { room }
 
   return next()
 }
