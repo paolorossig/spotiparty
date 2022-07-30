@@ -8,5 +8,5 @@ interface mongooseProps {
 
 declare global {
   var mongoose: mongooseProps
-  var prisma: PrismaClient
+  var prisma: PrismaClient | undefined
 }

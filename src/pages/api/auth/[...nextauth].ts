@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import prisma from 'lib/prisma'
+import { prisma } from 'server/db/client'
 import { LOGIN_URL } from 'lib/spotify'
 import { refreshAccessToken } from 'server/utils'
 
