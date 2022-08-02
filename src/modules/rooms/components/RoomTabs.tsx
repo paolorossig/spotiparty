@@ -34,7 +34,7 @@ const RoomTabs = ({ room, isRoomOwner }: RoomTabsProps) => {
 
     try {
       const response = await generatePlaylist({
-        roomId: room._id,
+        roomId: room.id,
         roomName: room.name,
         tracks: uniqueTrackUris,
       }).unwrap()

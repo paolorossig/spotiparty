@@ -22,10 +22,7 @@ const handler = nextConnect(options)
       room = await prisma.room.update({
         where: { id: room.id },
         data: {
-          members: [
-            ...room.members,
-            { accountId, name, image, role: 'member' },
-          ],
+          members: [...room.members, { accountId, name, image }],
           tracks: [...room.tracks, ...memberTopTracks],
         },
       })

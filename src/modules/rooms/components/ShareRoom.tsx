@@ -45,7 +45,7 @@ const ShareRoom = ({ room }: { room: Room }) => {
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-semibold">{room._id}</h1>
+          <h1 className="text-3xl font-semibold">{room.id}</h1>
           <IconButton
             Icon={!copiedText ? BsClipboard : BsClipboardCheck}
             size="medium"

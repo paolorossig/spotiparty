@@ -2,11 +2,6 @@ import type { ApiHandler } from 'types/utils'
 import { prisma } from 'server/db/client'
 
 export const roomMiddleware: ApiHandler = async (req, res, next) => {
-  const isPublicMethod = req.method === 'GET'
-  if (isPublicMethod) {
-    return next()
-  }
-
   const { roomId } = req.query
   const { accountId } = req.session
 
@@ -23,6 +18,13 @@ export const roomMiddleware: ApiHandler = async (req, res, next) => {
       .json({ success: false, error: `Room ${roomId} do not found` })
   }
 
+  req.info = { room }
+
+  const isPublicMethod = req.method === 'GET'
+  if (isPublicMethod) {
+    return next()
+  }
+
   const owner = room.members.find((member) => member.role === 'owner')
   const isRoomOwner = owner?.accountId === accountId
 
@@ -31,8 +33,6 @@ export const roomMiddleware: ApiHandler = async (req, res, next) => {
       .status(401)
       .json({ success: false, error: 'You are not the owner of this room' })
   }
-
-  req.info = { room }
 
   return next()
 }

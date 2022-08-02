@@ -2,14 +2,14 @@ import type { Playlist, Room } from 'types/rooms'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from 'modules/rooms/utils'
 
-function providesList<R extends { _id: string }[], T extends string>(
+function providesList<R extends { id: string }[], T extends string>(
   resultsWithIds: R | undefined,
   tagType: T
 ) {
   return resultsWithIds
     ? [
         { type: tagType, id: 'LIST' },
-        ...resultsWithIds.map(({ _id }) => ({ type: tagType, id: _id })),
+        ...resultsWithIds.map(({ id }) => ({ type: tagType, id })),
       ]
     : [{ type: tagType, id: 'LIST' }]
 }
@@ -40,12 +40,12 @@ export const roomApi = createApi({
       invalidatesTags: [{ type: 'Rooms', id: 'LIST' }],
     }),
     updateRoom: builder.mutation<Room, Partial<Room>>({
-      query: ({ _id: roomId, ...data }) => ({
+      query: ({ id: roomId, ...data }) => ({
         url: `/${roomId}`,
         method: 'PUT',
         data,
       }),
-      invalidatesTags: (result, error, { _id: id }) => [{ type: 'Rooms', id }],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Rooms', id }],
     }),
     deleteRoom: builder.mutation<Room, string>({
       query: (roomId) => ({
@@ -59,7 +59,7 @@ export const roomApi = createApi({
         url: `/${roomId}`,
         method: 'GET',
       }),
-      providesTags: (result) => [{ type: 'Rooms', id: result?._id }],
+      providesTags: (result) => [{ type: 'Rooms', id: result?.id }],
     }),
     generatePlaylist: builder.mutation<Playlist, any>({
       query: ({ roomId, ...data }) => ({
