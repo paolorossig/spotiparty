@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Room } from '../../../../node_modules/.prisma/client/index'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { Tab } from '@headlessui/react'
