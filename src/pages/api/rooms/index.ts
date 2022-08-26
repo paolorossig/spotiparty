@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { Room } from 'types/rooms'
 import nextConnect from 'next-connect'
 import { parser } from 'lib/multer'
 import { removeImage } from 'lib/cloudinary'
@@ -43,7 +42,7 @@ const handler = nextConnect(options)
           description,
           members: [{ accountId, name: owner, image, role: 'owner' }],
           imageUrl: path,
-        } as Room,
+        },
       })
 
       const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.id}`

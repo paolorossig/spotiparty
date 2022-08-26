@@ -21,7 +21,7 @@ export const roomApi = createApi({
   reducerPath: 'roomApi',
   baseQuery: axiosBaseQuery({ baseUrl: '/api/rooms' }),
   tagTypes: ['Rooms'],
-  refetchOnFocus: true,
+  // refetchOnFocus: true,
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     getUserRooms: builder.query<Room[], void>({
