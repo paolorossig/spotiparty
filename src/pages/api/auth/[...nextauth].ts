@@ -66,5 +66,10 @@ export default NextAuth({
 
       return token
     },
+    async session({ session, token }) {
+      session.user.accountId = token.providerAccountId
+
+      return session
+    },
   },
 })

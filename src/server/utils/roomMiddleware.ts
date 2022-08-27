@@ -3,7 +3,7 @@ import { prisma } from 'server/db/client'
 
 export const roomMiddleware: ApiHandler = async (req, res, next) => {
   const { roomId } = req.query
-  const { accountId } = req.session
+  const { accountId } = req.session || {}
 
   if (typeof roomId !== 'string') {
     return res
