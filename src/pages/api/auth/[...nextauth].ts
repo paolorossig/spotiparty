@@ -1,12 +1,16 @@
 import NextAuth from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-import clientPromise from 'lib/mongodb'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { prisma } from 'server/db/client'
+import {
+  getAccountTokens,
+  refreshAccessToken,
+  updateAccountTokens,
+} from 'server/services/auth'
 import { LOGIN_URL } from 'lib/spotify'
-import { refreshAccessToken } from 'server/utils'
 
 export default NextAuth({
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: PrismaAdapter(prisma),
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -21,31 +25,49 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, account, user }) {
-      if (account && user) {
-        console.log('Initial User Sign In')
+    async jwt({ token, user, account, isNewUser }) {
+      if (user && account) {
+        const { expires_at, providerAccountId } = account
+
+        if (isNewUser) {
+          console.log('New user signed:', user.name)
+        } else {
+          console.log('User signed:', user.name)
+          await updateAccountTokens(providerAccountId, account)
+        }
+
         return {
           ...token,
-          accessToken: account.access_token,
-          refreshToken: account.refresh_token,
-          accountId: account.providerAccountId,
-          accessTokenExpires: account.expires_at * 1000,
+          providerAccountId,
+          accessTokenExpiresAt: expires_at as number,
         }
       }
 
-      if (Date.now() < token.accessTokenExpires) {
-        // Existing Access token is valid
-        return token
+      if (Date.now() > token.accessTokenExpiresAt * 1000) {
+        console.log('Access Token expired')
+        const { providerAccountId } = token
+
+        const { refresh_token } = await getAccountTokens(providerAccountId)
+        const refreshedTokenResponse = await refreshAccessToken(refresh_token)
+
+        const { expires_in, ...newToken } = refreshedTokenResponse
+        const expires_at = Date.now() + expires_in * 1000
+
+        await updateAccountTokens(providerAccountId, {
+          ...newToken,
+          expires_at,
+        })
+
+        return {
+          ...token,
+          accessTokenExpiresAt: expires_at,
+        }
       }
 
-      console.log('Access Token has expired, refreshing...')
-      return await refreshAccessToken(token)
+      return token
     },
-
     async session({ session, token }) {
-      session.user.accessToken = token.accessToken
-      session.user.refreshToken = token.refreshToken
-      session.user.accountId = token.accountId
+      session.user.accountId = token.providerAccountId
 
       return session
     },

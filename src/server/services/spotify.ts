@@ -1,9 +1,8 @@
-import type { Playlist, Track } from 'types/rooms'
 import spotifyApi from 'lib/spotify'
 import { TOP_TRACKS_LIMIT } from '../constants'
 
-export const getUserTopTracks = async (session: any): Promise<Track[]> => {
-  spotifyApi.setAccessToken(session.accessToken)
+export const getUserTopTracks = async (accessToken: string) => {
+  spotifyApi.setAccessToken(accessToken)
 
   try {
     const response = await spotifyApi.getMyTopTracks({
@@ -27,11 +26,8 @@ export const getUserTopTracks = async (session: any): Promise<Track[]> => {
   }
 }
 
-export const createPlaylist = async (
-  name: string,
-  session: any
-): Promise<Playlist> => {
-  spotifyApi.setAccessToken(session.accessToken)
+export const createPlaylist = async (name: string, accessToken: string) => {
+  spotifyApi.setAccessToken(accessToken)
 
   try {
     const { body } = await spotifyApi.createPlaylist(name, {
@@ -50,9 +46,9 @@ export const createPlaylist = async (
 export const updatePlaylistItems = async (
   playlistId: string,
   tracks: string[],
-  session: any
+  accessToken: string
 ) => {
-  spotifyApi.setAccessToken(session.accessToken)
+  spotifyApi.setAccessToken(accessToken)
 
   try {
     const response = await spotifyApi.addTracksToPlaylist(playlistId, tracks)

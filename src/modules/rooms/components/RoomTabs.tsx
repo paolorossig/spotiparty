@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Room } from '../../../../node_modules/.prisma/client/index'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { Tab } from '@headlessui/react'
@@ -34,7 +34,7 @@ const RoomTabs = ({ room, isRoomOwner }: RoomTabsProps) => {
 
     try {
       const response = await generatePlaylist({
-        roomId: room._id,
+        roomId: room.id,
         roomName: room.name,
         tracks: uniqueTrackUris,
       }).unwrap()

@@ -1,74 +1,66 @@
 import type { NextApiResponse } from 'next'
+import type { ApiRequestWithSession } from 'types/utils'
 import nextConnect from 'next-connect'
-import Room from 'server/models/room'
+import { prisma } from 'server/db/client'
 import {
   createPlaylist,
   getUserTopTracks,
   updatePlaylistItems,
 } from 'server/services/spotify'
-import {
-  authMiddleware,
-  CustomApiReq,
-  options,
-  roomMiddleware,
-} from 'server/utils'
+import { authMiddleware, options, roomMiddleware } from 'server/utils'
 
 const handler = nextConnect(options)
   .use(authMiddleware)
   .use(roomMiddleware)
-  .get(async (req: CustomApiReq, res: NextApiResponse) => {
-    const { accountId, name, image } = req.session
-    const { roomId } = req.query
-
-    let room = await Room.findOne({ _id: roomId }).lean()
-    if (!room) {
-      return res
-        .status(404)
-        .json({ success: false, error: `Room ${roomId} do not exist` })
-    }
+  .get(async (req: ApiRequestWithSession, res: NextApiResponse) => {
+    const { access_token, accountId, name, image } = req.session
+    let { room } = req.info
 
     if (!room.members.find((member) => member.accountId === accountId)) {
-      const memberTopTracks = await getUserTopTracks(req.session)
+      const memberTopTracks = await getUserTopTracks(access_token)
 
-      room = await Room.findByIdAndUpdate(
-        roomId,
-        {
-          $push: {
-            members: { accountId, name, image, role: 'member' },
-            tracks: { $each: memberTopTracks },
-          },
+      room = await prisma.room.update({
+        where: { id: room.id },
+        data: {
+          members: [...room.members, { accountId, name, image }],
+          tracks: [...room.tracks, ...memberTopTracks],
         },
-        { new: true }
-      ).lean()
+      })
     }
 
     return res.status(200).json({ success: true, data: room })
   })
-  .post(async (req: CustomApiReq, res: NextApiResponse) => {
-    const { roomId } = req.query
+  .post(async (req: ApiRequestWithSession, res: NextApiResponse) => {
+    const { room } = req.info
     const { roomName, tracks } = req.body
+    const { access_token } = req.session
 
-    const playlist = await createPlaylist(roomName, req.session)
-    await updatePlaylistItems(playlist.id, tracks, req.session)
-    await Room.findByIdAndUpdate(roomId, { playlist })
+    const playlist = await createPlaylist(roomName, access_token)
+    await updatePlaylistItems(playlist.id, tracks, access_token)
+
+    await prisma.room.update({
+      where: { id: room.id },
+      data: { playlist },
+    })
 
     return res.status(200).json({ success: true, data: playlist })
   })
-  .put(async (req: CustomApiReq, res: NextApiResponse) => {
-    const { roomId } = req.query
+  .put(async (req: ApiRequestWithSession, res: NextApiResponse) => {
+    const { room } = req.info
 
-    const room = await Room.findByIdAndUpdate(
-      roomId,
-      { ...req.body },
-      { new: true, runValidators: true, context: 'query' }
-    )
+    const roomUpdated = await prisma.room.update({
+      where: { id: room.id },
+      data: { ...req.body },
+    })
 
-    return res.status(200).json({ success: true, data: room })
+    return res.status(200).json({ success: true, data: roomUpdated })
   })
-  .delete(async (req: CustomApiReq, res: NextApiResponse) => {
-    const { roomId } = req.query
+  .delete(async (req: ApiRequestWithSession, res: NextApiResponse) => {
+    const { room } = req.info
 
-    const response = await Room.findByIdAndDelete(roomId)
+    const response = await prisma.room.delete({
+      where: { id: room.id },
+    })
 
     return res.status(200).json({ success: true, data: response })
   })

@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Room } from '../../../../node_modules/.prisma/client/index'
 import toast from 'react-hot-toast'
 import { Dialog } from '@headlessui/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -31,7 +31,7 @@ const EditRoomDialog = ({ room, isOpen, toggle }: EditRoomDialogProps) => {
 
   const onSubmit: SubmitHandler<EditRoomFormInputs> = async (data) => {
     try {
-      await updateRoom({ _id: room._id, ...data }).unwrap()
+      await updateRoom({ id: room.id, ...data }).unwrap()
       toggle()
       toast.success('Room succesfully edited')
     } catch (error: any) {
