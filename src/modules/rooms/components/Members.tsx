@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Room } from '../../../../node_modules/.prisma/client/index'
 import { IoMdMicrophone } from 'react-icons/io'
 import { USER_PLACEHOLDER_IMAGE } from 'modules/ui/constants/navigation'
 

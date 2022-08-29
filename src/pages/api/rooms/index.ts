@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import type { Room } from 'types/rooms'
+import type { NextApiResponse } from 'next'
+import type { ApiRequestWithSession } from 'types/utils'
 import nextConnect from 'next-connect'
 import { parser } from 'lib/multer'
 import { removeImage } from 'lib/cloudinary'
@@ -7,15 +7,10 @@ import { prisma } from 'server/db/client'
 import { getUserTopTracks } from 'server/services/spotify'
 import { authMiddleware, options } from 'server/utils'
 
-interface CustomRequest extends NextApiRequest {
-  file: any
-  session?: any
-}
-
 const handler = nextConnect(options)
   .use(authMiddleware)
   .use(parser('rooms').single('image'))
-  .get(async (req: CustomRequest, res: NextApiResponse) => {
+  .get(async (req: ApiRequestWithSession, res: NextApiResponse) => {
     const { accountId } = req.session
 
     try {
@@ -27,12 +22,12 @@ const handler = nextConnect(options)
       return res.status(400).json({ success: false, error })
     }
   })
-  .post(async (req: CustomRequest, res: NextApiResponse) => {
+  .post(async (req: ApiRequestWithSession, res: NextApiResponse) => {
     if (!req.file) throw new Error('Uploading an Image for room is required')
 
     const { path, filename } = req.file
     const { name, description } = req.body
-    const { name: owner, accountId, image } = req.session
+    const { access_token, name: owner, accountId, image } = req.session
 
     try {
       let room = await prisma.room.create({
@@ -43,11 +38,11 @@ const handler = nextConnect(options)
           description,
           members: [{ accountId, name: owner, image, role: 'owner' }],
           imageUrl: path,
-        } as Room,
+        },
       })
 
       const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.id}`
-      const ownerTopTracks = await getUserTopTracks(req.session)
+      const ownerTopTracks = await getUserTopTracks(access_token)
 
       const roomUpdated = await prisma.room.update({
         where: { id: room.id },

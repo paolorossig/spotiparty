@@ -13,14 +13,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.String
-  access_token      String?  @db.String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  createdAt         DateTime @db.Date @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refresh_token     String   @db.String
+  access_token      String   @db.String
+  expires_at        Int
+  token_type        String
+  scope             String
+  createdAt         DateTime @default(now()) @db.Date
+  updatedAt         DateTime @updatedAt @db.Date
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -72,6 +72,6 @@ model Room {
   members     Member[]
   tracks      Track[]
   playlist    Playlist?
-  createdAt   DateTime  @db.Date @default(now())
-  updatedAt   DateTime  @db.Date @default(now())
+  createdAt   DateTime  @default(now()) @db.Date
+  updatedAt   DateTime  @default(now()) @db.Date
 }

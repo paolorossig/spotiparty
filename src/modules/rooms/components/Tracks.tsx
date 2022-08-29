@@ -1,4 +1,4 @@
-import type { Room, Track } from 'types/rooms'
+import type { Room, Track } from '../../../../node_modules/.prisma/client/index'
 import Image from 'next/image'
 
 const Tracks = ({ room }: { room: Room }) => {

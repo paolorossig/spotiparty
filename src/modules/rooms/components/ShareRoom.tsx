@@ -1,4 +1,4 @@
-import type { Room } from 'types/rooms'
+import type { Room } from '../../../../node_modules/.prisma/client/index'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'
@@ -40,12 +40,12 @@ const ShareRoom = ({ room }: { room: Room }) => {
           </p>
           <p>or scan the QR Code</p>
         </div>
-        <QRCodeSVG value={room.linkUrl} size={120} />
+        <QRCodeSVG value={room?.linkUrl || ''} size={120} />
       </div>
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-semibold">{room._id}</h1>
+          <h1 className="text-3xl font-semibold">{room.id}</h1>
           <IconButton
             Icon={!copiedText ? BsClipboard : BsClipboardCheck}
             size="medium"
