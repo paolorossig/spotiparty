@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthOptions } from "next-auth"
+import NextAuth, { type NextAuthOptions } from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from 'server/db/client'
