@@ -1,6 +1,11 @@
 import type { Account } from '@prisma/client'
-import { prisma } from 'server/db/client'
+import type { GetServerSidePropsContext } from 'next'
+import type { RichSession } from 'types/utils'
+
+import { unstable_getServerSession as getServerSession } from 'next-auth'
 import spotifyApi from 'lib/spotify'
+import { prisma } from 'server/db/client'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 const provider = 'spotify'
 
@@ -33,4 +38,16 @@ export const refreshAccessToken = async (refreshToken: string) => {
     console.error(error.message)
     throw new Error(error.message)
   }
+}
+
+export const getServerAuthSession = async (ctx: {
+  req: GetServerSidePropsContext['req']
+  res: GetServerSidePropsContext['res']
+}) => {
+  const serverSession = await getServerSession(ctx.req, ctx.res, authOptions)
+  if (!serverSession) return null
+
+  const { user } = serverSession
+  const { access_token } = await getAccountTokens(user.accountId)
+  return { ...user, access_token } as RichSession
 }

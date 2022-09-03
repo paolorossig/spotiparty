@@ -1,25 +1,28 @@
+import type { RichSession } from 'types/utils'
 import * as trpc from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
-import { unstable_getServerSession as getServerSession } from 'next-auth'
-
-import { authOptions as nextAuthOptions } from 'pages/api/auth/[...nextauth]'
 import { prisma } from 'server/db/client'
+import { getServerAuthSession } from 'server/services/auth'
 
-export const createContext = async (
-  opts?: trpcNext.CreateNextContextOptions
-) => {
-  const req = opts?.req
-  const res = opts?.res
+type CreateContextOptions = {
+  session: RichSession | null
+}
 
-  const session =
-    req && res && (await getServerSession(req, res, nextAuthOptions))
-
+export const createContextInner = async (opts: CreateContextOptions) => {
   return {
-    req,
-    res,
-    session,
+    session: opts.session,
     prisma,
   }
+}
+
+export const createContext = async (
+  opts: trpcNext.CreateNextContextOptions
+) => {
+  const { req, res } = opts
+
+  const session = await getServerAuthSession({ req, res })
+
+  return await createContextInner({ session })
 }
 
 type Context = trpc.inferAsyncReturnType<typeof createContext>
@@ -28,7 +31,7 @@ export const createRouter = () => trpc.router<Context>()
 
 export const createProtectedRouter = () =>
   createRouter().middleware(({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user) {
+    if (!ctx.session) {
       throw new trpc.TRPCError({ code: 'UNAUTHORIZED' })
     }
 
@@ -36,7 +39,7 @@ export const createProtectedRouter = () =>
       ctx: {
         ...ctx,
         // infers that `session` is non-nullable to downstream resolvers
-        session: { ...ctx.session, user: ctx.session.user },
+        session: { ...ctx.session },
       },
     })
   })
