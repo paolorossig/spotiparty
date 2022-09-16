@@ -5,7 +5,11 @@ const LandingFooter = () => {
   return (
     <footer className="flex h-14 w-full items-center justify-center border-t border-gray-700">
       <Link href="https://github.com/paolorossig/spotiparty">
-        <a target="_blank" rel="noopener noreferrer">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Check out the repository on Github"
+        >
           <GoMarkGithub className="text-3xl" />
         </a>
       </Link>
