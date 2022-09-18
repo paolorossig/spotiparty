@@ -18,7 +18,7 @@ const Rooms = () => {
   ) : !data ? null : (
     <>
       {data.map((room) => (
-        <Link href={`/app/rooms/${room.id}`} key={room.id}>
+        <Link href={`/app/rooms/${room.code}`} key={room.code}>
           <a>
             <article className="group flex h-44 flex-row items-center justify-center gap-4 rounded-xl border border-white hover:bg-white/10">
               <Image

@@ -1,6 +1,7 @@
 import type { NextApiResponse } from 'next'
 import type { ApiRequestWithSession } from 'types/utils'
 import nextConnect from 'next-connect'
+import { nanoid } from '@reduxjs/toolkit'
 import { parser } from 'lib/multer'
 import { removeImage } from 'lib/cloudinary'
 import { prisma } from 'server/db/client'
@@ -32,6 +33,7 @@ const handler = nextConnect(options)
     try {
       let room = await prisma.room.create({
         data: {
+          code: nanoid(8),
           name,
           owner,
           accountId,
@@ -41,7 +43,7 @@ const handler = nextConnect(options)
         },
       })
 
-      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.id}`
+      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.code}`
       const ownerTopTracks = await getUserTopTracks(access_token)
 
       const roomUpdated = await prisma.room.update({

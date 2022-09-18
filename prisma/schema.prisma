@@ -63,6 +63,7 @@ type Playlist {
 
 model Room {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  code        String    @unique()
   name        String    @unique()
   description String
   owner       String
