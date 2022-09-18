@@ -8,8 +8,10 @@ type Info = {
   room: Room
 }
 
+export type RichSession = Session['user'] & { access_token: string }
+
 export type ApiRequest = NextApiRequest & {
-  session?: Session['user'] & { access_token: string }
+  session?: RichSession
   file?: Express.Multer.File
   info: Info
 }
