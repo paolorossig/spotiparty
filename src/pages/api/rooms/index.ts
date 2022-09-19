@@ -6,7 +6,7 @@ import { parser } from 'lib/multer'
 import { removeImage } from 'lib/cloudinary'
 import { prisma } from 'server/db/client'
 import { getUserTopTracks } from 'server/services/spotify'
-import { authMiddleware, options } from 'server/utils'
+import { authMiddleware, baseUrl, options } from 'server/utils'
 
 const handler = nextConnect(options)
   .use(authMiddleware)
@@ -42,7 +42,7 @@ const handler = nextConnect(options)
           imageUrl: path,
         },
       })
-      const baseUrl = process.env.VERCEL_URL || process.env.NEXTAUTH_URL
+
       const linkUrl = `${baseUrl}/app/rooms/${room.code}`
       const ownerTopTracks = await getUserTopTracks(access_token)
 
