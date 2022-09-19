@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import LandingLayout from 'lib/ui/layouts/LandingLayout'
+import LandingLayout from 'modules/ui/layouts/LandingLayout'
 
 const Home: NextPage = () => {
   return (
@@ -9,9 +9,9 @@ const Home: NextPage = () => {
         <div className="w-full text-center md:w-2/5 md:text-left">
           <h1 className="text-5xl font-bold">Best app for Karaoke</h1>
           <br />
-          <h3 className="text-lg text-gray-300 lg:text-xl">
+          <h2 className="text-lg text-gray-300 lg:text-xl">
             Spotiparty creates a unique playlist based on your last songs played
-          </h3>
+          </h2>
           <br />
         </div>
         <div className="flex h-full w-full items-end justify-center md:w-3/5">

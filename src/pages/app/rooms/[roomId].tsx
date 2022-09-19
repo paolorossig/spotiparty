@@ -4,14 +4,14 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { FiRefreshCw } from 'react-icons/fi'
 import { BsGear, BsLink45Deg } from 'react-icons/bs'
-import AppLayout from 'lib/ui/layouts/AppLayout'
-import Tooltip from 'lib/ui/components/Tooltip'
-import IconButton from 'lib/ui/components/IconButton'
-import useToggle from 'lib/ui/hooks/useToggle'
-import RoomTabs from 'lib/rooms/components/RoomTabs'
-import ShareRoom from 'lib/rooms/components/ShareRoom'
-import EditRoomDialog from 'lib/rooms/components/EditRoomDialog'
-import { useGetRoombyIdQuery } from 'lib/rooms/services/roomApi'
+import AppLayout from 'modules/ui/layouts/AppLayout'
+import Tooltip from 'modules/ui/components/Tooltip'
+import IconButton from 'modules/ui/components/IconButton'
+import useToggle from 'modules/ui/hooks/useToggle'
+import RoomTabs from 'modules/rooms/components/RoomTabs'
+import ShareRoom from 'modules/rooms/components/ShareRoom'
+import EditRoomDialog from 'modules/rooms/components/EditRoomDialog'
+import { useGetRoombyIdQuery } from 'modules/rooms/services/roomApi'
 
 const Room = () => {
   const router = useRouter()
@@ -22,7 +22,7 @@ const Room = () => {
 
   const { data: session } = useSession()
   const [isModalOpen, toggleModal] = useToggle()
-  const { data, error, isLoading, refetch } = useGetRoombyIdQuery(roomId)
+  const { data, isLoading, refetch } = useGetRoombyIdQuery(roomId)
 
   const isRoomOwner = (data?.accountId ?? false) === session?.user.accountId
   const refetchAndNotify = () => {
@@ -31,7 +31,7 @@ const Room = () => {
   }
 
   return (
-    <AppLayout error={error?.message} isLoading={isLoading}>
+    <AppLayout isLoading={isLoading}>
       {!data ? (
         <div className="grid flex-1 place-content-center">
           <p>Something went wrong. Please try again later.</p>

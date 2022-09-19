@@ -7,15 +7,15 @@
       {
         "zones": [
           {
-            "target": "./src/core",
-            "from": "./src/lib"
-          },
-          {
-            "target": "./src/core",
-            "from": "./src/pages"
+            "target": "./src/lib",
+            "from": "./src/modules"
           },
           {
             "target": "./src/lib",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/modules",
             "from": "./src/pages"
           }
         ]
