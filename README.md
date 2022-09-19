@@ -2,6 +2,13 @@
 
 [Spotiparty](https://spotiparty.vercel.app) is a personal project that aims to be the app that everyone uses with friends in karaoke
 
+## Features
+
+- [x] User authentication with an Spotify account
+- [x] User can create and join rooms by QR code or custom link
+- [x] Users can create auto-generated playlist based on room members' top tracks
+- [ ] Full playback control of tracks on user's active devices
+
 ## Stack
 
 ![React](https://img.shields.io/badge/-React-black?style=flat-square&logo=react)
