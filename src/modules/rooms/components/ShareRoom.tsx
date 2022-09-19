@@ -1,4 +1,4 @@
-import type { Room } from '../../../../node_modules/.prisma/client/index'
+import type { Room } from '@prisma/client'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'

@@ -3,7 +3,7 @@ declare namespace NodeJS {
     NODE_ENV: 'development' | 'production'
     NEXTAUTH_URL: string
     NEXTAUTH_SECRET: string
-    MONGODB_URI: string
+    DATABASE_URL: string
     SPOTIFY_CLIENT_ID: string
     SPOTIFY_CLIENT_SECRET: string
     CLOUDINARY_CLOUD_NAME: string

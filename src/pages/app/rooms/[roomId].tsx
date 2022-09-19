@@ -22,7 +22,7 @@ const Room = () => {
 
   const { data: session } = useSession()
   const [isModalOpen, toggleModal] = useToggle()
-  const { data, error, isLoading, refetch } = useGetRoombyIdQuery(roomId)
+  const { data, isLoading, refetch } = useGetRoombyIdQuery(roomId)
 
   const isRoomOwner = (data?.accountId ?? false) === session?.user.accountId
   const refetchAndNotify = () => {
@@ -31,7 +31,7 @@ const Room = () => {
   }
 
   return (
-    <AppLayout error={error?.message} isLoading={isLoading}>
+    <AppLayout isLoading={isLoading}>
       {!data ? (
         <div className="grid flex-1 place-content-center">
           <p>Something went wrong. Please try again later.</p>

@@ -7,6 +7,7 @@ import { USER_PLACEHOLDER_IMAGE } from 'modules/ui/constants/navigation'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()
+  const { name, image } = session?.user || {}
 
   return (
     <Menu as="div" className="relative">
@@ -14,11 +15,11 @@ const ProfileMenu = () => {
         <div className="flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60 hover:bg-gray-800">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={session?.user.image || USER_PLACEHOLDER_IMAGE}
+            src={image || USER_PLACEHOLDER_IMAGE}
             alt="Profile image"
             className="h-10 w-10 rounded-full object-cover"
           />
-          <p>{session?.user.name}</p>
+          <p>{name}</p>
         </div>
       </Menu.Button>
       <Transition

@@ -1,7 +1,4 @@
-import type {
-  Playlist,
-  Room,
-} from '../../../../node_modules/.prisma/client/index'
+import type { Playlist, Room } from '@prisma/client'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from 'modules/rooms/utils'
 

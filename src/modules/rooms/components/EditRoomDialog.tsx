@@ -1,4 +1,4 @@
-import type { Room } from '../../../../node_modules/.prisma/client/index'
+import type { Room } from '@prisma/client'
 import toast from 'react-hot-toast'
 import { Dialog } from '@headlessui/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'

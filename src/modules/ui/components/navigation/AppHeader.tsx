@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ProfileMenu from './ProfileMenu'
@@ -8,7 +7,7 @@ const AppHeader = () => {
     <header className="flex w-full justify-center">
       <nav className="flex w-full max-w-5xl flex-col items-center gap-2 p-4">
         <div className="flex h-10 w-full items-center justify-between">
-          <Link href="/">
+          <Link href="/app">
             <a className="flex items-center space-x-2 hover:animate-pulse">
               <Image
                 src="/spotify-icon.png"
@@ -26,4 +25,4 @@ const AppHeader = () => {
   )
 }
 
-export default memo(AppHeader)
+export default AppHeader

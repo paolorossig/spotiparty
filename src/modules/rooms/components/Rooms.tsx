@@ -1,17 +1,11 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
-import toast from 'react-hot-toast'
 import Spinner from 'modules/ui/components/Spinner'
 import { useGetUserRoomsQuery } from 'modules/rooms/services/roomApi'
 
 const Rooms = () => {
-  const { data, error, isLoading } = useGetUserRoomsQuery()
-
-  if (error)
-    toast.error(error.message?.split(': ').pop() ?? '', {
-      duration: 3000,
-    })
+  const { data, isLoading } = useGetUserRoomsQuery()
 
   return isLoading ? (
     <Spinner variant="light" size="large" />

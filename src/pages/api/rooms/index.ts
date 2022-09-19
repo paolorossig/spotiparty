@@ -42,8 +42,8 @@ const handler = nextConnect(options)
           imageUrl: path,
         },
       })
-
-      const linkUrl = process.env.NEXTAUTH_URL + `app/rooms/${room.code}`
+      const baseUrl = process.env.VERCEL_URL || process.env.NEXTAUTH_URL
+      const linkUrl = `${baseUrl}/app/rooms/${room.code}`
       const ownerTopTracks = await getUserTopTracks(access_token)
 
       const roomUpdated = await prisma.room.update({

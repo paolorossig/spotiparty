@@ -6,11 +6,10 @@ import Toaster from '../components/Toaster'
 
 interface Props {
   children?: React.ReactNode
-  error?: string
   isLoading?: boolean
 }
 
-const AppLayout = ({ children, error, isLoading }: Props) => {
+const AppLayout = ({ children, isLoading }: Props) => {
   const { data: session, status } = useSession()
 
   return (
@@ -19,18 +18,20 @@ const AppLayout = ({ children, error, isLoading }: Props) => {
         <title>Spotiparty | App</title>
         <link rel="icon" href="/icon.png" />
       </Head>
-      <AppHeader />
-      <main className="flex w-full max-w-5xl flex-1 flex-col p-4">
-        {status === 'loading' || isLoading ? (
-          <Spinner />
-        ) : !session ? (
-          <p className="text-3xl font-bold">No session</p>
-        ) : error ? (
-          <p className="text-3xl font-bold">{error}</p>
-        ) : (
-          children
-        )}
-      </main>
+
+      {status === 'loading' || isLoading ? (
+        <Spinner />
+      ) : !session ? (
+        <p className="text-3xl font-bold">No session</p>
+      ) : (
+        <>
+          <AppHeader />
+          <main className="flex w-full max-w-5xl flex-1 flex-col p-4">
+            {children}
+          </main>
+        </>
+      )}
+
       <Toaster />
     </div>
   )

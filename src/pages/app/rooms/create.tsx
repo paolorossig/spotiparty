@@ -36,7 +36,7 @@ const Create = () => {
       await createRoom(formData).unwrap()
       return router.push('/app')
     } catch (error: any) {
-      toast.error(error.message.split(': ').pop() ?? '', {
+      toast.error(error.message ?? '', {
         duration: 3000,
       })
     }
