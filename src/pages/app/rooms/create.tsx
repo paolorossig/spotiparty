@@ -1,24 +1,26 @@
 import { useRouter } from 'next/router'
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { BsChevronLeft } from 'react-icons/bs'
+import { trpc } from 'lib/trpc'
 import AppLayout from 'modules/ui/layouts/AppLayout'
 import Button from 'modules/ui/components/Button'
-import Dropzone from 'modules/ui/components/Dropzone'
 import IconButton from 'modules/ui/components/IconButton'
 
 export interface FormValues {
   name: string
   description: string
-  image: FileList
 }
 
 const Create = () => {
   const router = useRouter()
-  const { register, handleSubmit, control, formState } = useForm<FormValues>()
+  const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
+  const mutation = trpc.useMutation(['rooms.create'])
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log({ data })
+    mutation.mutate(data)
+    return router.push('/app')
   }
 
   return (
@@ -65,15 +67,7 @@ const Create = () => {
             </p>
           )}
         </div>
-        <Controller
-          name="image"
-          control={control}
-          render={({ field: { onChange } }) => (
-            <Dropzone message="PNG or JPG (Max. 10MB)" onChange={onChange} />
-          )}
-          // TODO: add rules={{ required: 'Required field' }}
-        />
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" disabled={mutation.isLoading}>
           Create
         </Button>
       </form>

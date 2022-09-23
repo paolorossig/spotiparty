@@ -1,15 +1,17 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
+import { trpc } from 'lib/trpc'
+
 import Spinner from 'modules/ui/components/Spinner'
-import { useGetUserRoomsQuery } from 'modules/rooms/services/roomApi'
 
 const Rooms = () => {
-  const { data, isLoading } = useGetUserRoomsQuery()
+  const { data, isLoading } = trpc.useQuery(['rooms.getAll'])
 
-  return isLoading ? (
-    <Spinner variant="light" size="large" />
-  ) : !data ? null : (
+  if (!data) return null
+  if (isLoading) return <Spinner variant="light" size="large" />
+
+  return (
     <>
       {data.map((room) => (
         <Link href={`/app/rooms/${room.code}`} key={room.code}>

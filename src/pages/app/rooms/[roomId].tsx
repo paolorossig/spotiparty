@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { FiRefreshCw } from 'react-icons/fi'
 import { BsGear, BsLink45Deg } from 'react-icons/bs'
+import { trpc } from 'lib/trpc'
+
 import AppLayout from 'modules/ui/layouts/AppLayout'
 import Tooltip from 'modules/ui/components/Tooltip'
 import IconButton from 'modules/ui/components/IconButton'
@@ -11,7 +13,6 @@ import useToggle from 'modules/ui/hooks/useToggle'
 import RoomTabs from 'modules/rooms/components/RoomTabs'
 import ShareRoom from 'modules/rooms/components/ShareRoom'
 import EditRoomDialog from 'modules/rooms/components/EditRoomDialog'
-import { useGetRoombyIdQuery } from 'modules/rooms/services/roomApi'
 
 const Room = () => {
   const router = useRouter()
@@ -22,7 +23,10 @@ const Room = () => {
 
   const { data: session } = useSession()
   const [isModalOpen, toggleModal] = useToggle()
-  const { data, isLoading, refetch } = useGetRoombyIdQuery(roomId)
+  const { data, isLoading, refetch } = trpc.useQuery([
+    'rooms.accessByCode',
+    { roomCode: roomId },
+  ])
 
   const isRoomOwner = (data?.accountId ?? false) === session?.user.accountId
   const refetchAndNotify = () => {
