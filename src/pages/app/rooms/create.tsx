@@ -1,13 +1,10 @@
 import { useRouter } from 'next/router'
-import { Controller, useForm } from 'react-hook-form'
-import type { SubmitHandler } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
 import { BsChevronLeft } from 'react-icons/bs'
 import AppLayout from 'modules/ui/layouts/AppLayout'
 import Button from 'modules/ui/components/Button'
 import Dropzone from 'modules/ui/components/Dropzone'
 import IconButton from 'modules/ui/components/IconButton'
-import { useCreateRoomMutation } from 'modules/rooms/services/roomApi'
 
 export interface FormValues {
   name: string
@@ -15,31 +12,13 @@ export interface FormValues {
   image: FileList
 }
 
-type FormKeys = keyof FormValues
-
 const Create = () => {
   const router = useRouter()
-  const [createRoom, { isLoading }] = useCreateRoomMutation()
   const { register, handleSubmit, control, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const formData = new FormData()
-    const keys = Object.keys(data) as Array<FormKeys>
-    keys.forEach((key) => {
-      key === 'image'
-        ? data.image?.length && formData.append(key, data[key][0])
-        : formData.append(key, data[key])
-    })
-
-    try {
-      await createRoom(formData).unwrap()
-      return router.push('/app')
-    } catch (error: any) {
-      toast.error(error.message ?? '', {
-        duration: 3000,
-      })
-    }
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log({ data })
   }
 
   return (
@@ -94,7 +73,7 @@ const Create = () => {
           )}
           // TODO: add rules={{ required: 'Required field' }}
         />
-        <Button type="submit" variant="primary" isLoading={isLoading}>
+        <Button type="submit" variant="primary">
           Create
         </Button>
       </form>

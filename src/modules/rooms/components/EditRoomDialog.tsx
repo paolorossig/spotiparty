@@ -1,9 +1,7 @@
 import type { Room } from '@prisma/client'
-import toast from 'react-hot-toast'
 import { Dialog } from '@headlessui/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import Button from 'modules/ui/components/Button'
-import { useUpdateRoomMutation } from 'modules/rooms/services/roomApi'
 
 interface EditRoomDialogProps {
   room: Room
@@ -22,7 +20,6 @@ const EditRoomDialog = ({ room, isOpen, toggle }: EditRoomDialogProps) => {
   const { handleSubmit, control, reset } = useForm<EditRoomFormInputs>({
     defaultValues: { name, description },
   })
-  const [updateRoom] = useUpdateRoomMutation()
 
   const onClose = () => {
     reset()
@@ -30,15 +27,7 @@ const EditRoomDialog = ({ room, isOpen, toggle }: EditRoomDialogProps) => {
   }
 
   const onSubmit: SubmitHandler<EditRoomFormInputs> = async (data) => {
-    try {
-      await updateRoom({ id: room.id, ...data }).unwrap()
-      toggle()
-      toast.success('Room succesfully edited')
-    } catch (error: any) {
-      toast.error(error.message.split(': ').pop() ?? '', {
-        duration: 3000,
-      })
-    }
+    console.log({ data })
   }
 
   return (

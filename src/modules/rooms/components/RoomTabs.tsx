@@ -1,11 +1,9 @@
 import type { Room } from '@prisma/client'
 import clsx from 'clsx'
-import toast from 'react-hot-toast'
 import { Tab } from '@headlessui/react'
 import Button from 'modules/ui/components/Button'
 import Members from './Members'
 import Tracks from './Tracks'
-import { useGeneratePlaylistMutation } from '../services/roomApi'
 
 const TABS = {
   Members: 'Members',
@@ -18,31 +16,9 @@ interface RoomTabsProps {
 }
 
 const RoomTabs = ({ room, isRoomOwner }: RoomTabsProps) => {
-  const [generatePlaylist] = useGeneratePlaylistMutation()
-
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const setObj = new Set()
-
-    const uniqueTrackUris = room.tracks.reduce<string[]>((acc, track) => {
-      if (!setObj.has(track.id)) {
-        setObj.add(track.id)
-        acc.push(track.uri)
-      }
-      return acc
-    }, [])
-
-    try {
-      const response = await generatePlaylist({
-        roomId: room.id,
-        roomName: room.name,
-        tracks: uniqueTrackUris,
-      }).unwrap()
-      console.log(response)
-      toast.success('Playlist generated')
-    } catch (error: any) {
-      toast.error(error.message)
-    }
+    console.log('Generate Playlist')
   }
 
   return (
