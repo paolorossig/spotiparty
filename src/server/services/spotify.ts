@@ -1,6 +1,18 @@
 import spotifyApi from 'lib/spotify'
 import { TOP_TRACKS_LIMIT } from '../constants'
 
+export const refreshSpotifyTokens = async (refreshToken: string) => {
+  try {
+    spotifyApi.setRefreshToken(refreshToken)
+    const { body: refreshedToken } = await spotifyApi.refreshAccessToken()
+
+    return refreshedToken
+  } catch (error: any) {
+    console.error(error.message)
+    throw new Error(error.message)
+  }
+}
+
 export const getUserTopTracks = async (accessToken: string) => {
   spotifyApi.setAccessToken(accessToken)
 
