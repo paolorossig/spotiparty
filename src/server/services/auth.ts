@@ -1,43 +1,28 @@
-import type { Account } from '@prisma/client'
-import type { GetServerSidePropsContext } from 'next'
-import type { RichSession } from 'types/utils'
-
+import { type Account } from '@prisma/client'
+import { type GetServerSidePropsContext } from 'next'
 import { unstable_getServerSession as getServerSession } from 'next-auth'
-import spotifyApi from 'lib/spotify'
-import { prisma } from 'server/db/client'
-import { authOptions } from 'pages/api/auth/[...nextauth]'
 
-const provider = 'spotify'
+import { prisma } from 'server/db/client'
+import { type RichSession } from 'types/utils'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 export const getAccountTokens = async (providerAccountId: string) => {
   return await prisma.account.findFirstOrThrow({
-    where: { provider, providerAccountId },
+    where: { providerAccountId },
     select: { access_token: true, refresh_token: true, expires_at: true },
   })
 }
 
 export const updateAccountTokens = async (
-  providerAccountId: string,
-  data: Partial<Account>
+  data: Partial<Account> & { provider: string; providerAccountId: string }
 ) => {
+  const { provider, providerAccountId } = data
+  const provider_providerAccountId = { provider, providerAccountId }
+
   return await prisma.account.update({
-    where: {
-      provider_providerAccountId: { provider, providerAccountId },
-    },
+    where: { provider_providerAccountId },
     data,
   })
-}
-
-export const refreshAccessToken = async (refreshToken: string) => {
-  try {
-    spotifyApi.setRefreshToken(refreshToken)
-    const { body: refreshedToken } = await spotifyApi.refreshAccessToken()
-
-    return refreshedToken
-  } catch (error: any) {
-    console.error(error.message)
-    throw new Error(error.message)
-  }
 }
 
 export const getServerAuthSession = async (ctx: {

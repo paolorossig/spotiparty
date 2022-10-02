@@ -1,13 +1,11 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { prisma } from 'server/db/client'
-import {
-  getAccountTokens,
-  refreshAccessToken,
-  updateAccountTokens,
-} from 'server/services/auth'
+
 import { LOGIN_URL } from 'lib/spotify'
+import { prisma } from 'server/db/client'
+import { getAccountTokens, updateAccountTokens } from 'server/services/auth'
+import { refreshSpotifyTokens } from 'server/services/spotify'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -23,21 +21,25 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
+    maxAge: 3600,
   },
   callbacks: {
     async jwt({ token, user, account, isNewUser }) {
       if (user && account) {
-        const { expires_at, providerAccountId } = account
+        const { expires_at, provider, providerAccountId } = account
 
         if (isNewUser) {
           console.log('New user signed:', user.name)
         } else {
           console.log('User signed:', user.name)
-          await updateAccountTokens(providerAccountId, account)
+          await updateAccountTokens(account)
         }
 
         return {
           ...token,
+          // TODO: next-auth already include it as `sub` optional parameter
+          userId: user.id,
+          provider,
           providerAccountId,
           accessTokenExpiresAt: expires_at as number,
         }
@@ -45,18 +47,23 @@ export const authOptions: NextAuthOptions = {
 
       if (Date.now() > token.accessTokenExpiresAt * 1000) {
         console.log('Access Token expired')
-        const { providerAccountId } = token
-
+        const { provider, providerAccountId } = token
         const { refresh_token } = await getAccountTokens(providerAccountId)
-        const refreshedTokenResponse = await refreshAccessToken(refresh_token)
 
-        const { expires_in, ...newToken } = refreshedTokenResponse
+        // TODO: refresh token depending on `provider`
+        const { expires_in, ...refreshedToken } = await refreshSpotifyTokens(
+          refresh_token
+        )
+
         const expires_at = Date.now() + expires_in * 1000
-
-        await updateAccountTokens(providerAccountId, {
-          ...newToken,
+        const newToken = {
+          provider,
+          providerAccountId,
           expires_at,
-        })
+          ...refreshedToken,
+        }
+
+        await updateAccountTokens(newToken)
 
         return {
           ...token,
@@ -67,6 +74,7 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
+      session.user.userId = token.userId
       session.user.accountId = token.providerAccountId
 
       return session
