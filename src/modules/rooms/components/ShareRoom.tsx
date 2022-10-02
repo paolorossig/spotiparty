@@ -11,8 +11,10 @@ const ShareRoom = ({ room }: { room: Room }) => {
   const [showQrCode, toggleQrCode] = useToggle(true)
   const [copiedText, copy] = useCopyToClipboard()
 
+  const linkUrl = `${window.location.origin}/app/rooms/${room.roomId}`
+
   const copyLink = () => {
-    copy(room.linkUrl ?? '')
+    copy(linkUrl)
     toast.success('Link copied succesfully.')
   }
 
@@ -40,12 +42,12 @@ const ShareRoom = ({ room }: { room: Room }) => {
           </p>
           <p>or scan the QR Code</p>
         </div>
-        <QRCodeSVG value={room?.linkUrl || ''} size={120} />
+        <QRCodeSVG value={linkUrl} size={120} />
       </div>
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-semibold">{room.code}</h1>
+          <h1 className="text-3xl font-semibold">{room.roomId}</h1>
           <IconButton
             Icon={!copiedText ? BsClipboard : BsClipboardCheck}
             size="medium"

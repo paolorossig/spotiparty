@@ -20,59 +20,52 @@ model Account {
   scope             String
   createdAt         DateTime @default(now()) @db.Date
   updatedAt         DateTime @updatedAt @db.Date
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
+  name          String
+  email         String    @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-}
 
-enum Role {
-  owner
-  member
-}
-
-type Member {
-  accountId String
-  name      String
-  image     String
-  role      Role   @default(member)
-}
-
-type Track {
-  id            String
-  uri           String
-  title         String
-  artist        String
-  popularity    Int
-  albumImageUrl String
-}
-
-type Playlist {
-  id         String
-  uri        String
-  spotifyUrl String
+  accounts Account[]
+  rooms    Room[]
+  members  Member[]
 }
 
 model Room {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  code        String    @unique()
-  name        String    @unique()
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  roomId      String   @unique()
+  userId      String   @db.ObjectId
+  name        String
   description String
-  owner       String
-  accountId   String
-  linkUrl     String?
   imageUrl    String
   members     Member[]
-  tracks      Track[]
-  playlist    Playlist?
-  createdAt   DateTime  @default(now()) @db.Date
-  updatedAt   DateTime  @default(now()) @db.Date
+  createdAt   DateTime @default(now()) @db.Date
+  updatedAt   DateTime @default(now()) @db.Date
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId])
+}
+
+enum Status {
+  new
+  accepted
+  refused
+}
+
+model Member {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  roomId String @db.ObjectId
+  userId String @db.ObjectId
+  status Status @default(new)
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

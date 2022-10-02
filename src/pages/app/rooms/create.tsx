@@ -13,13 +13,19 @@ export interface FormValues {
 
 const Create = () => {
   const router = useRouter()
+  const context = trpc.useContext()
   const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
-  const mutation = trpc.useMutation(['rooms.create'])
+  const mutation = trpc.useMutation('rooms.create', {
+    onSuccess() {
+      context.invalidateQueries('rooms.getCreated')
+    },
+  })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     mutation.mutate(data)
+    // TODO: Navigate to the room directly
     return router.push('/app')
   }
 
