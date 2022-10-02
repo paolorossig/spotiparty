@@ -1,18 +1,41 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
+import { trpc } from 'lib/trpc'
+import { RiFolderAddLine } from 'react-icons/ri'
+
 import Spinner from 'modules/ui/components/Spinner'
-import { useGetUserRoomsQuery } from 'modules/rooms/services/roomApi'
+
+const CreateRoom = () => {
+  return (
+    <Link href="app/rooms/create">
+      <a>
+        <article className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-white hover:bg-white/10">
+          <p className="mb-2">Create a new room...</p>
+          <RiFolderAddLine className="rounded-full bg-white p-2 text-4xl text-gray-900" />
+        </article>
+      </a>
+    </Link>
+  )
+}
 
 const Rooms = () => {
-  const { data, isLoading } = useGetUserRoomsQuery()
+  const { data, isLoading } = trpc.useQuery(['rooms.getCreated'])
 
-  return isLoading ? (
-    <Spinner variant="light" size="large" />
-  ) : !data ? null : (
-    <>
+  // TODO: Add skeleton loading
+  if (isLoading) return <Spinner variant="light" size="large" />
+
+  if (!data)
+    return (
+      <section className="grid gap-6 p-2 md:grid-cols-2 lg:grid-cols-3">
+        <CreateRoom />
+      </section>
+    )
+
+  return (
+    <section className="grid gap-6 p-2 md:grid-cols-2 lg:grid-cols-3">
       {data.map((room) => (
-        <Link href={`/app/rooms/${room.code}`} key={room.code}>
+        <Link href={`/app/rooms/${room.roomId}`} key={room.roomId}>
           <a>
             <article className="group flex h-44 flex-row items-center justify-center gap-4 rounded-xl border border-white hover:bg-white/10">
               <Image
@@ -30,7 +53,8 @@ const Rooms = () => {
           </a>
         </Link>
       ))}
-    </>
+      <CreateRoom />
+    </section>
   )
 }
 

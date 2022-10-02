@@ -19,24 +19,23 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
             <a className="text-green-500 hover:animate-pulse">Spotiparty!</a>
           </Link>
         </h1>
-        <h3 className="my-4 text-lg text-gray-300 lg:text-2xl">
+        <p className="my-4 text-lg text-gray-300 lg:text-2xl">
           Get started by login with your Spotify account
-        </h3>
+        </p>
         {Object.values(providers).map((provider) => (
-          <div key={provider.id} className="mt-4">
-            <button
-              onClick={() => signIn(provider.id, { callbackUrl: '/app' })}
-              className="flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
-            >
-              <Image
-                src="/spotify-icon.png"
-                alt="Spotify Logo"
-                width={40}
-                height={40}
-              />
-              <p className="pr-2">Login with {provider.name}</p>
-            </button>
-          </div>
+          <button
+            key={provider.id}
+            onClick={() => signIn(provider.id, { callbackUrl: '/app' })}
+            className="mt-4 flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
+          >
+            <Image
+              src={`/${provider.id}-icon.png`}
+              alt={`${provider.name} Logo`}
+              width={40}
+              height={40}
+            />
+            <p className="pr-2">Login with {provider.name}</p>
+          </button>
         ))}
       </main>
     </div>
@@ -47,6 +46,7 @@ export default Login
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const providers = await getProviders()
+
   return {
     props: {
       providers,
