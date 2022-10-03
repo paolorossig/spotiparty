@@ -1,14 +1,5 @@
 import clsx from 'clsx'
 
-interface IconButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  Icon: React.ComponentType<any>
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'solid' | 'transparent'
-  className?: string
-  strokeWidth?: number
-}
-
 const classes = {
   size: {
     small: 'h-8 w-8',
@@ -30,11 +21,16 @@ const IconButton = ({
   Icon,
   size = 'small',
   variant = 'transparent',
-  className,
   strokeWidth,
   children,
+  className,
   ...props
-}: IconButtonProps) => {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  Icon: React.ComponentType<any>
+  size?: 'small' | 'medium' | 'large'
+  variant?: 'solid' | 'transparent'
+  strokeWidth?: number
+}) => {
   return (
     <button
       {...props}

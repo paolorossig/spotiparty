@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router'
 import { FiRefreshCw } from 'react-icons/fi'
 
-import AppLayout from './AppLayout'
+import AppLayout from './app'
 
-interface ErrorLayoutProps {
+const ErrorLayout = ({
+  title,
+  message,
+}: {
   title: string
   message?: string
-}
-
-const ErrorLayout = ({ title, message }: ErrorLayoutProps) => {
+}) => {
   const router = useRouter()
 
   return (

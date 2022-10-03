@@ -4,22 +4,17 @@ import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { BsCloudUpload } from 'react-icons/bs'
 import { RiCloseCircleLine } from 'react-icons/ri'
-import { fromBytesToMegabytes } from '../utils/conversions'
+import { fromBytesToMegabytes } from 'lib/utils'
 
 type ExtendedFile = File & { preview: string; path?: string }
 
-interface DropzoneProps {
-  message?: string
-  onChange?: (...event: any[]) => void
-  maxFiles?: number
-}
-
-interface PreviewImageProps {
+const PreviewImages = ({
+  files,
+  onRemove,
+}: {
   files: ExtendedFile[]
   onRemove: (fileName: string) => void
-}
-
-const PreviewImages = ({ files, onRemove }: PreviewImageProps) => {
+}) => {
   return (
     <ul
       className={clsx(
@@ -58,7 +53,15 @@ const PreviewImages = ({ files, onRemove }: PreviewImageProps) => {
   )
 }
 
-const Dropzone = ({ message, onChange, maxFiles = 1 }: DropzoneProps) => {
+const Dropzone = ({
+  message,
+  onChange,
+  maxFiles = 1,
+}: {
+  message?: string
+  onChange?: (...event: any[]) => void
+  maxFiles?: number
+}) => {
   const [files, setFiles] = useState<ExtendedFile[]>([])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

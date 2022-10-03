@@ -1,5 +1,5 @@
-import AppLayout from 'modules/ui/layouts/AppLayout'
-import Rooms from 'modules/rooms/components/Rooms'
+import AppLayout from 'components/layout/app'
+import Rooms from 'components/rooms/Rooms'
 
 const App = () => {
   return (

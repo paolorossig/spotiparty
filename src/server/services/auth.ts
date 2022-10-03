@@ -1,10 +1,14 @@
 import { type Account } from '@prisma/client'
 import { type GetServerSidePropsContext } from 'next'
-import { unstable_getServerSession as getServerSession } from 'next-auth'
+import {
+  type Session,
+  unstable_getServerSession as getServerSession,
+} from 'next-auth'
 
 import { prisma } from 'server/db/client'
-import { type RichSession } from 'types/utils'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
+
+export type RichSession = Session['user'] & { access_token: string }
 
 export const getAccountTokens = async (providerAccountId: string) => {
   return await prisma.account.findFirstOrThrow({

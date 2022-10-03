@@ -1,13 +1,6 @@
 import clsx from 'clsx'
 import Spinner from './Spinner'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode
-  className?: string
-  isLoading?: boolean
-  variant?: 'primary' | 'light' | 'dark'
-}
-
 const classes = {
   variant: {
     primary: 'bg-green-500 hover:bg-green-800 text-white',
@@ -22,7 +15,10 @@ const Button = ({
   isLoading = false,
   variant = 'primary',
   ...props
-}: ButtonProps) => {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  isLoading?: boolean
+  variant?: 'primary' | 'light' | 'dark'
+}) => {
   return (
     <button
       {...props}

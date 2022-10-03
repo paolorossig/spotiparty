@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { trpc } from 'lib/trpc'
 import { RiFolderAddLine } from 'react-icons/ri'
 
-import Spinner from 'modules/ui/components/Spinner'
+import Spinner from 'components/shared/Spinner'
 
 const CreateRoom = () => {
   return (

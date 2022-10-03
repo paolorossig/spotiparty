@@ -4,13 +4,13 @@ import { FiRefreshCw } from 'react-icons/fi'
 import { BsGear } from 'react-icons/bs'
 import { trpc } from 'lib/trpc'
 
-import AppLayout from 'modules/ui/layouts/AppLayout'
-import ErrorLayout from 'modules/ui/layouts/ErrorLayout'
-import Tooltip from 'modules/ui/components/Tooltip'
-import IconButton from 'modules/ui/components/IconButton'
-import useToggle from 'modules/ui/hooks/useToggle'
-import ShareRoom from 'modules/rooms/components/ShareRoom'
-import EditRoomDialog from 'modules/rooms/components/EditRoomDialog'
+import AppLayout from 'components/layout/app'
+import ErrorLayout from 'components/layout/ErrorLayout'
+import Tooltip from 'components/shared/Tooltip'
+import IconButton from 'components/shared/IconButton'
+import useToggle from 'lib/hooks/useToggle'
+import ShareRoom from 'components/rooms/ShareRoom'
+import EditRoomDialog from 'components/rooms/EditRoomDialog'
 
 const Room = () => {
   const router = useRouter()

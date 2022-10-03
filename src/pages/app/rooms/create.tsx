@@ -2,9 +2,9 @@ import { useRouter } from 'next/router'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { BsChevronLeft } from 'react-icons/bs'
 import { trpc } from 'lib/trpc'
-import AppLayout from 'modules/ui/layouts/AppLayout'
-import Button from 'modules/ui/components/Button'
-import IconButton from 'modules/ui/components/IconButton'
+import AppLayout from 'components/layout/app'
+import Button from 'components/shared/Button'
+import IconButton from 'components/shared/IconButton'
 
 export interface FormValues {
   name: string

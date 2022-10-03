@@ -1,11 +1,12 @@
 import clsx from 'clsx'
 
-interface TooltipProps {
+const Tooltip = ({
+  message,
+  children,
+}: {
   message: string
   children: React.ReactNode
-}
-
-const Tooltip = ({ message, children }: TooltipProps) => {
+}) => {
   return (
     <div className="group relative flex flex-col items-center">
       {children}

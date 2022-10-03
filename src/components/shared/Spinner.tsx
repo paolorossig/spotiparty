@@ -1,10 +1,5 @@
 import clsx from 'clsx'
 
-interface SpinnerProps {
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'primary' | 'light' | 'dark'
-}
-
 const classes = {
   size: {
     small: 'h-6 w-6',
@@ -18,7 +13,13 @@ const classes = {
   },
 }
 
-const Spinner = ({ size = 'medium', variant = 'primary' }: SpinnerProps) => {
+const Spinner = ({
+  size = 'medium',
+  variant = 'primary',
+}: {
+  size?: 'small' | 'medium' | 'large'
+  variant?: 'primary' | 'light' | 'dark'
+}) => {
   return (
     <div className="grid flex-1 place-content-center">
       <div

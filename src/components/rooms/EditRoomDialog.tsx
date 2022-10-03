@@ -3,20 +3,22 @@ import { Dialog } from '@headlessui/react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { trpc } from 'lib/trpc'
 
-import Button from 'modules/ui/components/Button'
-
-interface EditRoomDialogProps {
-  room: Room
-  isOpen: boolean
-  toggle: () => void
-}
+import Button from 'components/shared/Button'
 
 interface EditRoomFormInputs {
   name: string
   description: string
 }
 
-const EditRoomDialog = ({ room, isOpen, toggle }: EditRoomDialogProps) => {
+const EditRoomDialog = ({
+  room,
+  isOpen,
+  toggle,
+}: {
+  room: Room
+  isOpen: boolean
+  toggle: () => void
+}) => {
   const { roomId, name, description } = room
 
   const { handleSubmit, control, reset } = useForm<EditRoomFormInputs>({

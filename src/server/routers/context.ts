@@ -1,14 +1,11 @@
-import type { RichSession } from 'types/utils'
 import * as trpc from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
 import { prisma } from 'server/db/client'
-import { getServerAuthSession } from 'server/services/auth'
+import { getServerAuthSession, type RichSession } from 'server/services/auth'
 
-type CreateContextOptions = {
+export const createContextInner = async (opts: {
   session: RichSession | null
-}
-
-export const createContextInner = async (opts: CreateContextOptions) => {
+}) => {
   return {
     session: opts.session,
     prisma,
