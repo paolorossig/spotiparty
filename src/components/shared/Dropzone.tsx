@@ -2,8 +2,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { BsCloudUpload } from 'react-icons/bs'
-import { RiCloseCircleLine } from 'react-icons/ri'
+import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { fromBytesToMegabytes } from 'lib/utils'
 
 type ExtendedFile = File & { preview: string; path?: string }
@@ -30,7 +29,7 @@ const PreviewImages = ({
                 onClick={() => onRemove(file.name)}
                 className="mt-2 mr-2 self-end"
               >
-                <RiCloseCircleLine className="text-2xl hover:text-red-500" />
+                <XMarkIcon className="h-5 w-5 hover:text-red-500" />
               </button>
               <p className="flex flex-1 items-center">
                 {file.path} - {fromBytesToMegabytes(file.size)} MB
@@ -95,7 +94,7 @@ const Dropzone = ({
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-200">
-          <BsCloudUpload className="mb-3 text-4xl group-hover:animate-ping" />
+          <CloudArrowUpIcon className="mb-3 h-8 w-8 group-hover:animate-ping" />
           <p className="mb-1 text-sm">
             <span className="special-underline font-bold">Click to upload</span>{' '}
             or drag and drop

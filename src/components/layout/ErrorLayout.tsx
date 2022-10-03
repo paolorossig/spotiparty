@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FiRefreshCw } from 'react-icons/fi'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
 import AppLayout from './app'
 
@@ -21,7 +21,7 @@ const ErrorLayout = ({
           className="mt-4 flex items-center justify-center gap-2 rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600"
           onClick={() => router.back()}
         >
-          <FiRefreshCw className="text-xl" />
+          <ArrowPathIcon className="h-5 w-5" />
           <span>Go back</span>
         </button>
       </div>

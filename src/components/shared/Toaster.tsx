@@ -2,7 +2,10 @@ import clsx from 'clsx'
 import { Fragment } from 'react'
 import { Transition } from '@headlessui/react'
 import { Toaster as HotToaster, resolveValue } from 'react-hot-toast'
-import { MdCheckBox, MdErrorOutline } from 'react-icons/md'
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/24/outline'
 
 const classes = {
   colors: {
@@ -31,14 +34,14 @@ const Toaster = () => {
         >
           <div
             className={clsx(
-              'my-2 flex origin-top-right items-center self-end rounded-t border-b-4 p-4 md:w-1/2',
+              'my-2 flex origin-top-right items-center gap-2 self-end rounded-t border-b-4 p-4 md:w-1/2',
               classes.colors[t.type]
             )}
           >
             {t.type === 'success' ? (
-              <MdCheckBox className="mr-2 text-2xl" />
+              <CheckCircleIcon className="h-6 w-6" />
             ) : t.type === 'error' ? (
-              <MdErrorOutline className="mr-2 text-2xl" />
+              <ExclamationCircleIcon className="h-6 w-6" />
             ) : null}
             <p className="flex-1">{resolveValue(t.message, t)}</p>
           </div>

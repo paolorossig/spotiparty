@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
+import { FolderPlusIcon } from '@heroicons/react/24/outline'
+
 import { trpc } from 'lib/trpc'
-import { RiFolderAddLine } from 'react-icons/ri'
 
 import Spinner from 'components/shared/Spinner'
 
@@ -12,7 +13,9 @@ const CreateRoom = () => {
       <a>
         <article className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-white hover:bg-white/10">
           <p className="mb-2">Create a new room...</p>
-          <RiFolderAddLine className="rounded-full bg-white p-2 text-4xl text-gray-900" />
+          <div className="rounded-full bg-white p-2">
+            <FolderPlusIcon className="h-5 w-5 text-gray-900" />
+          </div>
         </article>
       </a>
     </Link>

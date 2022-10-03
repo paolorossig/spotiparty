@@ -1,7 +1,6 @@
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
-import { FiRefreshCw } from 'react-icons/fi'
-import { BsGear } from 'react-icons/bs'
+import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { trpc } from 'lib/trpc'
 
 import AppLayout from 'components/layout/app'
@@ -50,17 +49,13 @@ const Room = () => {
             </div>
             <p className="text-xl text-gray-300">{room.description}</p>
           </div>
-          <div className="flex space-x-2 pt-2">
+          <div className="flex gap-4 pt-2">
             <Tooltip message="Refresh">
-              <IconButton
-                Icon={FiRefreshCw}
-                onClick={refetchAndNotify}
-                strokeWidth={1.6}
-              />
+              <IconButton Icon={ArrowPathIcon} onClick={refetchAndNotify} />
             </Tooltip>
             <Tooltip message="Edit">
               <IconButton
-                Icon={BsGear}
+                Icon={PencilSquareIcon}
                 onClick={toggleModal}
                 disabled={!isRoomOwner}
               />

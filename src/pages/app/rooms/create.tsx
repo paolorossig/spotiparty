@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { BsChevronLeft } from 'react-icons/bs'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { trpc } from 'lib/trpc'
+
 import AppLayout from 'components/layout/app'
 import Button from 'components/shared/Button'
 import IconButton from 'components/shared/IconButton'
@@ -33,9 +34,9 @@ const Create = () => {
     <AppLayout>
       <div className="mb-8 flex items-center space-x-2">
         <IconButton
-          Icon={BsChevronLeft}
+          Icon={ChevronLeftIcon}
           onClick={() => router.back()}
-          className="pr-[2px]"
+          className="pr-0.5"
         />
         <h2 className="text-2xl font-bold">Create a new Room</h2>
       </div>

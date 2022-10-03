@@ -2,7 +2,11 @@ import clsx from 'clsx'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { signOut, useSession } from 'next-auth/react'
-import { RiLogoutBoxLine, RiShareForwardLine } from 'react-icons/ri'
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowUpRightIcon,
+} from '@heroicons/react/24/outline'
+
 import { USER_PLACEHOLDER_IMAGE } from 'lib/constants'
 
 const ProfileMenu = () => {
@@ -41,10 +45,10 @@ const ProfileMenu = () => {
                   rel="noopener noreferrer"
                   className={clsx(
                     active && 'bg-green-500',
-                    'group flex w-full items-center gap-2 rounded-md p-2 text-sm'
+                    'group flex w-full items-center gap-2 rounded-md p-2'
                   )}
                 >
-                  <RiShareForwardLine />
+                  <ArrowUpRightIcon className="h-4 w-4" />
                   Account
                 </a>
               )}
@@ -57,10 +61,10 @@ const ProfileMenu = () => {
                   onClick={() => signOut()}
                   className={clsx(
                     active && 'bg-green-500',
-                    'group flex w-full items-center gap-2 rounded-md p-2 text-sm'
+                    'group flex w-full items-center gap-2 rounded-md p-2'
                   )}
                 >
-                  <RiLogoutBoxLine />
+                  <ArrowLeftOnRectangleIcon className="h-4 w-4" />
                   Log out
                 </button>
               )}

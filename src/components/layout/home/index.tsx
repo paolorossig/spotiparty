@@ -1,8 +1,8 @@
 import Meta from '../Meta'
 import Link from 'next/link'
-import { GoMarkGithub } from 'react-icons/go'
 
 import LandingHeader from './LandingHeader'
+import Github from 'components/shared/icons/Github'
 
 interface Props {
   children: React.ReactNode
@@ -23,7 +23,7 @@ const LandingLayout = ({ children }: Props) => {
             rel="noopener noreferrer"
             aria-label="Check out the repository on Github"
           >
-            <GoMarkGithub className="text-3xl" />
+            <Github className="h-8 w-8" />
           </a>
         </Link>
       </footer>

@@ -2,7 +2,11 @@ import type { Room } from '@prisma/client'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'
-import { BsChevronDown, BsClipboard, BsClipboardCheck } from 'react-icons/bs'
+import {
+  ChevronDownIcon,
+  ClipboardDocumentCheckIcon,
+  ClipboardIcon,
+} from '@heroicons/react/24/outline'
 import useToggle from 'lib/hooks/useToggle'
 import useCopyToClipboard from 'lib/hooks/useCopyToClipboard'
 
@@ -22,12 +26,12 @@ const ShareRoom = ({ room }: { room: Room }) => {
   return (
     <section className="relative flex flex-col-reverse items-center rounded-lg border-2 border-gray-700 lg:flex-row">
       <IconButton
-        Icon={BsChevronDown}
+        Icon={ChevronDownIcon}
         onClick={toggleQrCode}
         variant="solid"
         className={clsx(
           'absolute right-2 top-2 transform transition duration-300',
-          showQrCode ? 'rotate-180' : 'rotate-0 pt-[3px]',
+          showQrCode ? 'rotate-180' : 'pt-0.5',
           'lg:hidden'
         )}
       />
@@ -47,13 +51,12 @@ const ShareRoom = ({ room }: { room: Room }) => {
       </div>
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
         <h3 className="">Room ID:</h3>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <h1 className="text-3xl font-semibold">{room.roomId}</h1>
           <IconButton
-            Icon={!copiedText ? BsClipboard : BsClipboardCheck}
+            Icon={!copiedText ? ClipboardIcon : ClipboardDocumentCheckIcon}
             size="medium"
             onClick={copyLink}
-            strokeWidth={0.5}
           />
         </div>
       </div>
