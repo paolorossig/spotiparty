@@ -9,7 +9,7 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Head>
         <title>Spotiparty | Login</title>
-        <link rel="icon" href="/icon.png" />
+        <link rel="icon" href="/static/icon.png" />
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-12 text-center">
@@ -29,7 +29,7 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
             className="mt-4 flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
           >
             <Image
-              src={`/${provider.id}-icon.png`}
+              src={`/static/logos/${provider.id}.png`}
               alt={`${provider.name} Logo`}
               width={40}
               height={40}

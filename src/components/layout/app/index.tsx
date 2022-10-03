@@ -29,7 +29,7 @@ const AppLayout = ({
             <Link href="/app">
               <a className="flex items-center space-x-2 hover:animate-pulse">
                 <Image
-                  src="/spotify-icon.png"
+                  src="/static/logos/spotify.png"
                   alt="Spotify Icon"
                   width={28}
                   height={28}

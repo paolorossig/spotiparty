@@ -13,7 +13,7 @@ const Home = () => {
         </div>
         <div className="flex h-full w-full items-end justify-center md:w-3/5">
           <Image
-            src="/undraw_mello.svg"
+            src="/static/illustrations/undraw_mello.svg"
             alt="Undraw Mello"
             width={500}
             height={500}

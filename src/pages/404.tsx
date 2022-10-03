@@ -8,7 +8,7 @@ const Custom404 = () => {
         <h1 className="text-center text-4xl font-bold">404 - Page Not Found</h1>
         <h3 className="text-xl text-gray-300">We are working on it</h3>
         <Image
-          src="/undraw_programming.svg"
+          src="/static/illustrations/undraw_programming.svg"
           alt="Page Not Found Image"
           width={500}
           height={500}

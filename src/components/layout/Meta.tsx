@@ -4,7 +4,7 @@ const Meta = () => {
   return (
     <Head>
       <title>Spotiparty</title>
-      <link rel="icon" href="/icon.png" />
+      <link rel="icon" href="/static/icon.png" />
       <meta
         name="description"
         content="App that randomly creates playlists for Karaoke based on users recently played songs."
@@ -22,7 +22,7 @@ const Meta = () => {
       <meta property="og:title" content="Spotiparty | Best app for Karaoke" />
       <meta
         property="og:image"
-        content="https://spotiparty.vercel.app/thumbnail.png"
+        content="https://spotiparty.vercel.app/static/thumbnail.png"
       />
       <meta
         property="og:description"
