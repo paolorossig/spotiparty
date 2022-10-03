@@ -1,4 +1,5 @@
-import type { AppType } from 'next/dist/shared/lib/utils'
+import type { AppType } from 'next/app'
+import type { Session } from 'next-auth'
 import type { AppRouter } from 'server/routers'
 
 import superjson from 'superjson'
@@ -7,7 +8,7 @@ import { SessionProvider } from 'next-auth/react'
 
 import 'styles/globals.css'
 
-const MyApp: AppType = ({
+const MyApp: AppType<{ session: Session }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
