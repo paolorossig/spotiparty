@@ -2,31 +2,39 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import { trpc } from 'lib/trpc'
+import useToggle from 'lib/hooks/useToggle'
 
 import AppLayout from 'components/layout/app'
 import ErrorLayout from 'components/layout/ErrorLayout'
 import Tooltip from 'components/shared/Tooltip'
 import IconButton from 'components/shared/IconButton'
-import useToggle from 'lib/hooks/useToggle'
-import ShareRoom from 'components/rooms/ShareRoom'
-import EditRoomDialog from 'components/rooms/EditRoomDialog'
+import ShareRoom from 'components/app/ShareRoom'
+import EditRoomDialog from 'components/app/EditRoomDialog'
 
 const Room = () => {
   const router = useRouter()
   const roomId = router.query['roomId'] as string
 
   const [isModalOpen, toggleModal] = useToggle()
-  const { data, error, isLoading, isSuccess, refetch } = trpc.useQuery([
-    'rooms.accessByRoomId',
-    { roomId },
-  ])
+  const mutation = trpc.useMutation('rooms.accessByRoomId')
+  const { data, error, isLoading, refetch } = trpc.useQuery(
+    ['rooms.getByRoomId', { roomId }],
+    {
+      retry: 1,
+      onError: (err) => {
+        if (err.data?.code === 'UNAUTHORIZED') {
+          mutation.mutate({ roomId })
+        }
+      },
+    }
+  )
 
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
   }
 
-  if (!isSuccess || error) {
-    return <ErrorLayout title="Room not found" message={error?.message} />
+  if (!data || error) {
+    return <ErrorLayout message={error?.message} />
   }
 
   const { room, role } = data

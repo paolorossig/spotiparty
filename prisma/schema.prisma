@@ -54,18 +54,14 @@ model Room {
   @@unique([name, userId])
 }
 
-enum Status {
-  new
-  accepted
-  refused
-}
-
 model Member {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  roomId String @db.ObjectId
+  roomId String
   userId String @db.ObjectId
-  status Status @default(new)
+  hasAccess Boolean @default(true)
 
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
 }

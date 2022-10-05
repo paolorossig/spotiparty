@@ -50,6 +50,7 @@ export const roomsRouter = createProtectedRouter()
 
       const rooms = await ctx.prisma.room.findMany({
         where: { userId },
+        select: { roomId: true, name: true, imageUrl: true },
       })
 
       return rooms
@@ -61,7 +62,9 @@ export const roomsRouter = createProtectedRouter()
 
       const members = await ctx.prisma.member.findMany({
         where: { id: userId },
-        select: { room: true },
+        select: {
+          room: { select: { roomId: true, name: true, imageUrl: true } },
+        },
       })
 
       const rooms = members.map(({ room }) => room)
@@ -69,7 +72,7 @@ export const roomsRouter = createProtectedRouter()
       return rooms
     },
   })
-  .query('accessByRoomId', {
+  .query('getByRoomId', {
     input: z.object({
       roomId: z.string(),
     }),
@@ -84,7 +87,8 @@ export const roomsRouter = createProtectedRouter()
       if (!room) {
         throw new trpc.TRPCError({
           code: 'NOT_FOUND',
-          message: 'The room you are trying to access does not exist',
+          message:
+            'Room not found|The room you are trying to access does not exist',
         })
       }
 
@@ -100,10 +104,37 @@ export const roomsRouter = createProtectedRouter()
       if (!role) {
         throw new trpc.TRPCError({
           code: 'UNAUTHORIZED',
-          message: `You do not have access for room ${roomId}`,
+          message: `Unauthorized|You do not have access for room ${roomId}`,
         })
       }
 
       return { room, role }
+    },
+  })
+  .mutation('accessByRoomId', {
+    input: z.object({
+      roomId: z.string(),
+    }),
+    resolve: async ({ ctx, input }) => {
+      const { roomId } = input
+
+      const room = await ctx.prisma.room.findUnique({
+        where: { roomId },
+        include: { members: true },
+      })
+
+      if (!room) {
+        throw new trpc.TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Room not found|The room you are trying to access does not exist',
+        })
+      }
+
+      const { userId } = ctx.session
+
+      await ctx.prisma.member.create({
+        data: { roomId, userId },
+      })
     },
   })
