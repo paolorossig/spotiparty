@@ -15,10 +15,10 @@ const NavLinks = ({ className }: { className: string }) => {
   )
 }
 
-const LandingHeader = () => {
-  const { data } = useSession()
+const Header = () => {
+  const { data: session } = useSession()
   const { authenticated, unauthenticated } = NAVIGATION_STATES
-  const button = data?.user ? authenticated : unauthenticated
+  const button = session ? authenticated : unauthenticated
 
   return (
     <header className="flex w-full justify-center border-b border-gray-700">
@@ -48,4 +48,4 @@ const LandingHeader = () => {
   )
 }
 
-export default LandingHeader
+export default Header

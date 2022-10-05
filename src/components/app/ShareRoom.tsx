@@ -43,7 +43,7 @@ const ShareRoom = ({ room }: { room: Room }) => {
       >
         <div className="flex flex-col items-center">
           <p className="text-center">
-            Join at spotiparty.vercel.app/app/room/join
+            Join at spotiparty.vercel.app/app/rooms/join
           </p>
           <p>or scan the QR Code</p>
         </div>

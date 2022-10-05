@@ -28,10 +28,7 @@ const EditRoomDialog = ({
   const context = trpc.useContext()
   const mutation = trpc.useMutation('rooms.update', {
     onSuccess(input) {
-      context.invalidateQueries([
-        'rooms.accessByRoomId',
-        { roomId: input.roomId },
-      ])
+      context.invalidateQueries(['rooms.getByRoomId', { roomId: input.roomId }])
     },
   })
 

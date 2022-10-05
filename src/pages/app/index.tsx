@@ -1,5 +1,5 @@
 import AppLayout from 'components/layout/app'
-import Rooms from 'components/rooms/Rooms'
+import Rooms from 'components/app/Rooms'
 
 const App = () => {
   return (

@@ -1,7 +1,7 @@
 import Meta from '../Meta'
 import Link from 'next/link'
 
-import LandingHeader from './LandingHeader'
+import Header from './Header'
 import Github from 'components/shared/icons/Github'
 
 interface Props {
@@ -12,7 +12,7 @@ const LandingLayout = ({ children }: Props) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Meta />
-      <LandingHeader />
+      <Header />
       <main className="flex w-full flex-1 flex-col">
         <div className="mx-auto max-w-5xl">{children}</div>
       </main>
