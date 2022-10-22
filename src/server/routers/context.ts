@@ -1,25 +1,15 @@
 import * as trpc from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
 import { prisma } from 'server/db/client'
-import { getServerAuthSession, type RichSession } from 'server/services/auth'
-
-export const createContextInner = async (opts: {
-  session: RichSession | null
-}) => {
-  return {
-    session: opts.session,
-    prisma,
-  }
-}
+import { getServerAuthSession } from 'server/services/auth'
 
 export const createContext = async (
   opts: trpcNext.CreateNextContextOptions
 ) => {
   const { req, res } = opts
-
   const session = await getServerAuthSession({ req, res })
 
-  return await createContextInner({ session })
+  return { session, prisma }
 }
 
 type Context = trpc.inferAsyncReturnType<typeof createContext>

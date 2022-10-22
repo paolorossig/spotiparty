@@ -1,4 +1,3 @@
-import type { Room } from '@prisma/client'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import { QRCodeSVG } from 'qrcode.react'
@@ -12,11 +11,11 @@ import useCopyToClipboard from 'lib/hooks/useCopyToClipboard'
 
 import IconButton from 'components/shared/IconButton'
 
-const ShareRoom = ({ room }: { room: Room }) => {
+const ShareRoom = ({ roomId }: { roomId: string }) => {
   const [showQrCode, toggleQrCode] = useToggle(true)
   const [copiedText, copy] = useCopyToClipboard()
 
-  const linkUrl = `${window.location.origin}/app/rooms/${room.roomId}`
+  const linkUrl = `${window.location.origin}/app/rooms/${roomId}`
 
   const copyLink = () => {
     copy(linkUrl)
@@ -50,7 +49,7 @@ const ShareRoom = ({ room }: { room: Room }) => {
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
         <h3 className="">Room ID:</h3>
         <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-semibold">{room.roomId}</h1>
+          <h1 className="text-3xl font-semibold">{roomId}</h1>
           <IconButton
             Icon={!copiedText ? ClipboardIcon : ClipboardDocumentCheckIcon}
             size="medium"

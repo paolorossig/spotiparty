@@ -48,7 +48,7 @@ const Room = () => {
   return (
     <AppLayout>
       <EditRoomDialog room={room} isOpen={isModalOpen} toggle={toggleModal} />
-      <ShareRoom room={room} />
+      <ShareRoom roomId={room.roomId} />
       <section className="mt-4 flex flex-1 flex-col gap-6">
         <div className="flex items-start">
           <div className="flex-1">

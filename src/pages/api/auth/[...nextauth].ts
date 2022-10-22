@@ -45,16 +45,16 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      if (Date.now() > token.accessTokenExpiresAt * 1000) {
+      if (Date.now() > token.accessTokenExpiresAt) {
         console.log('Access Token expired')
         const { provider, providerAccountId } = token
         const { refresh_token } = await getAccountTokens(providerAccountId)
 
         // TODO: refresh token depending on `provider`
-        const { expires_in, ...refreshedToken } = await refreshSpotifyTokens(
-          refresh_token
-        )
+        const response = await refreshSpotifyTokens(refresh_token)
+        if (!response) return token
 
+        const { expires_in, ...refreshedToken } = response
         const expires_at = Date.now() + expires_in * 1000
         const newToken = {
           provider,
