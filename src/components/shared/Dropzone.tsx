@@ -68,7 +68,7 @@ const Dropzone = ({
       'image/*': [],
     },
     onDrop: (acceptedFiles) => {
-      onChange && onChange(acceptedFiles)
+      if (onChange) onChange(acceptedFiles)
       const newFiles = acceptedFiles.map((file) => ({
         ...file,
         preview: URL.createObjectURL(file),
