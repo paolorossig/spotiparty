@@ -33,8 +33,7 @@ const IconButton = ({
     <button
       {...props}
       className={clsx(
-        'grid h-8 w-8 place-content-center rounded-full ring-offset-2 ring-offset-black',
-        'focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90',
+        'ring-on-focus grid h-8 w-8 place-content-center rounded-full',
         'disabled:cursor-not-allowed disabled:opacity-50',
         classes.size[size],
         classes.variant[variant],

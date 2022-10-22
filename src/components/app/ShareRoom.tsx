@@ -30,7 +30,7 @@ const ShareRoom = ({ room }: { room: Room }) => {
         onClick={toggleQrCode}
         variant="solid"
         className={clsx(
-          'absolute right-2 top-2 transform transition duration-300',
+          'absolute right-2 top-2',
           showQrCode ? 'rotate-180' : 'pt-0.5',
           'lg:hidden'
         )}
@@ -42,9 +42,7 @@ const ShareRoom = ({ room }: { room: Room }) => {
         )}
       >
         <div className="flex flex-col items-center">
-          <p className="text-center">
-            Join at spotiparty.vercel.app/app/rooms/join
-          </p>
+          <p className="text-center">Join at spotiparty.vercel.app/join</p>
           <p>or scan the QR Code</p>
         </div>
         <QRCodeSVG value={linkUrl} size={120} />

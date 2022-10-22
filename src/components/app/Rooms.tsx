@@ -10,8 +10,8 @@ import Spinner from 'components/shared/Spinner'
 const CreateRoom = () => {
   return (
     <Link href="app/rooms/create">
-      <a>
-        <article className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-white hover:bg-white/10">
+      <a className="ring-on-focus rounded-xl focus:ring-offset-4">
+        <article className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-xl border border-white hover:bg-white/10">
           <p className="mb-2">Create a new room...</p>
           <div className="rounded-full bg-white p-2">
             <FolderPlusIcon className="h-5 w-5 text-gray-900" />
@@ -39,7 +39,7 @@ const Rooms = () => {
     <section className="grid gap-6 p-2 md:grid-cols-2 lg:grid-cols-3">
       {data.map((room) => (
         <Link href={`/app/rooms/${room.roomId}`} key={room.roomId}>
-          <a>
+          <a className="ring-on-focus rounded-xl focus:ring-offset-4">
             <article className="group flex h-44 flex-row items-center justify-center gap-4 rounded-xl border border-white hover:bg-white/10">
               <Image
                 src={room.imageUrl}

@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
@@ -27,7 +28,12 @@ const AppLayout = ({
         <>
           <header className="flex w-full max-w-5xl items-center justify-between p-4">
             <Link href="/app">
-              <a className="flex items-center space-x-2 hover:animate-pulse">
+              <a
+                className={clsx(
+                  'ring-on-focus flex items-center space-x-2 rounded-full py-3 px-2',
+                  'hover:animate-pulse'
+                )}
+              >
                 <Image
                   src="/static/logos/spotify.png"
                   alt="Spotify Icon"

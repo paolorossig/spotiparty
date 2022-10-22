@@ -6,12 +6,7 @@ const App = () => {
     <AppLayout>
       <h1 className="my-10 text-center text-5xl font-bold">
         Welcome to{' '}
-        <a
-          className="text-green-500 hover:animate-pulse"
-          href="https://github.com/paolorossig/spotiparty"
-        >
-          Spotiparty!
-        </a>
+        <span className="text-green-500 hover:animate-pulse">Spotiparty!</span>
       </h1>
       <Rooms />
     </AppLayout>

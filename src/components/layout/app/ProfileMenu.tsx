@@ -15,16 +15,19 @@ const ProfileMenu = () => {
 
   return (
     <Menu as="div" className="relative">
-      <Menu.Button className="focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75">
-        <div className="flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60 hover:bg-gray-800">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={image || USER_PLACEHOLDER_IMAGE}
-            alt="Profile image"
-            className="h-10 w-10 rounded-full object-cover"
-          />
-          <p>{name}</p>
-        </div>
+      <Menu.Button
+        className={clsx(
+          'ring-on-focus flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60',
+          'hover:bg-gray-800'
+        )}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image || USER_PLACEHOLDER_IMAGE}
+          alt="Profile image"
+          className="h-10 w-10 rounded-full object-cover"
+        />
+        <p>{name}</p>
       </Menu.Button>
       <Transition
         as={Fragment}
