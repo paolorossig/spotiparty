@@ -27,7 +27,7 @@ const ProfileMenu = () => {
           alt="Profile image"
           className="h-10 w-10 rounded-full object-cover"
         />
-        <p>{name}</p>
+        <span>{name}</span>
       </Menu.Button>
       <Transition
         as={Fragment}

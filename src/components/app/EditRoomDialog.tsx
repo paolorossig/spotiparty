@@ -1,6 +1,7 @@
 import type { Room } from '@prisma/client'
+import { useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { trpc } from 'lib/trpc'
 
 import Button from 'components/shared/Button'
@@ -21,7 +22,7 @@ const EditRoomDialog = ({
 }) => {
   const { roomId, name, description } = room
 
-  const { handleSubmit, control, reset } = useForm<EditRoomFormInputs>({
+  const { handleSubmit, reset, register } = useForm<EditRoomFormInputs>({
     defaultValues: { name, description },
   })
 
@@ -31,6 +32,12 @@ const EditRoomDialog = ({
       context.invalidateQueries(['rooms.getByRoomId', { roomId: input.roomId }])
     },
   })
+
+  useEffect(() => {
+    if (name && description) {
+      reset({ name, description })
+    }
+  }, [name, description, reset])
 
   const onClose = () => {
     reset()
@@ -57,29 +64,19 @@ const EditRoomDialog = ({
             <div className="flex-1 space-y-8">
               <div>
                 <label htmlFor="name">Name</label>
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <input type="text" className="mt-1 text-black" {...field} />
-                  )}
+                <input
+                  type="text"
+                  className="mt-1 text-black"
+                  {...register('name', { required: true })}
                 />
               </div>
               <div>
                 <label htmlFor="description">Description</label>
-                <Controller
-                  name="description"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      className="mt-1 text-black"
-                      {...field}
-                    />
-                  )}
+                <input
+                  type="text"
+                  autoComplete="off"
+                  className="mt-1 text-black"
+                  {...register('description', { required: true })}
                 />
               </div>
             </div>

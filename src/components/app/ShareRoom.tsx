@@ -36,20 +36,20 @@ const ShareRoom = ({ roomId }: { roomId: string }) => {
       />
       <div
         className={clsx(
-          'm-2 flex-1 items-center justify-center gap-2 text-sm md:my-4 md:text-base',
+          'm-2 flex-1 items-center justify-center gap-3 text-sm md:my-4 md:gap-6 md:text-base',
           showQrCode ? 'flex' : 'hidden'
         )}
       >
+        <QRCodeSVG value={linkUrl} size={120} />
         <div className="flex flex-col items-center">
           <p className="text-center">Join at spotiparty.vercel.app/join</p>
           <p>or scan the QR Code</p>
         </div>
-        <QRCodeSVG value={linkUrl} size={120} />
       </div>
       <div className="m-2 flex flex-1 flex-col items-center md:my-4">
-        <h3 className="">Room ID:</h3>
+        <span>Room ID:</span>
         <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-semibold">{roomId}</h1>
+          <span className="text-3xl font-semibold">{roomId}</span>
           <IconButton
             Icon={!copiedText ? ClipboardIcon : ClipboardDocumentCheckIcon}
             size="medium"
