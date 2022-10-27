@@ -45,6 +45,7 @@ model Room {
   name        String
   description String
   imageUrl    String
+  active      Boolean  @default(true)
   members     Member[]
   createdAt   DateTime @default(now()) @db.Date
   updatedAt   DateTime @default(now()) @db.Date
@@ -55,10 +56,13 @@ model Room {
 }
 
 model Member {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  roomId String
-  userId String @db.ObjectId
-  hasAccess Boolean @default(true)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  roomId    String
+  userId    String   @db.ObjectId
+  hasAccess Boolean  @default(true)
+  topTracks String[]
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @default(now()) @db.Date
 
   room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -30,15 +30,14 @@ export const roomsRouter = createProtectedRouter()
   .mutation('update', {
     input: z.object({
       roomId: z.string(),
-      name: z.string(),
-      description: z.string(),
+      name: z.string().optional(),
+      description: z.string().optional(),
+      active: z.boolean().optional(),
     }),
     resolve: async ({ ctx, input }) => {
-      const { userId } = ctx.session
-
       const room = await ctx.prisma.room.update({
         where: { roomId: input.roomId },
-        data: { userId, ...input },
+        data: input,
       })
 
       return room
@@ -132,6 +131,13 @@ export const roomsRouter = createProtectedRouter()
       }
 
       const { userId } = ctx.session
+
+      if (room.members.some((member) => member.userId === userId)) {
+        throw new trpc.TRPCError({
+          code: 'CONFLICT',
+          message: `A conflic occured|You are already a member of room ${roomId}`,
+        })
+      }
 
       await ctx.prisma.member.create({
         data: { roomId, userId },

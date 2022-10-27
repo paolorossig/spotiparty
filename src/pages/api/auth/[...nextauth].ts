@@ -21,11 +21,12 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 3600,
+    maxAge: 60 * 60 * 24,
   },
   callbacks: {
     async jwt({ token, user, account, isNewUser }) {
       if (user && account) {
+        // New users sign in and initial login when there is no token
         const { expires_at, provider, providerAccountId } = account
 
         if (isNewUser) {
@@ -46,7 +47,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (Date.now() > token.accessTokenExpiresAt) {
-        console.log('Access Token expired')
+        // Access Token expired
         const { provider, providerAccountId } = token
         const { refresh_token } = await getAccountTokens(providerAccountId)
 
