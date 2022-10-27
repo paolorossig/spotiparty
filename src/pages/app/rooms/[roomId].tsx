@@ -10,6 +10,7 @@ import Tooltip from 'components/shared/Tooltip'
 import IconButton from 'components/shared/IconButton'
 import ShareRoom from 'components/app/ShareRoom'
 import EditRoomDialog from 'components/app/EditRoomDialog'
+import Search from 'components/app/Search'
 
 const Room = () => {
   const router = useRouter()
@@ -70,8 +71,11 @@ const Room = () => {
             </Tooltip>
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-center">
-          <p>New features coming soon! 🚀</p>
+        <div className="flex w-full flex-1 flex-col  justify-center">
+          <Search />
+          <div className="grid flex-1 place-content-center">
+            New features coming soon! 🚀
+          </div>
         </div>
       </section>
     </AppLayout>

@@ -1,5 +1,5 @@
 import spotifyApi from 'lib/spotify'
-import { TOP_TRACKS_LIMIT } from '../constants'
+import { SEARCH_TRACKS_LIMIT, TOP_TRACKS_LIMIT } from '../constants'
 
 export const refreshSpotifyTokens = async (refreshToken: string) => {
   try {
@@ -66,6 +66,37 @@ export const updatePlaylistItems = async (
     return response
   } catch (error) {
     handleSpotityError(error)
+  }
+}
+
+export const searchTracks = async (query: string, accessToken: string) => {
+  spotifyApi.setAccessToken(accessToken)
+
+  try {
+    const response = await spotifyApi.searchTracks(query, {
+      limit: SEARCH_TRACKS_LIMIT,
+    })
+    const searchTracks = response.body.tracks?.items.map((track) => {
+      const { id, uri, name, duration_ms, explicit } = track
+      const albumImageUrl = track.album.images[0].url
+      const artists = track.artists.map((artist) => artist.name).join(', ')
+
+      return {
+        id,
+        uri,
+        name,
+        artists,
+        albumImageUrl,
+        durationMs: duration_ms,
+        explicit,
+      }
+    })
+
+    return searchTracks
+  } catch (error) {
+    handleSpotityError(error)
+
+    return []
   }
 }
 

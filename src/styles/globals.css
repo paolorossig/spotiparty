@@ -15,11 +15,11 @@
   [multiple],
   textarea,
   select {
-    @apply w-full rounded-lg ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black;
+    @apply w-full transform rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90 focus:ring-offset-2 focus:ring-offset-black;
   }
 
   [type='radio'] {
-    @apply text-green-500 ring-opacity-90 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-black;
+    @apply transform text-green-500 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-90 focus:ring-offset-2 focus:ring-offset-black;
   }
 
   textarea {
