@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { PlayIcon } from '@heroicons/react/24/solid'
+import { getDuration } from 'lib/utils'
 
 type Track = {
   id: string
@@ -11,16 +12,18 @@ type Track = {
   explicit: boolean
 }
 
-const getDuration = (durationMs: number) => {
-  const minutes = Math.floor(durationMs / 1000 / 60)
-  const seconds = Math.floor((durationMs / 1000) % 60)
-
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
-}
-
-const Track = ({ track }: { track: Track }) => {
+const Track = ({
+  track,
+  onClick,
+}: {
+  track: Track
+  onClick: (event: React.MouseEvent<HTMLElement>) => void
+}) => {
   return (
-    <li className="group flex items-center justify-between rounded-md p-2 hover:cursor-pointer hover:bg-gray-800">
+    <li
+      onClick={onClick}
+      className="group flex items-center justify-between rounded-md p-2 hover:cursor-pointer hover:bg-gray-800"
+    >
       <div className="flex space-x-4">
         <div className="relative h-[50px] w-[50px]">
           <Image

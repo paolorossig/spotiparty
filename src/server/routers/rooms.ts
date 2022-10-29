@@ -144,3 +144,43 @@ export const roomsRouter = createProtectedRouter()
       })
     },
   })
+  .query('getToken', {
+    input: z.object({
+      roomId: z.string(),
+    }),
+    resolve: async ({ ctx, input }) => {
+      const { roomId } = input
+
+      const room = await ctx.prisma.room.findUnique({
+        where: { roomId },
+        select: {
+          active: true,
+          user: {
+            select: {
+              accounts: {
+                select: { access_token: true },
+                where: { provider: 'spotify' },
+              },
+            },
+          },
+        },
+      })
+
+      if (!room) {
+        throw new trpc.TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Room not found|The room you are trying to access does not exist',
+        })
+      }
+
+      if (!room.active) {
+        throw new trpc.TRPCError({
+          code: 'UNAUTHORIZED',
+          message: `Unauthorized|Room ${roomId} is not active`,
+        })
+      }
+
+      return room.user.accounts[0].access_token
+    },
+  })

@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { trpc } from 'lib/trpc'
 import useDebounce from 'lib/hooks/useDebounce'
+import usePlaybackStore from 'lib/stores/playbackStore'
 
 import Track from './Track'
 
 const Search = () => {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 500)
+  const setPlayback = usePlaybackStore((state) => state.setPlayback)
 
   const { data } = trpc.useQuery(
     ['music.searchTracks', { query: debouncedSearch }],
@@ -39,7 +41,11 @@ const Search = () => {
       {data && (
         <ul className="my-6 flex flex-col gap-4">
           {data.map((track) => (
-            <Track key={track.id} track={track} />
+            <Track
+              key={track.id}
+              track={track}
+              onClick={() => setPlayback(track.uri)}
+            />
           ))}
         </ul>
       )}

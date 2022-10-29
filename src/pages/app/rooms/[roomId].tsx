@@ -11,6 +11,7 @@ import IconButton from 'components/shared/IconButton'
 import ShareRoom from 'components/app/ShareRoom'
 import EditRoomDialog from 'components/app/EditRoomDialog'
 import Search from 'components/app/Search'
+import MusicPlayer from 'components/app/MusicPlayer'
 
 const Room = () => {
   const router = useRouter()
@@ -76,6 +77,7 @@ const Room = () => {
           <div className="grid flex-1 place-content-center">
             New features coming soon! 🚀
           </div>
+          <MusicPlayer roomId={room.roomId} />
         </div>
       </section>
     </AppLayout>
