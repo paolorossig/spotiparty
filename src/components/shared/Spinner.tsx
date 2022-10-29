@@ -17,8 +17,8 @@ const Spinner = ({
   size = 'medium',
   variant = 'primary',
 }: {
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'primary' | 'light' | 'dark'
+  size?: keyof typeof classes['size']
+  variant?: keyof typeof classes['variant']
 }) => {
   return (
     <div className="grid flex-1 place-content-center">

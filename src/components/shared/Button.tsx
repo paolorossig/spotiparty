@@ -17,7 +17,7 @@ const Button = ({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean
-  variant?: 'primary' | 'light' | 'dark'
+  variant?: keyof typeof classes['variant']
 }) => {
   return (
     <button

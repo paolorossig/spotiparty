@@ -26,8 +26,8 @@ const IconButton = ({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
   Icon: React.ComponentType<any>
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'solid' | 'transparent'
+  size?: keyof typeof classes['size']
+  variant?: keyof typeof classes['variant']
 }) => {
   return (
     <button
