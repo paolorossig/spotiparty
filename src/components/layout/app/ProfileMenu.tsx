@@ -7,6 +7,7 @@ import {
   ArrowUpRightIcon,
 } from '@heroicons/react/24/outline'
 
+import { ACCOUNT_URL } from 'lib/spotify'
 import { USER_PLACEHOLDER_IMAGE } from 'lib/constants'
 
 const ProfileMenu = () => {
@@ -43,7 +44,7 @@ const ProfileMenu = () => {
             <Menu.Item>
               {({ active }) => (
                 <a
-                  href="https://www.spotify.com/account/overview"
+                  href={ACCOUNT_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={clsx(

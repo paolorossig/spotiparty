@@ -41,6 +41,7 @@
     "@tailwindcss/forms": "0.5.3",
     "@types/node": "18.8.0",
     "@types/react": "18.0.21",
+    "@types/react-dom": "18.0.8",
     "@types/spotify-web-api-node": "5.0.7",
     "autoprefixer": "10.4.12",
     "eslint": "8.24.0",

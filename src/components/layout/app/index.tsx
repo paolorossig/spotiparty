@@ -18,15 +18,15 @@ const AppLayout = ({
   const { data: session, status } = useSession()
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+    <div className="flex min-h-screen flex-col justify-center bg-black text-white">
       <Meta />
       {status === 'loading' || isLoading ? (
         <Spinner />
       ) : !session ? (
-        <p className="text-3xl font-bold">No session</p>
+        <p className="text-center text-3xl font-bold">No session</p>
       ) : (
         <>
-          <header className="flex w-full max-w-5xl items-center justify-between p-4">
+          <header className="m-auto flex w-full max-w-5xl items-center justify-between p-4">
             <Link href="/app">
               <a
                 className={clsx(
@@ -45,9 +45,10 @@ const AppLayout = ({
             </Link>
             <ProfileMenu />
           </header>
-          <main className="flex w-full max-w-5xl flex-1 flex-col p-4">
+          <main className="m-auto flex w-full max-w-5xl flex-1 flex-col p-4">
             {children}
           </main>
+          <div id="music-player"></div>
         </>
       )}
       <Toaster />
