@@ -17,6 +17,7 @@ const Home = () => {
             alt="Undraw Mello"
             width={500}
             height={500}
+            priority
           />
         </div>
       </section>

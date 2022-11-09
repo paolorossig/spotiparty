@@ -15,8 +15,8 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
       <main className="flex w-full flex-1 flex-col items-center justify-center px-12 text-center">
         <h1 className="text-5xl font-bold lg:text-6xl">
           Welcome to{' '}
-          <Link href="/">
-            <a className="text-green-500 hover:animate-pulse">Spotiparty!</a>
+          <Link href="/" className="text-green-500 hover:animate-pulse">
+            Spotiparty!
           </Link>
         </h1>
         <p className="my-4 text-lg text-gray-300 lg:text-2xl">

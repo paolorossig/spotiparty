@@ -27,21 +27,20 @@ const AppLayout = ({
       ) : (
         <>
           <header className="m-auto flex w-full max-w-5xl items-center justify-between p-4">
-            <Link href="/app">
-              <a
-                className={clsx(
-                  'ring-on-focus flex items-center space-x-2 rounded-full py-3 px-2',
-                  'hover:animate-pulse'
-                )}
-              >
-                <Image
-                  src="/static/logos/spotify.png"
-                  alt="Spotify Icon"
-                  width={28}
-                  height={28}
-                />
-                <p className="text-lg font-bold text-green-500">Spotiparty</p>
-              </a>
+            <Link
+              href="/app"
+              className={clsx(
+                'ring-on-focus flex items-center space-x-2 rounded-full py-3 px-2',
+                'hover:animate-pulse'
+              )}
+            >
+              <Image
+                src="/static/logos/spotify.png"
+                alt="Spotify Icon"
+                width={28}
+                height={28}
+              />
+              <p className="text-lg font-bold text-green-500">Spotiparty</p>
             </Link>
             <ProfileMenu />
           </header>

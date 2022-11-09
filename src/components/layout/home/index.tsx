@@ -17,14 +17,13 @@ const LandingLayout = ({ children }: Props) => {
         <div className="mx-auto max-w-5xl">{children}</div>
       </main>
       <footer className="flex h-14 w-full items-center justify-center border-t border-gray-700">
-        <Link href="https://github.com/paolorossig/spotiparty">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Check out the repository on Github"
-          >
-            <Github className="h-8 w-8" />
-          </a>
+        <Link
+          href="https://github.com/paolorossig/spotiparty"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Check out the repository on Github"
+        >
+          <Github className="h-8 w-8" />
         </Link>
       </footer>
     </div>
