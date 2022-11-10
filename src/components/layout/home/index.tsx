@@ -13,8 +13,8 @@ const LandingLayout = ({ children }: Props) => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Meta />
       <Header />
-      <main className="flex w-full flex-1 flex-col">
-        <div className="mx-auto max-w-5xl">{children}</div>
+      <main className="flex w-full flex-1">
+        <div className="mx-auto flex max-w-5xl flex-1 flex-col">{children}</div>
       </main>
       <footer className="flex h-14 w-full items-center justify-center border-t border-gray-700">
         <Link

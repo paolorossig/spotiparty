@@ -45,16 +45,22 @@ const Rooms = () => {
           className="ring-on-focus rounded-xl focus:ring-offset-4"
         >
           <article className="group flex h-44 flex-row items-center justify-center gap-4 rounded-xl border border-white hover:bg-white/10">
-            <Image
-              src={room.imageUrl}
-              alt="Room image"
-              width={90}
-              height={90}
+            <figure
               className={clsx(
-                'rounded-full object-cover brightness-50 grayscale filter transition duration-300',
+                'relative h-20 w-20 overflow-hidden rounded-full brightness-50 grayscale filter transition duration-300',
                 'group-hover:brightness-100 group-hover:grayscale-0'
               )}
-            />
+            >
+              <Image
+                src={room.imageUrl}
+                alt="Room image"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+            </figure>
             <p className="text-xl font-bold">{room.name}</p>
           </article>
         </Link>

@@ -28,6 +28,12 @@
 }
 
 @layer utilities {
+  @supports (-webkit-touch-callout: none) {
+    .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+  }
+
   .bg-circle-gradient {
     background: radial-gradient(
       circle at calc(60%),

@@ -10,8 +10,15 @@ const Custom404 = () => {
         <Image
           src="/static/illustrations/undraw_programming.svg"
           alt="Page Not Found Image"
+          priority
           width={500}
-          height={500}
+          height={364}
+          style={{
+            width: '100%',
+            maxWidth: '500px',
+            height: 'auto',
+            margin: '2rem 0',
+          }}
         />
       </section>
     </LandingLayout>
