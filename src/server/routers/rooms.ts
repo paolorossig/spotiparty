@@ -184,3 +184,29 @@ export const roomsRouter = createProtectedRouter()
       return room.user.accounts[0].access_token
     },
   })
+  .query('getMembers', {
+    input: z.object({
+      roomId: z.string(),
+    }),
+    resolve: async ({ ctx, input }) => {
+      const { roomId } = input
+
+      const room = await ctx.prisma.room.findUnique({
+        where: { roomId },
+        select: { user: true, members: { select: { user: true } } },
+      })
+
+      if (!room) {
+        throw new trpc.TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Room not found|The room you are trying to access does not exist',
+        })
+      }
+
+      const members = room.members.map(({ user }) => ({ user, role: 'member' }))
+      const owner = { user: room.user, role: 'owner' }
+
+      return [...members, owner]
+    },
+  })

@@ -23,7 +23,7 @@ const ShareRoom = ({ roomId }: { roomId: string }) => {
   }
 
   return (
-    <section className="relative flex flex-col-reverse items-center rounded-lg border-2 border-gray-700 lg:flex-row">
+    <section className="box relative flex flex-col-reverse items-center lg:flex-row">
       <IconButton
         Icon={ChevronDownIcon}
         onClick={toggleQrCode}
