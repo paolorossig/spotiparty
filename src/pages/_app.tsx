@@ -1,14 +1,12 @@
 import type { AppType } from 'next/app'
 import type { Session } from 'next-auth'
-import type { AppRouter } from 'server/routers'
-
-import superjson from 'superjson'
-import { withTRPC } from '@trpc/next'
 import { SessionProvider } from 'next-auth/react'
+
+import { api } from 'lib/api'
 
 import 'styles/globals.css'
 
-const MyApp: AppType<{ session: Session }> = ({
+const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
@@ -19,26 +17,4 @@ const MyApp: AppType<{ session: Session }> = ({
   )
 }
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return '' // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}` // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3000}` // dev SSR should use localhost
-}
-
-export default withTRPC<AppRouter>({
-  config() {
-    const url = `${getBaseUrl()}/api/trpc`
-
-    return {
-      url,
-      transformer: superjson,
-      queryClientConfig: {
-        defaultOptions: {
-          queries: {
-            retry: false,
-          },
-        },
-      },
-    }
-  },
-})(MyApp)
+export default api.withTRPC(MyApp)
