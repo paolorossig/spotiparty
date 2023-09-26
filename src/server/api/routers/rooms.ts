@@ -1,21 +1,31 @@
-import { z } from 'zod'
-import * as trpc from '@trpc/server'
+import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
-import { createProtectedRouter } from './context'
+import { z } from 'zod'
 
-const defaultImageURL: string =
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from 'server/api/trpc'
+
+const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
 
-export const roomsRouter = createProtectedRouter()
-  .mutation('create', {
-    input: z.object({
-      name: z.string(),
-      description: z.string(),
+export const roomsRouter = createTRPCRouter({
+  hello: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
+      return {
+        greeting: `Hello ${input.text}`,
+      }
     }),
-    resolve: async ({ ctx, input }) => {
-      const { userId } = ctx.session
 
-      const room = await ctx.prisma.room.create({
+  create: protectedProcedure
+    .input(z.object({ name: z.string(), description: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id: userId } = ctx.session.user
+
+      const room = await ctx.db.room.create({
         data: {
           roomId: nanoid(8),
           userId,
@@ -25,73 +35,65 @@ export const roomsRouter = createProtectedRouter()
       })
 
       return room
-    },
-  })
-  .mutation('update', {
-    input: z.object({
-      roomId: z.string(),
-      name: z.string().optional(),
-      description: z.string().optional(),
-      active: z.boolean().optional(),
     }),
-    resolve: async ({ ctx, input }) => {
-      const room = await ctx.prisma.room.update({
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        roomId: z.string(),
+        name: z.string().optional(),
+        description: z.string().optional(),
+        active: z.boolean().optional(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.room.update({
         where: { roomId: input.roomId },
         data: input,
       })
-
-      return room
-    },
-  })
-  .query('getCreated', {
-    resolve: async ({ ctx }) => {
-      const { userId } = ctx.session
-
-      const rooms = await ctx.prisma.room.findMany({
-        where: { userId },
-        select: { roomId: true, name: true, imageUrl: true },
-      })
-
-      return rooms
-    },
-  })
-  .query('getJoined', {
-    resolve: async ({ ctx }) => {
-      const { userId } = ctx.session
-
-      const members = await ctx.prisma.member.findMany({
-        where: { id: userId },
-        select: {
-          room: { select: { roomId: true, name: true, imageUrl: true } },
-        },
-      })
-
-      const rooms = members.map(({ room }) => room)
-
-      return rooms
-    },
-  })
-  .query('getByRoomId', {
-    input: z.object({
-      roomId: z.string(),
     }),
-    resolve: async ({ ctx, input }) => {
+
+  getCreated: protectedProcedure.query(({ ctx }) => {
+    const { id: userId } = ctx.session.user
+
+    return ctx.db.room.findMany({
+      where: { userId },
+      select: { roomId: true, name: true, imageUrl: true },
+    })
+  }),
+
+  getJoined: protectedProcedure.query(async ({ ctx }) => {
+    const { id: userId } = ctx.session.user
+
+    const members = await ctx.db.member.findMany({
+      where: { id: userId },
+      select: {
+        room: { select: { roomId: true, name: true, imageUrl: true } },
+      },
+    })
+
+    return members.map(({ room }) => room)
+  }),
+
+  getByRoomId: protectedProcedure
+    .input(z.object({ roomId: z.string() }))
+    .query(async ({ ctx, input }) => {
       const { roomId } = input
 
-      const room = await ctx.prisma.room.findUnique({
+      const room = await ctx.db.room.findUnique({
         where: { roomId },
         include: { members: true },
       })
 
       if (!room) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'NOT_FOUND',
           message:
             'Room not found|The room you are trying to access does not exist',
         })
       }
 
-      const { userId } = ctx.session
+      const { id: userId } = ctx.session.user
 
       let role = ''
       if (room.userId === userId) {
@@ -101,57 +103,53 @@ export const roomsRouter = createProtectedRouter()
       }
 
       if (!role) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: `Unauthorized|You do not have access for room ${roomId}`,
         })
       }
 
       return { room, role }
-    },
-  })
-  .mutation('accessByRoomId', {
-    input: z.object({
-      roomId: z.string(),
     }),
-    resolve: async ({ ctx, input }) => {
+
+  accessByRoomId: protectedProcedure
+    .input(z.object({ roomId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
       const { roomId } = input
 
-      const room = await ctx.prisma.room.findUnique({
+      const room = await ctx.db.room.findUnique({
         where: { roomId },
         include: { members: true },
       })
 
       if (!room) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'NOT_FOUND',
           message:
             'Room not found|The room you are trying to access does not exist',
         })
       }
 
-      const { userId } = ctx.session
+      const { id: userId } = ctx.session.user
 
       if (room.members.some((member) => member.userId === userId)) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'CONFLICT',
           message: `A conflic occured|You are already a member of room ${roomId}`,
         })
       }
 
-      await ctx.prisma.member.create({
+      await ctx.db.member.create({
         data: { roomId, userId },
       })
-    },
-  })
-  .query('getToken', {
-    input: z.object({
-      roomId: z.string(),
     }),
-    resolve: async ({ ctx, input }) => {
+
+  getToken: protectedProcedure
+    .input(z.object({ roomId: z.string() }))
+    .query(async ({ ctx, input }) => {
       const { roomId } = input
 
-      const room = await ctx.prisma.room.findUnique({
+      const room = await ctx.db.room.findUnique({
         where: { roomId },
         select: {
           active: true,
@@ -167,7 +165,7 @@ export const roomsRouter = createProtectedRouter()
       })
 
       if (!room) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'NOT_FOUND',
           message:
             'Room not found|The room you are trying to access does not exist',
@@ -175,29 +173,27 @@ export const roomsRouter = createProtectedRouter()
       }
 
       if (!room.active) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: `Unauthorized|Room ${roomId} is not active`,
         })
       }
 
       return room.user.accounts[0].access_token
-    },
-  })
-  .query('getMembers', {
-    input: z.object({
-      roomId: z.string(),
     }),
-    resolve: async ({ ctx, input }) => {
+
+  getMembers: protectedProcedure
+    .input(z.object({ roomId: z.string() }))
+    .query(async ({ ctx, input }) => {
       const { roomId } = input
 
-      const room = await ctx.prisma.room.findUnique({
+      const room = await ctx.db.room.findUnique({
         where: { roomId },
         select: { user: true, members: { select: { user: true } } },
       })
 
       if (!room) {
-        throw new trpc.TRPCError({
+        throw new TRPCError({
           code: 'NOT_FOUND',
           message:
             'Room not found|The room you are trying to access does not exist',
@@ -208,5 +204,5 @@ export const roomsRouter = createProtectedRouter()
       const owner = { user: room.user, role: 'owner' }
 
       return [...members, owner]
-    },
-  })
+    }),
+})
