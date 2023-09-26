@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 import useToggle from 'lib/hooks/useToggle'
 import usePlaybackStore from 'lib/stores/playbackStore'
 
@@ -24,18 +24,21 @@ const Room = () => {
   const { cleanPlayback } = usePlaybackStore()
   const [isModalOpen, toggleModal] = useToggle()
 
-  const mutation = trpc.useMutation('rooms.accessByRoomId')
+  const mutation = api.rooms.accessByRoomId.useMutation()
 
-  const { data, error, isLoading, refetch } = trpc.useQuery(
-    ['rooms.getByRoomId', { roomId }],
+  const { data, error, isLoading, refetch } = api.rooms.getByRoomId.useQuery(
     {
+      roomId,
+    },
+    {
+      enabled: !!roomId,
       retry: 1,
       onError: (err) => {
         if (err.data?.code === 'UNAUTHORIZED') {
           mutation.mutate({ roomId })
         }
       },
-    }
+    },
   )
 
   useEffect(() => {

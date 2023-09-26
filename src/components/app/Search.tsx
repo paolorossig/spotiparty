@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 import useDebounce from 'lib/hooks/useDebounce'
 import usePlaybackStore from 'lib/stores/playbackStore'
 
@@ -11,9 +11,9 @@ const Search = () => {
   const debouncedSearch = useDebounce(search, 500)
   const setPlayback = usePlaybackStore((state) => state.setPlayback)
 
-  const { data } = trpc.useQuery(
-    ['music.searchTracks', { query: debouncedSearch }],
-    { enabled: Boolean(debouncedSearch) }
+  const { data } = api.music.searchTracks.useQuery(
+    { query: debouncedSearch },
+    { enabled: Boolean(debouncedSearch) },
   )
 
   return (

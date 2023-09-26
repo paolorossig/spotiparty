@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 
 import AppLayout from 'components/layout/app'
 import Button from 'components/shared/Button'
@@ -14,13 +14,13 @@ export interface FormValues {
 
 const Create = () => {
   const router = useRouter()
-  const context = trpc.useContext()
+  const context = api.useContext()
   const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
-  const mutation = trpc.useMutation('rooms.create', {
+  const mutation = api.rooms.create.useMutation({
     onSuccess() {
-      context.invalidateQueries('rooms.getCreated')
+      context.rooms.getCreated.invalidate()
     },
   })
 

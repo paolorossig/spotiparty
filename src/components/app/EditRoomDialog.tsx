@@ -2,7 +2,7 @@ import type { Room } from '@prisma/client'
 import { useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 
 import Button from 'components/shared/Button'
 
@@ -26,10 +26,10 @@ const EditRoomDialog = ({
     defaultValues: { name, description },
   })
 
-  const context = trpc.useContext()
-  const mutation = trpc.useMutation('rooms.update', {
+  const context = api.useContext()
+  const mutation = api.rooms.update.useMutation({
     onSuccess(input) {
-      context.invalidateQueries(['rooms.getByRoomId', { roomId: input.roomId }])
+      context.rooms.getByRoomId.invalidate({ roomId: input.roomId })
     },
   })
 

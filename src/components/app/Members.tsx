@@ -1,9 +1,9 @@
 import { MicrophoneIcon } from '@heroicons/react/24/outline'
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 import { USER_PLACEHOLDER_IMAGE } from 'lib/constants'
 
 const Members = ({ roomId }: { roomId: string }) => {
-  const { data: members } = trpc.useQuery(['rooms.getMembers', { roomId }])
+  const { data: members } = api.rooms.getMembers.useQuery({ roomId })
 
   return (
     <div className="box p-4">

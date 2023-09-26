@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FolderPlusIcon } from '@heroicons/react/24/outline'
 
-import { trpc } from 'lib/trpc'
+import { api } from 'lib/api'
 
 import Spinner from 'components/shared/Spinner'
 
@@ -24,7 +24,7 @@ const CreateRoom = () => {
 }
 
 const Rooms = () => {
-  const { data, isLoading } = trpc.useQuery(['rooms.getCreated'])
+  const { data, isLoading } = api.rooms.getCreated.useQuery()
 
   // TODO: Add skeleton loading
   if (isLoading) return <Spinner variant="light" size="large" />
@@ -48,7 +48,7 @@ const Rooms = () => {
             <figure
               className={clsx(
                 'relative h-20 w-20 overflow-hidden rounded-full brightness-50 grayscale filter transition duration-300',
-                'group-hover:brightness-100 group-hover:grayscale-0'
+                'group-hover:brightness-100 group-hover:grayscale-0',
               )}
             >
               <Image
