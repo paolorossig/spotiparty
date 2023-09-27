@@ -1,11 +1,12 @@
-import clsx from 'clsx'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import clsx from 'clsx'
 import { useSession } from 'next-auth/react'
 
 import Meta from '@/components/layout/Meta'
 import Spinner from '@/components/shared/Spinner'
 import Toaster from '@/components/shared/Toaster'
+
 import ProfileMenu from './ProfileMenu'
 
 const AppLayout = ({

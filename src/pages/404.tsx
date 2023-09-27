@@ -1,4 +1,5 @@
 import Image from 'next/image'
+
 import LandingLayout from '@/components/layout/home'
 
 const Custom404 = () => {

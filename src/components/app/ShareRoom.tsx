@@ -1,15 +1,15 @@
-import clsx from 'clsx'
-import toast from 'react-hot-toast'
-import { QRCodeSVG } from 'qrcode.react'
 import {
   ChevronDownIcon,
   ClipboardDocumentCheckIcon,
   ClipboardIcon,
 } from '@heroicons/react/24/outline'
-import useToggle from '@/lib/hooks/useToggle'
-import useCopyToClipboard from '@/lib/hooks/useCopyToClipboard'
+import clsx from 'clsx'
+import { QRCodeSVG } from 'qrcode.react'
+import toast from 'react-hot-toast'
 
 import IconButton from '@/components/shared/IconButton'
+import useCopyToClipboard from '@/lib/hooks/useCopyToClipboard'
+import useToggle from '@/lib/hooks/useToggle'
 
 const ShareRoom = ({ roomId }: { roomId: string }) => {
   const [showQrCode, toggleQrCode] = useToggle(true)

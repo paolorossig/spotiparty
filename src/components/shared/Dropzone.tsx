@@ -1,8 +1,9 @@
-import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
-import { useDropzone } from 'react-dropzone'
 import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import { useDropzone } from 'react-dropzone'
+
 import { fromBytesToMegabytes } from '@/lib/utils'
 
 type ExtendedFile = File & { preview: string; path?: string }

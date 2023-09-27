@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
-import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
-import { api } from '@/lib/api'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 
 import AppLayout from '@/components/layout/app'
 import Button from '@/components/shared/Button'
 import IconButton from '@/components/shared/IconButton'
+import { api } from '@/lib/api'
 
 export interface FormValues {
   name: string

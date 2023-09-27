@@ -1,11 +1,11 @@
-import clsx from 'clsx'
 import { Fragment } from 'react'
 import { Transition } from '@headlessui/react'
-import { Toaster as HotToaster, resolveValue } from 'react-hot-toast'
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import { Toaster as HotToaster, resolveValue } from 'react-hot-toast'
 
 const classes = {
   colors: {
@@ -35,7 +35,7 @@ const Toaster = () => {
           <div
             className={clsx(
               'my-2 flex origin-top-right items-center gap-2 self-end rounded-t border-b-4 p-4 md:w-1/2',
-              classes.colors[t.type]
+              classes.colors[t.type],
             )}
           >
             {t.type === 'success' ? (

@@ -1,14 +1,14 @@
-import clsx from 'clsx'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { signOut, useSession } from 'next-auth/react'
 import {
   ArrowLeftOnRectangleIcon,
   ArrowUpRightIcon,
 } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
+import { signOut, useSession } from 'next-auth/react'
 
-import { ACCOUNT_URL } from '@/lib/spotify'
 import { USER_PLACEHOLDER_IMAGE } from '@/lib/constants'
+import { ACCOUNT_URL } from '@/lib/spotify'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()

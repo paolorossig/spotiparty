@@ -13,7 +13,7 @@ const Tooltip = ({
       <div
         className={clsx(
           'invisible absolute top-9 flex flex-col items-center opacity-0 transition-opacity duration-300 ease-in',
-          'group-hover:visible group-hover:opacity-100'
+          'group-hover:visible group-hover:opacity-100',
         )}
       >
         <div className="-mb-2 h-3 w-3 rotate-45 bg-gray-600" />

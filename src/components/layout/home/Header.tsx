@@ -1,6 +1,7 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+
 import { LANDING_PATHS, NAVIGATION_STATES } from '@/lib/constants'
 
 const NavLinks = ({ className }: { className: string }) => {

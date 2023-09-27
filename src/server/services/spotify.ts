@@ -57,7 +57,7 @@ export const createPlaylist = async (name: string, accessToken: string) => {
 export const updatePlaylistItems = async (
   playlistId: string,
   tracks: string[],
-  accessToken: string
+  accessToken: string,
 ) => {
   spotifyApi.setAccessToken(accessToken)
 

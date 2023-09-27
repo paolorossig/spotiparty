@@ -1,10 +1,10 @@
-import type { Room } from '@prisma/client'
 import { useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
+import type { Room } from '@prisma/client'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { api } from '@/lib/api'
 
 import Button from '@/components/shared/Button'
+import { api } from '@/lib/api'
 
 interface EditRoomFormInputs {
   name: string

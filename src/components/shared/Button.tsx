@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+
 import Spinner from './Spinner'
 
 const classes = {
@@ -17,7 +18,7 @@ const Button = ({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean
-  variant?: keyof typeof classes['variant']
+  variant?: keyof (typeof classes)['variant']
 }) => {
   return (
     <button
@@ -26,7 +27,7 @@ const Button = ({
         'ring-on-focus my-4 rounded-full px-4 py-2 text-base',
         'disabled:cursor-not-allowed disabled:opacity-50',
         classes.variant[variant],
-        className
+        className,
       )}
     >
       {isLoading ? <Spinner variant="light" size="small" /> : children}

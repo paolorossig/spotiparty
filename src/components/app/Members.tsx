@@ -1,4 +1,5 @@
 import { MicrophoneIcon } from '@heroicons/react/24/outline'
+
 import { api } from '@/lib/api'
 import { USER_PLACEHOLDER_IMAGE } from '@/lib/constants'
 
