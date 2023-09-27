@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import LandingLayout from 'components/layout/home'
+
+import LandingLayout from '@/components/layout/home'
 
 const Home = () => {
   return (

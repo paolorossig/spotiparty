@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { api } from 'lib/api'
-import useDebounce from 'lib/hooks/useDebounce'
-import usePlaybackStore from 'lib/stores/playbackStore'
+
+import { api } from '@/lib/api'
+import useDebounce from '@/lib/hooks/useDebounce'
+import usePlaybackStore from '@/lib/stores/playbackStore'
 
 import Track from './Track'
 

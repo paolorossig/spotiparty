@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   reactStrictMode: true,
   swcMinify: true,
   i18n: {
@@ -10,3 +10,5 @@ module.exports = {
     domains: ['i.scdn.co', 'res.cloudinary.com'],
   },
 }
+
+export default config

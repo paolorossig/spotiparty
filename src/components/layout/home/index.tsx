@@ -1,8 +1,9 @@
-import Meta from '../Meta'
 import Link from 'next/link'
 
+import Github from '@/components/shared/icons/Github'
+
+import Meta from '../Meta'
 import Header from './Header'
-import Github from 'components/shared/icons/Github'
 
 interface Props {
   children: React.ReactNode

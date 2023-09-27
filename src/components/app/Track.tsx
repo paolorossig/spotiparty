@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { PlayIcon } from '@heroicons/react/24/solid'
-import { getDuration } from 'lib/utils'
+
+import { getDuration } from '@/lib/utils'
 
 type Track = {
   id: string

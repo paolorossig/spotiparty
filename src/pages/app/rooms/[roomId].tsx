@@ -1,25 +1,25 @@
-import { useEffect } from 'react'
-import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
-import { api } from 'lib/api'
-import useToggle from 'lib/hooks/useToggle'
-import usePlaybackStore from 'lib/stores/playbackStore'
+import toast from 'react-hot-toast'
 
-import AppLayout from 'components/layout/app'
-import ErrorLayout from 'components/layout/ErrorLayout'
-import Button from 'components/shared/Button'
-import Tooltip from 'components/shared/Tooltip'
-import IconButton from 'components/shared/IconButton'
-import Search from 'components/app/Search'
-import Members from 'components/app/Members'
-import ShareRoom from 'components/app/ShareRoom'
-import MusicPlayer from 'components/app/MusicPlayer'
-import EditRoomDialog from 'components/app/EditRoomDialog'
+import EditRoomDialog from '@/components/app/EditRoomDialog'
+import Members from '@/components/app/Members'
+import MusicPlayer from '@/components/app/MusicPlayer'
+import Search from '@/components/app/Search'
+import ShareRoom from '@/components/app/ShareRoom'
+import AppLayout from '@/components/layout/app'
+import ErrorLayout from '@/components/layout/ErrorLayout'
+import Button from '@/components/shared/Button'
+import IconButton from '@/components/shared/IconButton'
+import Tooltip from '@/components/shared/Tooltip'
+import { api } from '@/lib/api'
+import useToggle from '@/lib/hooks/useToggle'
+import usePlaybackStore from '@/lib/stores/playbackStore'
 
 const Room = () => {
   const router = useRouter()
-  const roomId = router.query['roomId'] as string
+  const roomId = router.query.roomId as string
 
   const { cleanPlayback } = usePlaybackStore()
   const [isModalOpen, toggleModal] = useToggle()
@@ -77,11 +77,11 @@ const Room = () => {
           </div>
           <div className="flex gap-4 pt-2">
             <Tooltip message="Refresh">
-              <IconButton Icon={ArrowPathIcon} onClick={refetchAndNotify} />
+              <IconButton icon={ArrowPathIcon} onClick={refetchAndNotify} />
             </Tooltip>
             <Tooltip message="Edit">
               <IconButton
-                Icon={PencilSquareIcon}
+                icon={PencilSquareIcon}
                 onClick={toggleModal}
                 disabled={!isRoomOwner}
               />

@@ -1,4 +1,4 @@
-import { type DefaultSession, Account } from 'next-auth'
+import type { DefaultSession, Account as NextAuthAccount } from 'next-auth'
 import type { DefaultJWT } from 'next-auth/jwt'
 
 declare module 'next-auth' {
@@ -9,7 +9,7 @@ declare module 'next-auth' {
     accessToken: string
   }
 
-  interface Account extends Account {
+  interface Account extends NextAuthAccount {
     access_token: string
   }
 }

@@ -1,7 +1,8 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useSession } from 'next-auth/react'
-import { LANDING_PATHS, NAVIGATION_STATES } from 'lib/constants'
+
+import { LANDING_PATHS, NAVIGATION_STATES } from '@/lib/constants'
 
 const NavLinks = ({ className }: { className: string }) => {
   return (
@@ -39,7 +40,7 @@ const Header = () => {
           <NavLinks className="hidden gap-16 md:flex" />
           <Link
             href={button.href}
-            className="rounded-xl border-2 border-gray-700 py-2 px-4"
+            className="rounded-xl border-2 border-gray-700 px-4 py-2"
           >
             {button.label}
           </Link>

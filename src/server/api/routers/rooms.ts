@@ -6,7 +6,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from 'server/api/trpc'
+} from '@/server/api/trpc'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'

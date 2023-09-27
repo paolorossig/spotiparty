@@ -1,5 +1,5 @@
-import spotifyApi from 'lib/spotify'
-import { SEARCH_TRACKS_LIMIT, TOP_TRACKS_LIMIT } from '../constants'
+import spotifyApi from '@/lib/spotify'
+import { SEARCH_TRACKS_LIMIT, TOP_TRACKS_LIMIT } from '@/server/constants'
 
 export const refreshSpotifyTokens = async (refreshToken: string) => {
   try {
@@ -57,7 +57,7 @@ export const createPlaylist = async (name: string, accessToken: string) => {
 export const updatePlaylistItems = async (
   playlistId: string,
   tracks: string[],
-  accessToken: string
+  accessToken: string,
 ) => {
   spotifyApi.setAccessToken(accessToken)
 

@@ -18,16 +18,15 @@ const classes = {
 }
 
 const IconButton = ({
-  Icon,
+  icon: Icon,
   size = 'small',
   variant = 'transparent',
-  children,
   className,
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  Icon: React.ComponentType<any>
-  size?: keyof typeof classes['size']
-  variant?: keyof typeof classes['variant']
+  icon: React.ComponentType<{ className?: string }>
+  size?: keyof (typeof classes)['size']
+  variant?: keyof (typeof classes)['variant']
 }) => {
   return (
     <button
@@ -37,7 +36,7 @@ const IconButton = ({
         'disabled:cursor-not-allowed disabled:opacity-50',
         classes.size[size],
         classes.variant[variant],
-        className
+        className,
       )}
     >
       <Icon className={classes.iconSize[size]} />

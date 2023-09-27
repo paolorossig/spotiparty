@@ -1,10 +1,10 @@
-import type { Room } from '@prisma/client'
 import { useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
+import type { Room } from '@prisma/client'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { api } from 'lib/api'
 
-import Button from 'components/shared/Button'
+import Button from '@/components/shared/Button'
+import { api } from '@/lib/api'
 
 interface EditRoomFormInputs {
   name: string
@@ -44,7 +44,7 @@ const EditRoomDialog = ({
     toggle()
   }
 
-  const onSubmit: SubmitHandler<EditRoomFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<EditRoomFormInputs> = (data) => {
     mutation.mutate({ roomId, ...data })
     return onClose()
   }
@@ -81,7 +81,7 @@ const EditRoomDialog = ({
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 px-2 md:mt-8 md:gap-8 md:px-4">
-              <Button onClick={onClose} variant="light">
+              <Button type="button" onClick={onClose} variant="light">
                 Cancel
               </Button>
               <Button type="submit">Save</Button>

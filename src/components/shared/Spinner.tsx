@@ -17,8 +17,8 @@ const Spinner = ({
   size = 'medium',
   variant = 'primary',
 }: {
-  size?: keyof typeof classes['size']
-  variant?: keyof typeof classes['variant']
+  size?: keyof (typeof classes)['size']
+  variant?: keyof (typeof classes)['variant']
 }) => {
   return (
     <div className="grid flex-1 place-content-center">
@@ -26,7 +26,7 @@ const Spinner = ({
         className={clsx(
           classes.size[size],
           classes.variant[variant],
-          'animate-spin rounded-full border-2 border-t-transparent'
+          'animate-spin rounded-full border-2 border-t-transparent',
         )}
       />
     </div>
