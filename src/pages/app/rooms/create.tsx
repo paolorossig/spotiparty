@@ -1,54 +1,42 @@
 import { useRouter } from 'next/router'
-import { Controller, useForm } from 'react-hook-form'
-import type { SubmitHandler } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
-import { BsChevronLeft } from 'react-icons/bs'
-import AppLayout from 'modules/ui/layouts/AppLayout'
-import Button from 'modules/ui/components/Button'
-import Dropzone from 'modules/ui/components/Dropzone'
-import IconButton from 'modules/ui/components/IconButton'
-import { useCreateRoomMutation } from 'modules/rooms/services/roomApi'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
+import { api } from 'lib/api'
+
+import AppLayout from 'components/layout/app'
+import Button from 'components/shared/Button'
+import IconButton from 'components/shared/IconButton'
 
 export interface FormValues {
   name: string
   description: string
-  image: FileList
 }
-
-type FormKeys = keyof FormValues
 
 const Create = () => {
   const router = useRouter()
-  const [createRoom, { isLoading }] = useCreateRoomMutation()
-  const { register, handleSubmit, control, formState } = useForm<FormValues>()
+  const context = api.useContext()
+  const { register, handleSubmit, formState } = useForm<FormValues>()
   const { errors: formErrors } = formState
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const formData = new FormData()
-    const keys = Object.keys(data) as Array<FormKeys>
-    keys.forEach((key) => {
-      key === 'image'
-        ? data.image?.length && formData.append(key, data[key][0])
-        : formData.append(key, data[key])
-    })
+  const mutation = api.rooms.create.useMutation({
+    onSuccess() {
+      context.rooms.getCreated.invalidate()
+    },
+  })
 
-    try {
-      await createRoom(formData).unwrap()
-      return router.push('/app')
-    } catch (error: any) {
-      toast.error(error.message ?? '', {
-        duration: 3000,
-      })
-    }
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    mutation.mutate(data)
+    // TODO: Navigate to the room directly
+    return router.push('/app')
   }
 
   return (
     <AppLayout>
       <div className="mb-8 flex items-center space-x-2">
         <IconButton
-          Icon={BsChevronLeft}
+          Icon={ChevronLeftIcon}
           onClick={() => router.back()}
-          className="pr-[2px]"
+          className="pr-0.5"
         />
         <h2 className="text-2xl font-bold">Create a new Room</h2>
       </div>
@@ -86,15 +74,7 @@ const Create = () => {
             </p>
           )}
         </div>
-        <Controller
-          name="image"
-          control={control}
-          render={({ field: { onChange } }) => (
-            <Dropzone message="PNG or JPG (Max. 10MB)" onChange={onChange} />
-          )}
-          // TODO: add rules={{ required: 'Required field' }}
-        />
-        <Button type="submit" variant="primary" isLoading={isLoading}>
+        <Button type="submit" variant="primary" disabled={mutation.isLoading}>
           Create
         </Button>
       </form>

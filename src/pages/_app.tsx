@@ -1,17 +1,20 @@
+import type { AppType } from 'next/app'
+import type { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
-import type { AppProps } from 'next/app'
-import { Provider } from 'react-redux'
-import store from 'modules/store'
+
+import { api } from 'lib/api'
+
 import 'styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <SessionProvider session={pageProps.session}>
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
+    <SessionProvider session={session}>
+      <Component {...pageProps} />
     </SessionProvider>
   )
 }
 
-export default MyApp
+export default api.withTRPC(MyApp)

@@ -1,25 +1,9 @@
 {
-  "extends": "next",
-  "root": true,
+  "extends": "next/core-web-vitals",
   "rules": {
-    "import/no-restricted-paths": [
-      "error",
-      {
-        "zones": [
-          {
-            "target": "./src/lib",
-            "from": "./src/modules"
-          },
-          {
-            "target": "./src/lib",
-            "from": "./src/pages"
-          },
-          {
-            "target": "./src/modules",
-            "from": "./src/pages"
-          }
-        ]
-      }
-    ]
+    "no-unreachable": "error",
+    "no-constant-condition": "error",
+    "no-unused-expressions": "error",
+    "no-constant-binary-expression": "error"
   }
 }
