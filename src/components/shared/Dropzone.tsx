@@ -59,7 +59,7 @@ const Dropzone = ({
   maxFiles = 1,
 }: {
   message?: string
-  onChange?: (...event: any[]) => void
+  onChange?: (...event: unknown[]) => void
   maxFiles?: number
 }) => {
   const [files, setFiles] = useState<ExtendedFile[]>([])

@@ -44,7 +44,7 @@ const EditRoomDialog = ({
     toggle()
   }
 
-  const onSubmit: SubmitHandler<EditRoomFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<EditRoomFormInputs> = (data) => {
     mutation.mutate({ roomId, ...data })
     return onClose()
   }
@@ -81,7 +81,7 @@ const EditRoomDialog = ({
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 px-2 md:mt-8 md:gap-8 md:px-4">
-              <Button onClick={onClose} variant="light">
+              <Button type="button" onClick={onClose} variant="light">
                 Cancel
               </Button>
               <Button type="submit">Save</Button>

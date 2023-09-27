@@ -34,7 +34,7 @@ const Create = () => {
     <AppLayout>
       <div className="mb-8 flex items-center space-x-2">
         <IconButton
-          Icon={ChevronLeftIcon}
+          icon={ChevronLeftIcon}
           onClick={() => router.back()}
           className="pr-0.5"
         />

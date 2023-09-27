@@ -19,7 +19,7 @@ import usePlaybackStore from '@/lib/stores/playbackStore'
 
 const Room = () => {
   const router = useRouter()
-  const roomId = router.query['roomId'] as string
+  const roomId = router.query.roomId as string
 
   const { cleanPlayback } = usePlaybackStore()
   const [isModalOpen, toggleModal] = useToggle()
@@ -77,11 +77,11 @@ const Room = () => {
           </div>
           <div className="flex gap-4 pt-2">
             <Tooltip message="Refresh">
-              <IconButton Icon={ArrowPathIcon} onClick={refetchAndNotify} />
+              <IconButton icon={ArrowPathIcon} onClick={refetchAndNotify} />
             </Tooltip>
             <Tooltip message="Edit">
               <IconButton
-                Icon={PencilSquareIcon}
+                icon={PencilSquareIcon}
                 onClick={toggleModal}
                 disabled={!isRoomOwner}
               />

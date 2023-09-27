@@ -12,7 +12,7 @@ import { ACCOUNT_URL } from '@/lib/spotify'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()
-  const { name, image } = session?.user || {}
+  const { name, image } = session?.user ?? {}
 
   return (
     <Menu as="div" className="relative">
@@ -24,7 +24,7 @@ const ProfileMenu = () => {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={image || USER_PLACEHOLDER_IMAGE}
+          src={image ?? USER_PLACEHOLDER_IMAGE}
           alt="Profile image"
           className="h-10 w-10 rounded-full object-cover"
         />

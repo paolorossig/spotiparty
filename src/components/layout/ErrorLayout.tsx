@@ -5,7 +5,7 @@ import AppLayout from '@/components/layout/app'
 
 const ErrorLayout = ({ message }: { message?: string }) => {
   const router = useRouter()
-  const [title, ...restMessage] = message?.split('|') || []
+  const [title, ...restMessage] = message?.split('|') ?? []
   const errorMessage = restMessage.join(' | ')
 
   return (

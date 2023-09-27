@@ -25,7 +25,7 @@ const ShareRoom = ({ roomId }: { roomId: string }) => {
   return (
     <section className="box relative flex flex-col-reverse items-center lg:flex-row">
       <IconButton
-        Icon={ChevronDownIcon}
+        icon={ChevronDownIcon}
         onClick={toggleQrCode}
         variant="solid"
         className={clsx(
@@ -51,7 +51,7 @@ const ShareRoom = ({ roomId }: { roomId: string }) => {
         <div className="flex items-center gap-4">
           <span className="text-3xl font-semibold">{roomId}</span>
           <IconButton
-            Icon={!copiedText ? ClipboardIcon : ClipboardDocumentCheckIcon}
+            icon={!copiedText ? ClipboardIcon : ClipboardDocumentCheckIcon}
             size="medium"
             onClick={copyLink}
           />

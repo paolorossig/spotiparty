@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
-function useToggle(initialState: boolean = false): [boolean, () => void] {
+function useToggle(initialState = false): [boolean, () => void] {
   const [state, setState] = useState<boolean>(initialState)
 
-  const toggle = useCallback((): void => setState((state) => !state), [])
+  const toggle = useCallback(() => setState((state) => !state), [])
 
   return [state, toggle]
 }
