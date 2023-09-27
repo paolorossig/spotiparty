@@ -32,6 +32,8 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  createdAt     DateTime  @default(now()) @db.Date
+  updatedAt     DateTime  @updatedAt @db.Date
 
   accounts Account[]
   rooms    Room[]
