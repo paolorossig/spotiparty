@@ -3,7 +3,7 @@
 /** @typedef  {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig*/
 
 /** @type { PrettierConfig | TailwindConfig | SortImportsConfig} */
-module.exports = {
+const config = {
   semi: false,
   singleQuote: true,
   plugins: [
@@ -20,3 +20,5 @@ module.exports = {
     '^[./]',
   ],
 }
+
+export default config
