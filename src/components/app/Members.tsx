@@ -1,6 +1,6 @@
 import { MicrophoneIcon } from '@heroicons/react/24/outline'
-import { api } from 'lib/api'
-import { USER_PLACEHOLDER_IMAGE } from 'lib/constants'
+import { api } from '@/lib/api'
+import { USER_PLACEHOLDER_IMAGE } from '@/lib/constants'
 
 const Members = ({ roomId }: { roomId: string }) => {
   const { data: members } = api.rooms.getMembers.useQuery({ roomId })

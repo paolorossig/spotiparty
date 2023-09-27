@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { CloudArrowUpIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { fromBytesToMegabytes } from 'lib/utils'
+import { fromBytesToMegabytes } from '@/lib/utils'
 
 type ExtendedFile = File & { preview: string; path?: string }
 
@@ -18,7 +18,7 @@ const PreviewImages = ({
     <ul
       className={clsx(
         'flex h-64 flex-wrap justify-center gap-4',
-        !files.length && 'hidden'
+        !files.length && 'hidden',
       )}
     >
       {files.map((file) => (
@@ -27,7 +27,7 @@ const PreviewImages = ({
             <div className="absolute top-0 z-10 hidden h-full w-full flex-col items-center bg-black/80 text-white opacity-100 group-hover:flex">
               <button
                 onClick={() => onRemove(file.name)}
-                className="mt-2 mr-2 self-end"
+                className="mr-2 mt-2 self-end"
               >
                 <XMarkIcon className="h-5 w-5 hover:text-red-500" />
               </button>
@@ -89,11 +89,11 @@ const Dropzone = ({
           'group flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300',
           'hover:bg-[#1d1d1d] focus:border-transparent focus:outline-none focus:ring focus:ring-green-500 focus:ring-opacity-90',
           isDragActive && 'bg-[#1d1d1d]',
-          files.length > 0 && 'hidden'
+          files.length > 0 && 'hidden',
         )}
       >
         <input {...getInputProps()} />
-        <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-200">
+        <div className="flex flex-col items-center justify-center pb-6 pt-5 text-gray-200">
           <CloudArrowUpIcon className="mb-3 h-8 w-8 group-hover:animate-ping" />
           <p className="mb-1 text-sm">
             <span className="special-underline font-bold">Click to upload</span>{' '}

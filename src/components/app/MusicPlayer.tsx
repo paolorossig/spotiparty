@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom'
 import SpotifyWebPlayer from 'react-spotify-web-playback'
-import { api } from 'lib/api'
-import usePlaybackStore from 'lib/stores/playbackStore'
+import { api } from '@/lib/api'
+import usePlaybackStore from '@/lib/stores/playbackStore'
 
 const MusicPlayer = ({ roomId }: { roomId: string }) => {
   const { data: token } = api.rooms.getToken.useQuery({ roomId })

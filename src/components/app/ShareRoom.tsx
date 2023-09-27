@@ -6,10 +6,10 @@ import {
   ClipboardDocumentCheckIcon,
   ClipboardIcon,
 } from '@heroicons/react/24/outline'
-import useToggle from 'lib/hooks/useToggle'
-import useCopyToClipboard from 'lib/hooks/useCopyToClipboard'
+import useToggle from '@/lib/hooks/useToggle'
+import useCopyToClipboard from '@/lib/hooks/useCopyToClipboard'
 
-import IconButton from 'components/shared/IconButton'
+import IconButton from '@/components/shared/IconButton'
 
 const ShareRoom = ({ roomId }: { roomId: string }) => {
   const [showQrCode, toggleQrCode] = useToggle(true)
@@ -31,13 +31,13 @@ const ShareRoom = ({ roomId }: { roomId: string }) => {
         className={clsx(
           'absolute right-2 top-2',
           showQrCode ? 'rotate-180' : 'pt-0.5',
-          'lg:hidden'
+          'lg:hidden',
         )}
       />
       <div
         className={clsx(
           'm-2 flex-1 items-center justify-center gap-3 text-sm md:my-4 md:gap-6 md:text-base',
-          showQrCode ? 'flex' : 'hidden'
+          showQrCode ? 'flex' : 'hidden',
         )}
       >
         <QRCodeSVG value={linkUrl} size={120} />

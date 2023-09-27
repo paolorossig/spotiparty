@@ -2,7 +2,7 @@ import Meta from '../Meta'
 import Link from 'next/link'
 
 import Header from './Header'
-import Github from 'components/shared/icons/Github'
+import Github from '@/components/shared/icons/Github'
 
 interface Props {
   children: React.ReactNode

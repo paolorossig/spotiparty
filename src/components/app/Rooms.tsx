@@ -3,9 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { FolderPlusIcon } from '@heroicons/react/24/outline'
 
-import { api } from 'lib/api'
+import { api } from '@/lib/api'
 
-import Spinner from 'components/shared/Spinner'
+import Spinner from '@/components/shared/Spinner'
 
 const CreateRoom = () => {
   return (

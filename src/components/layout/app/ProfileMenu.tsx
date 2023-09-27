@@ -7,8 +7,8 @@ import {
   ArrowUpRightIcon,
 } from '@heroicons/react/24/outline'
 
-import { ACCOUNT_URL } from 'lib/spotify'
-import { USER_PLACEHOLDER_IMAGE } from 'lib/constants'
+import { ACCOUNT_URL } from '@/lib/spotify'
+import { USER_PLACEHOLDER_IMAGE } from '@/lib/constants'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()
@@ -19,7 +19,7 @@ const ProfileMenu = () => {
       <Menu.Button
         className={clsx(
           'ring-on-focus flex items-center space-x-2 rounded-full bg-gray-700 p-2 pr-4 shadow-lg shadow-gray-900/60',
-          'hover:bg-gray-800'
+          'hover:bg-gray-800',
         )}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -49,7 +49,7 @@ const ProfileMenu = () => {
                   rel="noopener noreferrer"
                   className={clsx(
                     active && 'bg-green-500',
-                    'group flex w-full items-center gap-2 rounded-md p-2'
+                    'group flex w-full items-center gap-2 rounded-md p-2',
                   )}
                 >
                   <ArrowUpRightIcon className="h-4 w-4" />
@@ -65,7 +65,7 @@ const ProfileMenu = () => {
                   onClick={() => signOut()}
                   className={clsx(
                     active && 'bg-green-500',
-                    'group flex w-full items-center gap-2 rounded-md p-2'
+                    'group flex w-full items-center gap-2 rounded-md p-2',
                   )}
                 >
                   <ArrowLeftOnRectangleIcon className="h-4 w-4" />

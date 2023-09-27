@@ -3,9 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 
-import Meta from '../Meta'
-import Spinner from 'components/shared/Spinner'
-import Toaster from 'components/shared/Toaster'
+import Meta from '@/components/layout/Meta'
+import Spinner from '@/components/shared/Spinner'
+import Toaster from '@/components/shared/Toaster'
 import ProfileMenu from './ProfileMenu'
 
 const AppLayout = ({
@@ -30,8 +30,8 @@ const AppLayout = ({
             <Link
               href="/app"
               className={clsx(
-                'ring-on-focus flex items-center space-x-2 rounded-full py-3 px-2',
-                'hover:animate-pulse'
+                'ring-on-focus flex items-center space-x-2 rounded-full px-2 py-3',
+                'hover:animate-pulse',
               )}
             >
               <Image

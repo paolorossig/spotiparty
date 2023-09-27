@@ -4,8 +4,8 @@ import { type Account, type NextAuthOptions, getServerSession } from 'next-auth'
 import { type JWT } from 'next-auth/jwt'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
-import { db } from 'server/db'
-import { LOGIN_URL } from 'lib/spotify'
+import { db } from '@/server/db'
+import { LOGIN_URL } from '@/lib/spotify'
 
 const extendJWT = (token: JWT, account: Account) => {
   return {
