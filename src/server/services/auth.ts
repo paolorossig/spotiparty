@@ -4,6 +4,7 @@ import { getServerSession, type Account, type NextAuthOptions } from 'next-auth'
 import { type JWT } from 'next-auth/jwt'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
+import { env } from '@/env.mjs'
 import { LOGIN_URL } from '@/lib/spotify'
 import { db } from '@/server/db'
 
@@ -18,8 +19,8 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: env.SPOTIFY_CLIENT_ID,
+      clientSecret: env.SPOTIFY_CLIENT_SECRET,
       authorization: LOGIN_URL,
     }),
   ],
