@@ -2,24 +2,12 @@ import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from '@/server/api/trpc'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
 
 export const roomsRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      }
-    }),
-
   create: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -66,7 +54,7 @@ export const roomsRouter = createTRPCRouter({
     const { id: userId } = ctx.session.user
 
     const members = await ctx.db.member.findMany({
-      where: { id: userId },
+      where: { userId },
       select: {
         room: { select: { roomId: true, name: true, imageUrl: true } },
       },
