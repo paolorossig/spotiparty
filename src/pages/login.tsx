@@ -20,7 +20,7 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
           </Link>
         </h1>
         <p className="my-4 text-lg text-gray-300 lg:text-2xl">
-          Get started by login with your Spotify account
+          Use the following auth providers
         </p>
         {Object.values(providers).map((provider) => (
           <button

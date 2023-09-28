@@ -13,8 +13,9 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String
+  refresh_token     String? // for spotify provider
   access_token      String
+  id_token          String? // for google provider
   expires_at        Int
   token_type        String
   scope             String

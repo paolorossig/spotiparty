@@ -2,15 +2,18 @@ import { GetServerSidePropsContext } from 'next'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { getServerSession, type Account, type NextAuthOptions } from 'next-auth'
 import { type JWT } from 'next-auth/jwt'
+import GoogleProvider from 'next-auth/providers/google'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
 import { env } from '@/env.mjs'
 import { LOGIN_URL } from '@/lib/spotify'
 import { db } from '@/server/db'
+import { type SupportedProviders } from '@/types/next-auth'
 
-const extendJWT = (token: JWT, account: Account) => {
+const extendJWT = (token: JWT, account: Account): JWT => {
   return {
     ...token,
+    provider: account.provider as SupportedProviders,
     accessToken: account.access_token,
   }
 }
@@ -22,6 +25,10 @@ export const authOptions: NextAuthOptions = {
       clientId: env.SPOTIFY_CLIENT_ID,
       clientSecret: env.SPOTIFY_CLIENT_SECRET,
       authorization: LOGIN_URL,
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   pages: {
@@ -57,6 +64,7 @@ export const authOptions: NextAuthOptions = {
     },
     session: ({ session, token }) => {
       session.user = { ...session.user, id: token.sub }
+      session.provider = token.provider
       session.accessToken = token.accessToken
 
       return session
