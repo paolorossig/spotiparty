@@ -10,6 +10,7 @@ import { db } from '@/server/db'
 const extendJWT = (token: JWT, account: Account) => {
   return {
     ...token,
+    provider: account.provider,
     accessToken: account.access_token,
   }
 }
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
     },
     session: ({ session, token }) => {
       session.user = { ...session.user, id: token.sub }
+      session.provider = token.provider
       session.accessToken = token.accessToken
 
       return session

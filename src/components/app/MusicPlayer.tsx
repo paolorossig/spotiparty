@@ -5,8 +5,11 @@ import { api } from '@/lib/api'
 import usePlaybackStore from '@/lib/stores/playbackStore'
 
 const MusicPlayer = ({ roomId }: { roomId: string }) => {
-  const { data: token } = api.rooms.getToken.useQuery({ roomId })
   const playback = usePlaybackStore((state) => state.playback)
+  const { data: token } = api.rooms.getToken.useQuery(
+    { roomId },
+    { enabled: !!playback },
+  )
 
   if (!token || !playback) return null
 

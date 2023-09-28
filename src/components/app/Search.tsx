@@ -14,7 +14,7 @@ const Search = () => {
 
   const { data } = api.music.searchTracks.useQuery(
     { query: debouncedSearch },
-    { enabled: Boolean(debouncedSearch) },
+    { enabled: !!debouncedSearch },
   )
 
   return (
