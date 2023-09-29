@@ -103,7 +103,7 @@ const Room = () => {
               </Button>
             </div>
           </aside>
-          <MusicPlayer roomId={room.roomId} />
+          <MusicPlayer />
         </div>
       </section>
     </AppLayout>
