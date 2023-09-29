@@ -19,7 +19,7 @@ const AppLayout = ({
   const { data: session, status } = useSession()
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-black text-white">
+    <div className="relative flex min-h-screen flex-col justify-center bg-black text-white">
       <Meta />
       {status === 'loading' || isLoading ? (
         <Spinner />
@@ -45,10 +45,10 @@ const AppLayout = ({
             </Link>
             <ProfileMenu />
           </header>
-          <main className="m-auto flex w-full max-w-5xl flex-1 flex-col p-4">
+          <main className="m-auto mb-14 flex w-full max-w-5xl flex-1 flex-col p-4">
             {children}
           </main>
-          <div id="music-player"></div>
+          <div id="music-player" className="sticky bottom-0 w-full" />
         </>
       )}
       <Toaster />

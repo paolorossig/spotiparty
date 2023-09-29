@@ -21,7 +21,7 @@ const Room = () => {
   const router = useRouter()
   const roomId = router.query.roomId as string
 
-  const { cleanPlayback } = usePlaybackStore()
+  const { cleanPlayback, setPlayback } = usePlaybackStore()
   const [isModalOpen, toggleModal] = useToggle()
 
   const mutation = api.rooms.accessByRoomId.useMutation()
@@ -63,6 +63,14 @@ const Room = () => {
     toast.success('Room refreshed')
   }
 
+  const onTrackSelection = (trackUri: string) => {
+    if (isRoomOwner) {
+      setPlayback(trackUri)
+    } else {
+      toast.error('Remote Control not supported yet!')
+    }
+  }
+
   return (
     <AppLayout>
       <EditRoomDialog room={room} isOpen={isModalOpen} toggle={toggleModal} />
@@ -90,7 +98,7 @@ const Room = () => {
         </div>
         <div className="flex flex-1 flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-1 flex-col justify-center md:w-2/3">
-            <Search />
+            <Search onTrackSelection={onTrackSelection} />
             <div className="grid flex-1 place-content-center">
               New features coming soon! 🚀
             </div>
@@ -98,12 +106,12 @@ const Room = () => {
           <aside className="w-full space-y-4 md:w-1/3">
             <Members roomId={roomId} />
             <div className="text-center">
-              <Button onClick={() => alert('Generated!')}>
+              <Button onClick={() => toast.success('Generated!')}>
                 Generate a Playlist
               </Button>
             </div>
           </aside>
-          <MusicPlayer roomId={room.roomId} />
+          <MusicPlayer />
         </div>
       </section>
     </AppLayout>
