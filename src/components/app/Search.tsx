@@ -3,14 +3,16 @@ import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import { api } from '@/lib/api'
 import useDebounce from '@/lib/hooks/useDebounce'
-import usePlaybackStore from '@/lib/stores/playbackStore'
 
 import Track from './Track'
 
-const Search = () => {
+const Search = ({
+  onTrackSelection,
+}: {
+  onTrackSelection: (trackUri: string) => void
+}) => {
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 500)
-  const setPlayback = usePlaybackStore((state) => state.setPlayback)
 
   const { data } = api.music.searchTracks.useQuery(
     { query: debouncedSearch },
@@ -45,7 +47,7 @@ const Search = () => {
             <Track
               key={track.id}
               track={track}
-              onClick={() => setPlayback(track.uri)}
+              onClick={() => onTrackSelection(track.uri)}
             />
           ))}
         </ul>
