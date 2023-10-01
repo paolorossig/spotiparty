@@ -24,8 +24,6 @@ const Room = () => {
   const { cleanPlayback, setPlayback } = usePlaybackStore()
   const [isModalOpen, toggleModal] = useToggle()
 
-  const mutation = api.rooms.accessByRoomId.useMutation()
-
   const { data, error, isLoading, refetch } = api.rooms.getByRoomId.useQuery(
     {
       roomId,
@@ -35,10 +33,15 @@ const Room = () => {
       retry: 1,
       onError: (err) => {
         if (err.data?.code === 'UNAUTHORIZED') {
-          mutation.mutate({ roomId })
+          api.rooms.accessByRoomId.useMutation().mutate({ roomId })
         }
       },
     },
+  )
+
+  const { data: members } = api.rooms.getMembers.useQuery(
+    { roomId },
+    { enabled: !!roomId && !!data },
   )
 
   useEffect(() => {
@@ -104,7 +107,7 @@ const Room = () => {
             </div>
           </div>
           <aside className="w-full space-y-4 md:w-1/3">
-            <Members roomId={roomId} />
+            <Members members={members} />
             <div className="text-center">
               <Button onClick={() => toast.success('Generated!')}>
                 Generate a Playlist
