@@ -2,9 +2,11 @@ import { type Session } from 'next-auth'
 
 export type MemberInfo = Omit<Session['user'], 'id'>
 
+export type MemberPayload = { id: string; info: MemberInfo }
+
 export type ChannelMembers = {
   count: number
-  me: { id: string; info: MemberInfo }
+  me: MemberPayload
   myID: string
   members: Record<string, MemberInfo>
 }

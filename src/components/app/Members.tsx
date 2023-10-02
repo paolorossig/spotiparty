@@ -34,21 +34,32 @@ const MemberItem = ({
 
 const Members = ({
   members,
+  connectedMembers,
 }: {
   members: RouterOutputs['rooms']['getMembers'] | undefined
+  connectedMembers: string[]
 }) => {
   return (
     <div className="box p-4">
       <h2 className="font-medium text-gray-300">Members:</h2>
       <ul className="my-3 flex flex-col gap-2">
-        {members?.map((member) => (
-          <MemberItem
-            key={member.user.id}
-            user={member.user}
-            isConnected={member.role === 'owner'}
-            isOwner={member.role === 'owner'}
-          />
-        ))}
+        {members
+          ?.map((member) => ({
+            user: member.user,
+            isConnected: connectedMembers.includes(member.user.id),
+            isOwner: member.role === 'owner',
+          }))
+          .sort((a, b) =>
+            a.isConnected === b.isConnected ? 0 : a.isConnected ? -1 : 1,
+          )
+          .map((member) => (
+            <MemberItem
+              key={member.user.id}
+              user={member.user}
+              isConnected={member.isConnected}
+              isOwner={member.isOwner}
+            />
+          ))}
       </ul>
     </div>
   )
