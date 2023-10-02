@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next'
 
-import { pusherServer } from '@/lib/pusher'
+import { pusher } from '@/server/lib/pusher'
 import { getServerAuthSession } from '@/server/services/auth'
 
 interface PusherAuthBody {
@@ -24,7 +24,7 @@ const handler: NextApiHandler = async (req, res) => {
         user_info: userInfo,
       }
 
-      const authResponse = pusherServer.authorizeChannel(
+      const authResponse = pusher.authorizeChannel(
         socketId,
         channel,
         presenceData,

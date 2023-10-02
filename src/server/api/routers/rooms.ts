@@ -2,9 +2,9 @@ import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
-import { pusherServer } from '@/lib/pusher'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { RoomEvents } from '@/server/constants/events'
+import { pusher } from '@/server/lib/pusher'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
@@ -165,7 +165,7 @@ export const roomsRouter = createTRPCRouter({
       }),
     )
     .mutation(({ input }) => {
-      pusherServer.trigger(input.channel, RoomEvents.ChangePlayback, {
+      pusher.trigger(input.channel, RoomEvents.ChangePlayback, {
         trackUri: input.trackUri,
       })
     }),
