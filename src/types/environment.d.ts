@@ -9,5 +9,9 @@ declare namespace NodeJS {
     CLOUDINARY_API_KEY: string
     CLOUDINARY_API_SECRET: string
     CLOUDINARY_ROOT_FOLDER: string
+    PUSHER_APP_ID: string
+    NEXT_PUBLIC_PUSHER_KEY: string
+    PUSHER_SECRET: string
+    NEXT_PUBLIC_PUSHER_CLUSTER: string
   }
 }
