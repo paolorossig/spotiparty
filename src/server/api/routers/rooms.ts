@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { pusherServer } from '@/lib/pusher'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { RoomEvents } from '@/server/constants/events'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
@@ -164,7 +165,7 @@ export const roomsRouter = createTRPCRouter({
       }),
     )
     .mutation(({ input }) => {
-      pusherServer.trigger(input.channel, 'room:change_playback', {
+      pusherServer.trigger(input.channel, RoomEvents.ChangePlayback, {
         trackUri: input.trackUri,
       })
     }),

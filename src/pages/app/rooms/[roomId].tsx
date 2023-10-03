@@ -17,6 +17,7 @@ import { api } from '@/lib/api'
 import useToggle from '@/lib/hooks/useToggle'
 import { pusherClient } from '@/lib/pusher'
 import usePlaybackStore from '@/lib/stores/playbackStore'
+import { PusherEvents, RoomEvents } from '@/server/constants/events'
 import type { ChannelMembers, MemberPayload } from '@/types/pusher'
 
 const Room = () => {
@@ -64,19 +65,27 @@ const Room = () => {
   useEffect(() => {
     const channel = pusherClient.subscribe(roomChannelName)
 
-    channel.bind('pusher:subscription_succeeded', (members: ChannelMembers) => {
-      setConnectedMembers(Object.keys(members.members))
-    })
-    channel.bind('pusher:member_added', (member: MemberPayload) => {
+    // Presence channel bindings
+    channel.bind(
+      PusherEvents.SubscriptionSucceeded,
+      (members: ChannelMembers) => {
+        setConnectedMembers(Object.keys(members.members))
+      },
+    )
+    channel.bind(PusherEvents.MemberAdded, (member: MemberPayload) => {
       setConnectedMembers((prev) => [...prev, member.id])
     })
-    channel.bind('pusher:member_removed', (member: MemberPayload) => {
+    channel.bind(PusherEvents.MemberRemoved, (member: MemberPayload) => {
       setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
     })
 
-    channel.bind('room:change_playback', (trackUri: string) => {
-      setPlayback(trackUri)
-    })
+    // Room bindings
+    channel.bind(
+      RoomEvents.ChangePlayback,
+      ({ trackUri }: { trackUri: string }) => {
+        setPlayback(trackUri)
+      },
+    )
 
     return () => {
       pusherClient.unsubscribe(roomChannelName)
