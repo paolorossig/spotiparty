@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
+import { pusherServer } from '@/lib/pusher'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
 const defaultImageURL =
@@ -154,5 +155,17 @@ export const roomsRouter = createTRPCRouter({
       const owner = { user: room.user, role: 'owner' }
 
       return [...members, owner]
+    }),
+  changePlaybackState: protectedProcedure
+    .input(
+      z.object({
+        channel: z.string(),
+        trackUri: z.string().startsWith('spotify:'),
+      }),
+    )
+    .mutation(({ input }) => {
+      pusherServer.trigger(input.channel, 'room:change_playback', {
+        trackUri: input.trackUri,
+      })
     }),
 })

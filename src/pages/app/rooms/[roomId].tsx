@@ -44,6 +44,18 @@ const Room = () => {
     { enabled: !!roomId && !!data },
   )
 
+  const changePlaybackMutation = api.rooms.changePlaybackState.useMutation()
+
+  // Playback
+
+  const { cleanPlayback, setPlayback } = usePlaybackStore()
+
+  useEffect(() => {
+    return () => {
+      cleanPlayback()
+    }
+  }, [cleanPlayback])
+
   // Room Channel
 
   const roomChannelName = `presence-room-${roomId}`
@@ -62,20 +74,14 @@ const Room = () => {
       setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
     })
 
+    channel.bind('room:change_playback', (trackUri: string) => {
+      setPlayback(trackUri)
+    })
+
     return () => {
       pusherClient.unsubscribe(roomChannelName)
     }
-  }, [roomChannelName])
-
-  // Playback
-
-  const { cleanPlayback, setPlayback } = usePlaybackStore()
-
-  useEffect(() => {
-    return () => {
-      cleanPlayback()
-    }
-  }, [cleanPlayback])
+  }, [roomChannelName, setPlayback])
 
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
@@ -97,7 +103,9 @@ const Room = () => {
     if (isRoomOwner) {
       setPlayback(trackUri)
     } else {
-      toast.error('Remote Control not supported yet!')
+      toast.error('Remote Control is now being tested!')
+
+      changePlaybackMutation.mutate({ channel: roomChannelName, trackUri })
     }
   }
 
