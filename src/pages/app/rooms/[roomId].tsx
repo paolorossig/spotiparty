@@ -117,9 +117,17 @@ const Room = () => {
     if (isRoomOwner) {
       setPlayback(trackUri)
     } else {
-      toast.error('Remote Control is now being tested!')
-
-      changePlaybackMutation.mutate({ channel: roomChannelName, trackUri })
+      changePlaybackMutation.mutate(
+        { channel: roomChannelName, trackUri },
+        {
+          onSuccess: () => {
+            toast.success('Playback changed successfully')
+          },
+          onError: (err) => {
+            toast.error(`Something went wrong: ${err.message}`)
+          },
+        },
+      )
     }
   }
 
