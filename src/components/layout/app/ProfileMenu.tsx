@@ -8,7 +8,8 @@ import clsx from 'clsx'
 import { signOut, useSession } from 'next-auth/react'
 
 import { USER_PLACEHOLDER_IMAGE } from '@/lib/constants'
-import { ACCOUNT_URL } from '@/lib/spotify'
+
+const ACCOUNT_URL = 'https://www.spotify.com/account/overview'
 
 const ProfileMenu = () => {
   const { data: session } = useSession()

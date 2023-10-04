@@ -15,8 +15,9 @@ import IconButton from '@/components/shared/IconButton'
 import Tooltip from '@/components/shared/Tooltip'
 import { api } from '@/lib/api'
 import useToggle from '@/lib/hooks/useToggle'
-import { pusherClient } from '@/lib/pusher'
+import { pusher } from '@/lib/pusher'
 import usePlaybackStore from '@/lib/stores/playbackStore'
+import { PusherEvents, RoomEvents } from '@/server/constants/events'
 import type { ChannelMembers, MemberPayload } from '@/types/pusher'
 
 const Room = () => {
@@ -24,7 +25,12 @@ const Room = () => {
   const roomId = router.query.roomId as string
   const [isModalOpen, toggleModal] = useToggle()
 
-  const { data, error, isLoading, refetch } = api.rooms.getByRoomId.useQuery(
+  const {
+    data: roomInfo,
+    error,
+    isLoading,
+    refetch,
+  } = api.rooms.getByRoomId.useQuery(
     {
       roomId,
     },
@@ -41,31 +47,10 @@ const Room = () => {
 
   const { data: members } = api.rooms.getMembers.useQuery(
     { roomId },
-    { enabled: !!roomId && !!data },
+    { enabled: !!roomId && !!roomInfo },
   )
 
-  // Room Channel
-
-  const roomChannelName = `presence-room-${roomId}`
-  const [connectedMembers, setConnectedMembers] = useState<string[]>([])
-
-  useEffect(() => {
-    const channel = pusherClient.subscribe(roomChannelName)
-
-    channel.bind('pusher:subscription_succeeded', (members: ChannelMembers) => {
-      setConnectedMembers(Object.keys(members.members))
-    })
-    channel.bind('pusher:member_added', (member: MemberPayload) => {
-      setConnectedMembers((prev) => [...prev, member.id])
-    })
-    channel.bind('pusher:member_removed', (member: MemberPayload) => {
-      setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
-    })
-
-    return () => {
-      pusherClient.unsubscribe(roomChannelName)
-    }
-  }, [roomChannelName])
+  const changePlaybackMutation = api.rooms.changePlaybackState.useMutation()
 
   // Playback
 
@@ -77,15 +62,50 @@ const Room = () => {
     }
   }, [cleanPlayback])
 
+  // Room Channel
+
+  const roomChannelName = `presence-room-${roomId}`
+  const [connectedMembers, setConnectedMembers] = useState<string[]>([])
+
+  useEffect(() => {
+    const channel = pusher.subscribe(roomChannelName)
+
+    // Presence channel bindings
+    channel.bind(
+      PusherEvents.SubscriptionSucceeded,
+      (members: ChannelMembers) => {
+        setConnectedMembers(Object.keys(members.members))
+      },
+    )
+    channel.bind(PusherEvents.MemberAdded, (member: MemberPayload) => {
+      setConnectedMembers((prev) => [...prev, member.id])
+    })
+    channel.bind(PusherEvents.MemberRemoved, (member: MemberPayload) => {
+      setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
+    })
+
+    // Room bindings
+    channel.bind(
+      RoomEvents.ChangePlayback,
+      ({ trackUri }: { trackUri: string }) => {
+        setPlayback(trackUri)
+      },
+    )
+
+    return () => {
+      pusher.unsubscribe(roomChannelName)
+    }
+  }, [roomChannelName, setPlayback])
+
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
   }
 
-  if (!data || error) {
+  if (!roomInfo || error) {
     return <ErrorLayout message={error?.message} />
   }
 
-  const { room, role } = data
+  const { room, role } = roomInfo
   const isRoomOwner = role === 'owner'
 
   const refetchAndNotify = () => {
@@ -97,7 +117,17 @@ const Room = () => {
     if (isRoomOwner) {
       setPlayback(trackUri)
     } else {
-      toast.error('Remote Control not supported yet!')
+      changePlaybackMutation.mutate(
+        { channel: roomChannelName, trackUri },
+        {
+          onSuccess: () => {
+            toast.success('Playback changed successfully')
+          },
+          onError: (err) => {
+            toast.error(`Something went wrong: ${err.message}`)
+          },
+        },
+      )
     }
   }
 

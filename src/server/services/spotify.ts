@@ -1,5 +1,5 @@
-import spotifyApi from '@/lib/spotify'
 import { SEARCH_TRACKS_LIMIT, TOP_TRACKS_LIMIT } from '@/server/constants'
+import { spotifyApi } from '@/server/lib/spotify'
 
 export const refreshSpotifyTokens = async (refreshToken: string) => {
   try {

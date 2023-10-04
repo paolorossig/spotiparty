@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { RoomEvents } from '@/server/constants/events'
+import { pusher } from '@/server/lib/pusher'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
@@ -154,5 +156,17 @@ export const roomsRouter = createTRPCRouter({
       const owner = { user: room.user, role: 'owner' }
 
       return [...members, owner]
+    }),
+  changePlaybackState: protectedProcedure
+    .input(
+      z.object({
+        channel: z.string(),
+        trackUri: z.string().startsWith('spotify:'),
+      }),
+    )
+    .mutation(({ input }) => {
+      pusher.trigger(input.channel, RoomEvents.ChangePlayback, {
+        trackUri: input.trackUri,
+      })
     }),
 })
