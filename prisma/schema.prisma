@@ -32,42 +32,26 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  roomIds       String[]  @db.ObjectId
   createdAt     DateTime  @default(now()) @db.Date
   updatedAt     DateTime  @updatedAt @db.Date
 
   accounts Account[]
-  rooms    Room[]
-  members  Member[]
+  rooms    Room[]    @relation(fields: [roomIds], references: [id])
 }
 
 model Room {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   roomId      String   @unique()
-  userId      String   @db.ObjectId
+  ownerId     String   @db.ObjectId
+  memberIds   String[] @db.ObjectId
   name        String
   description String
   imageUrl    String
-  active      Boolean  @default(true)
-  members     Member[]
   createdAt   DateTime @default(now()) @db.Date
   updatedAt   DateTime @default(now()) @db.Date
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members User[] @relation(fields: [memberIds], references: [id])
 
-  @@unique([name, userId])
-}
-
-model Member {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  roomId    String
-  userId    String   @db.ObjectId
-  hasAccess Boolean  @default(true)
-  topTracks String[]
-  createdAt DateTime @default(now()) @db.Date
-  updatedAt DateTime @default(now()) @db.Date
-
-  room Room @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([roomId, userId])
+  @@unique([name, ownerId])
 }
