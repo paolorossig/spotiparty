@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
@@ -8,6 +8,8 @@ import { pusher } from '@/server/lib/pusher'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
+const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
+const nanoid = customAlphabet(alphabet)
 
 export const roomsRouter = createTRPCRouter({
   create: protectedProcedure
@@ -38,6 +40,13 @@ export const roomsRouter = createTRPCRouter({
         data: input,
       })
     }),
+
+  getRooms: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.user.findUniqueOrThrow({
+      where: { id: ctx.session.user.id },
+      select: { rooms: true },
+    })
+  }),
 
   getCreated: protectedProcedure.query(({ ctx }) => {
     return ctx.db.room.findMany({
