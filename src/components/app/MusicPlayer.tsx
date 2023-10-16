@@ -8,10 +8,11 @@ const MusicPlayer = () => {
   const { data: session } = useSession()
   const playback = usePlaybackStore((state) => state.playback)
 
-  if (!session || !playback) return null
+  if (!session || session.provider !== 'spotify' || !playback) return null
 
   return createPortal(
-    <div className="flex h-14 items-end">
+    <>
+      <div className="h-28 bg-gradient-to-b from-transparent to-gray-800/70" />
       <SpotifyWebPlayer
         name="Spotiparty"
         token={session.accessToken}
@@ -24,7 +25,7 @@ const MusicPlayer = () => {
           sliderColor: '#1db954',
         }}
       />
-    </div>,
+    </>,
     document.getElementById('music-player')!,
   )
 }

@@ -21,9 +21,11 @@ import { PusherEvents, RoomEvents } from '@/server/constants/events'
 import type { ChannelMembers, MemberPayload } from '@/types/pusher'
 
 const Room = () => {
+  let isRoomOwner = false
   const router = useRouter()
   const roomId = router.query.roomId as string
   const [isModalOpen, toggleModal] = useToggle()
+  const mutation = api.rooms.accessByRoomId.useMutation()
 
   const {
     data: roomInfo,
@@ -39,7 +41,7 @@ const Room = () => {
       retry: 1,
       onError: (err) => {
         if (err.data?.code === 'UNAUTHORIZED') {
-          api.rooms.accessByRoomId.useMutation().mutate({ roomId })
+          mutation.mutate({ roomId })
         }
       },
     },
@@ -85,17 +87,17 @@ const Room = () => {
     })
 
     // Room bindings
-    channel.bind(
-      RoomEvents.ChangePlayback,
-      ({ trackUri }: { trackUri: string }) => {
-        setPlayback(trackUri)
-      },
-    )
+    if (isRoomOwner) {
+      channel.bind(
+        RoomEvents.ChangePlayback,
+        ({ trackUri }: { trackUri: string }) => setPlayback(trackUri),
+      )
+    }
 
     return () => {
       pusher.unsubscribe(roomChannelName)
     }
-  }, [roomChannelName, setPlayback])
+  }, [isRoomOwner, roomChannelName, setPlayback])
 
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
@@ -106,7 +108,7 @@ const Room = () => {
   }
 
   const { room, role } = roomInfo
-  const isRoomOwner = role === 'owner'
+  isRoomOwner = role === 'owner'
 
   const refetchAndNotify = () => {
     refetch()
@@ -159,7 +161,7 @@ const Room = () => {
         <div className="flex flex-1 flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-1 flex-col justify-center md:w-2/3">
             <Search onTrackSelection={onTrackSelection} />
-            <div className="grid flex-1 place-content-center">
+            <div className="grid flex-1 place-content-center py-10">
               New features coming soon! 🚀
             </div>
           </div>
@@ -171,9 +173,9 @@ const Room = () => {
               </Button>
             </div>
           </aside>
-          <MusicPlayer />
         </div>
       </section>
+      {isRoomOwner && <MusicPlayer />}
     </AppLayout>
   )
 }
