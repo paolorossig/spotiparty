@@ -49,7 +49,7 @@ model Room {
   description String
   imageUrl    String
   createdAt   DateTime @default(now()) @db.Date
-  updatedAt   DateTime @default(now()) @db.Date
+  updatedAt   DateTime @updatedAt @db.Date
 
   members User[] @relation(fields: [memberIds], references: [id])
 

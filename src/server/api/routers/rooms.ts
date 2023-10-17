@@ -15,12 +15,19 @@ export const roomsRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const { id: ownerId } = ctx.session.user
+
       return ctx.db.room.create({
         data: {
           roomId: nanoid(8),
-          ownerId: ctx.session.user.id,
+          ownerId,
           imageUrl: defaultImageURL,
           ...input,
+          members: {
+            connect: {
+              id: ownerId,
+            },
+          },
         },
       })
     }),
@@ -41,7 +48,7 @@ export const roomsRouter = createTRPCRouter({
       })
     }),
 
-  getRooms: protectedProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.user.findUniqueOrThrow({
       where: { id: ctx.session.user.id },
       select: { rooms: true },
@@ -135,7 +142,7 @@ export const roomsRouter = createTRPCRouter({
 
       await ctx.db.room.update({
         where: { roomId },
-        data: { memberIds: { push: userId } },
+        data: { members: { connect: { id: userId } } },
       })
     }),
 
