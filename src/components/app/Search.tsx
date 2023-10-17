@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 import { api } from '@/lib/api'
 import useDebounce from '@/lib/hooks/useDebounce'
@@ -14,9 +16,21 @@ const Search = ({
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 500)
 
+  const { data: session } = useSession()
+  const isLocalSearch = session?.provider === 'spotify'
+  const enableLocalSearch = isLocalSearch && !!debouncedSearch
+
+  useEffect(() => {
+    if (!debouncedSearch) return
+
+    if (!isLocalSearch) {
+      toast.error('Invalid provider')
+    }
+  }, [debouncedSearch, isLocalSearch])
+
   const { data } = api.music.searchTracks.useQuery(
     { query: debouncedSearch },
-    { enabled: !!debouncedSearch },
+    { enabled: enableLocalSearch },
   )
 
   return (
