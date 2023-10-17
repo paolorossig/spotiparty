@@ -2,9 +2,23 @@ import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ClientSafeProvider, getProviders, signIn } from 'next-auth/react'
+import { useSearchParams } from 'next/navigation'
+import { getProviders, signIn, type ClientSafeProvider } from 'next-auth/react'
+
+const ERROR_MESSAGES: Record<string, string> = {
+  OAuthAccountNotLinked:
+    'To confirm your identity, sign in with the same account you used originally.',
+  default: 'Try signing in with a different account.',
+}
 
 const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
+  const searchParams = useSearchParams()
+
+  const error = searchParams.get('error')
+  const errorMessage = error
+    ? ERROR_MESSAGES[error] || ERROR_MESSAGES.default
+    : null
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
       <Head>
@@ -22,6 +36,11 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
         <p className="my-4 text-lg text-gray-300 lg:text-2xl">
           Use the following auth providers
         </p>
+        {errorMessage && (
+          <p className="mt-4 rounded-lg bg-red-500 px-4 py-2 font-medium">
+            {errorMessage}
+          </p>
+        )}
         {Object.values(providers).map((provider) => (
           <button
             key={provider.id}

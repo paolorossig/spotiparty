@@ -45,10 +45,10 @@ const AppLayout = ({
             </Link>
             <ProfileMenu />
           </header>
-          <main className="m-auto mb-14 flex w-full max-w-5xl flex-1 flex-col p-4">
+          <main className="m-auto flex w-full max-w-5xl flex-1 flex-col p-4">
             {children}
           </main>
-          <div id="music-player" className="sticky bottom-0 w-full" />
+          <div id="music-player" className="sticky bottom-0 z-20 w-full" />
         </>
       )}
       <Toaster />

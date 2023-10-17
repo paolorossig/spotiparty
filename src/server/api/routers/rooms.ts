@@ -1,28 +1,35 @@
 import { TRPCError } from '@trpc/server'
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { RoomEvents } from '@/server/constants/events'
+import { pusher } from '@/server/lib/pusher'
 
 const defaultImageURL =
   'https://res.cloudinary.com/paolorossi/image/upload/v1662212920/spotiparty/karaoke_bejniu.jpg'
+const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
+const nanoid = customAlphabet(alphabet)
 
 export const roomsRouter = createTRPCRouter({
   create: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const { id: userId } = ctx.session.user
+      const { id: ownerId } = ctx.session.user
 
-      const room = await ctx.db.room.create({
+      return ctx.db.room.create({
         data: {
           roomId: nanoid(8),
-          userId,
+          ownerId,
           imageUrl: defaultImageURL,
           ...input,
+          members: {
+            connect: {
+              id: ownerId,
+            },
+          },
         },
       })
-
-      return room
     }),
 
   update: protectedProcedure
@@ -41,11 +48,16 @@ export const roomsRouter = createTRPCRouter({
       })
     }),
 
-  getCreated: protectedProcedure.query(({ ctx }) => {
-    const { id: userId } = ctx.session.user
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.user.findUniqueOrThrow({
+      where: { id: ctx.session.user.id },
+      select: { rooms: true },
+    })
+  }),
 
+  getCreated: protectedProcedure.query(({ ctx }) => {
     return ctx.db.room.findMany({
-      where: { userId },
+      where: { ownerId: ctx.session.user.id },
       select: { roomId: true, name: true, imageUrl: true },
     })
   }),
@@ -53,14 +65,17 @@ export const roomsRouter = createTRPCRouter({
   getJoined: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user
 
-    const members = await ctx.db.member.findMany({
-      where: { userId },
+    return ctx.db.room.findMany({
+      where: {
+        memberIds: { hasSome: [userId] },
+        AND: { NOT: { ownerId: userId } },
+      },
       select: {
-        room: { select: { roomId: true, name: true, imageUrl: true } },
+        roomId: true,
+        name: true,
+        imageUrl: true,
       },
     })
-
-    return members.map(({ room }) => room)
   }),
 
   getByRoomId: protectedProcedure
@@ -70,7 +85,6 @@ export const roomsRouter = createTRPCRouter({
 
       const room = await ctx.db.room.findUnique({
         where: { roomId },
-        include: { members: true },
       })
 
       if (!room) {
@@ -84,9 +98,9 @@ export const roomsRouter = createTRPCRouter({
       const { id: userId } = ctx.session.user
 
       let role = ''
-      if (room.userId === userId) {
+      if (room.ownerId === userId) {
         role = 'owner'
-      } else if (room.members.some((member) => member.userId === userId)) {
+      } else if (room.memberIds.includes(userId)) {
         role = 'member'
       }
 
@@ -107,7 +121,6 @@ export const roomsRouter = createTRPCRouter({
 
       const room = await ctx.db.room.findUnique({
         where: { roomId },
-        include: { members: true },
       })
 
       if (!room) {
@@ -120,15 +133,16 @@ export const roomsRouter = createTRPCRouter({
 
       const { id: userId } = ctx.session.user
 
-      if (room.members.some((member) => member.userId === userId)) {
+      if (room.memberIds.includes(userId)) {
         throw new TRPCError({
           code: 'CONFLICT',
           message: `A conflic occured|You are already a member of room ${roomId}`,
         })
       }
 
-      await ctx.db.member.create({
-        data: { roomId, userId },
+      await ctx.db.room.update({
+        where: { roomId },
+        data: { members: { connect: { id: userId } } },
       })
     }),
 
@@ -139,7 +153,7 @@ export const roomsRouter = createTRPCRouter({
 
       const room = await ctx.db.room.findUnique({
         where: { roomId },
-        select: { user: true, members: { select: { user: true } } },
+        select: { ownerId: true, members: true },
       })
 
       if (!room) {
@@ -150,9 +164,25 @@ export const roomsRouter = createTRPCRouter({
         })
       }
 
-      const members = room.members.map(({ user }) => ({ user, role: 'member' }))
-      const owner = { user: room.user, role: 'owner' }
+      const owner = room.members
+        .filter((user) => user.id === room.ownerId)
+        .map((user) => ({ user, role: 'owner' }))
+      const members = room.members
+        .filter((user) => user.id !== room.ownerId)
+        .map((user) => ({ user, role: 'member' }))
 
-      return [...members, owner]
+      return [...owner, ...members]
+    }),
+  changePlaybackState: protectedProcedure
+    .input(
+      z.object({
+        channel: z.string(),
+        trackUri: z.string().startsWith('spotify:'),
+      }),
+    )
+    .mutation(({ input }) => {
+      pusher.trigger(input.channel, RoomEvents.ChangePlayback, {
+        trackUri: input.trackUri,
+      })
     }),
 })

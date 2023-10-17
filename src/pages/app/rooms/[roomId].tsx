@@ -17,12 +17,15 @@ import { api } from '@/lib/api'
 import useToggle from '@/lib/hooks/useToggle'
 import { pusher } from '@/lib/pusher'
 import usePlaybackStore from '@/lib/stores/playbackStore'
+import { PusherEvents, RoomEvents } from '@/server/constants/events'
 import type { ChannelMembers, MemberPayload } from '@/types/pusher'
 
 const Room = () => {
+  let isRoomOwner = false
   const router = useRouter()
   const roomId = router.query.roomId as string
   const [isModalOpen, toggleModal] = useToggle()
+  const mutation = api.rooms.accessByRoomId.useMutation()
 
   const {
     data: roomInfo,
@@ -38,7 +41,7 @@ const Room = () => {
       retry: 1,
       onError: (err) => {
         if (err.data?.code === 'UNAUTHORIZED') {
-          api.rooms.accessByRoomId.useMutation().mutate({ roomId })
+          mutation.mutate({ roomId })
         }
       },
     },
@@ -49,28 +52,7 @@ const Room = () => {
     { enabled: !!roomId && !!roomInfo },
   )
 
-  // Room Channel
-
-  const roomChannelName = `presence-room-${roomId}`
-  const [connectedMembers, setConnectedMembers] = useState<string[]>([])
-
-  useEffect(() => {
-    const channel = pusher.subscribe(roomChannelName)
-
-    channel.bind('pusher:subscription_succeeded', (members: ChannelMembers) => {
-      setConnectedMembers(Object.keys(members.members))
-    })
-    channel.bind('pusher:member_added', (member: MemberPayload) => {
-      setConnectedMembers((prev) => [...prev, member.id])
-    })
-    channel.bind('pusher:member_removed', (member: MemberPayload) => {
-      setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
-    })
-
-    return () => {
-      pusher.unsubscribe(roomChannelName)
-    }
-  }, [roomChannelName])
+  const changePlaybackMutation = api.rooms.changePlaybackState.useMutation()
 
   // Playback
 
@@ -82,6 +64,41 @@ const Room = () => {
     }
   }, [cleanPlayback])
 
+  // Room Channel
+
+  const roomChannelName = `presence-room-${roomId}`
+  const [connectedMembers, setConnectedMembers] = useState<string[]>([])
+
+  useEffect(() => {
+    const channel = pusher.subscribe(roomChannelName)
+
+    // Presence channel bindings
+    channel.bind(
+      PusherEvents.SubscriptionSucceeded,
+      (members: ChannelMembers) => {
+        setConnectedMembers(Object.keys(members.members))
+      },
+    )
+    channel.bind(PusherEvents.MemberAdded, (member: MemberPayload) => {
+      setConnectedMembers((prev) => [...prev, member.id])
+    })
+    channel.bind(PusherEvents.MemberRemoved, (member: MemberPayload) => {
+      setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
+    })
+
+    // Room bindings
+    if (isRoomOwner) {
+      channel.bind(
+        RoomEvents.ChangePlayback,
+        ({ trackUri }: { trackUri: string }) => setPlayback(trackUri),
+      )
+    }
+
+    return () => {
+      pusher.unsubscribe(roomChannelName)
+    }
+  }, [isRoomOwner, roomChannelName, setPlayback])
+
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
   }
@@ -91,7 +108,7 @@ const Room = () => {
   }
 
   const { room, role } = roomInfo
-  const isRoomOwner = role === 'owner'
+  isRoomOwner = role === 'owner'
 
   const refetchAndNotify = () => {
     refetch()
@@ -102,7 +119,17 @@ const Room = () => {
     if (isRoomOwner) {
       setPlayback(trackUri)
     } else {
-      toast.error('Remote Control not supported yet!')
+      changePlaybackMutation.mutate(
+        { channel: roomChannelName, trackUri },
+        {
+          onSuccess: () => {
+            toast.success('Playback changed successfully')
+          },
+          onError: (err) => {
+            toast.error(`Something went wrong: ${err.message}`)
+          },
+        },
+      )
     }
   }
 
@@ -134,7 +161,7 @@ const Room = () => {
         <div className="flex flex-1 flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-1 flex-col justify-center md:w-2/3">
             <Search onTrackSelection={onTrackSelection} />
-            <div className="grid flex-1 place-content-center">
+            <div className="grid flex-1 place-content-center py-10">
               New features coming soon! 🚀
             </div>
           </div>
@@ -146,9 +173,9 @@ const Room = () => {
               </Button>
             </div>
           </aside>
-          <MusicPlayer />
         </div>
       </section>
+      {isRoomOwner && <MusicPlayer />}
     </AppLayout>
   )
 }
