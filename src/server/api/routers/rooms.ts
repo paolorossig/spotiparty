@@ -38,7 +38,6 @@ export const roomsRouter = createTRPCRouter({
         roomId: z.string(),
         name: z.string().optional(),
         description: z.string().optional(),
-        active: z.boolean().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {

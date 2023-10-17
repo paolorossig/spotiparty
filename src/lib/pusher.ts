@@ -1,13 +1,15 @@
-import Pusher from 'pusher-js'
+import { PusherProviderProps } from '@harelpls/use-pusher'
+import { Session } from 'next-auth'
 
 import { env } from '@/env.mjs'
 
-Pusher.logToConsole = !!process.env.PUSHER_LOGS_ENABLED
+export type ChannelMembersMe = {
+  id: string
+  info: Omit<Session['user'], 'id'>
+}
 
-export const pusher = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
+export const config: PusherProviderProps = {
+  clientKey: env.NEXT_PUBLIC_PUSHER_KEY,
   cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
-  channelAuthorization: {
-    endpoint: '/api/pusher/auth',
-    transport: 'ajax',
-  },
-})
+  authEndpoint: '/api/pusher/auth',
+}
