@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useEvent, usePresenceChannel } from '@harelpls/use-pusher'
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
@@ -15,15 +16,15 @@ import IconButton from '@/components/shared/IconButton'
 import Tooltip from '@/components/shared/Tooltip'
 import { api } from '@/lib/api'
 import useToggle from '@/lib/hooks/useToggle'
-import { pusher } from '@/lib/pusher'
 import usePlaybackStore from '@/lib/stores/playbackStore'
-import { PusherEvents, RoomEvents } from '@/server/constants/events'
-import type { ChannelMembers, MemberPayload } from '@/types/pusher'
+import { RoomEvents } from '@/server/constants/events'
 
 const Room = () => {
   let isRoomOwner = false
+
   const router = useRouter()
   const roomId = router.query.roomId as string
+
   const [isModalOpen, toggleModal] = useToggle()
   const mutation = api.rooms.accessByRoomId.useMutation()
 
@@ -66,38 +67,15 @@ const Room = () => {
 
   // Room Channel
 
-  const roomChannelName = `presence-room-${roomId}`
-  const [connectedMembers, setConnectedMembers] = useState<string[]>([])
+  const channelName = `presence-room-${roomId}`
+  const { channel, members: channelMembers } = usePresenceChannel(channelName)
+  const connectedMembers = channelMembers ? Object.keys(channelMembers) : []
 
-  useEffect(() => {
-    const channel = pusher.subscribe(roomChannelName)
-
-    // Presence channel bindings
-    channel.bind(
-      PusherEvents.SubscriptionSucceeded,
-      (members: ChannelMembers) => {
-        setConnectedMembers(Object.keys(members.members))
-      },
-    )
-    channel.bind(PusherEvents.MemberAdded, (member: MemberPayload) => {
-      setConnectedMembers((prev) => [...prev, member.id])
-    })
-    channel.bind(PusherEvents.MemberRemoved, (member: MemberPayload) => {
-      setConnectedMembers((prev) => prev.filter((id) => id !== member.id))
-    })
-
-    // Room bindings
-    if (isRoomOwner) {
-      channel.bind(
-        RoomEvents.ChangePlayback,
-        ({ trackUri }: { trackUri: string }) => setPlayback(trackUri),
-      )
+  useEvent<{ trackUri: string }>(channel, RoomEvents.ChangePlayback, (data) => {
+    if (isRoomOwner && data) {
+      setPlayback(data.trackUri)
     }
-
-    return () => {
-      pusher.unsubscribe(roomChannelName)
-    }
-  }, [isRoomOwner, roomChannelName, setPlayback])
+  })
 
   if (isLoading) {
     return <AppLayout isLoading={isLoading} />
@@ -120,7 +98,7 @@ const Room = () => {
       setPlayback(trackUri)
     } else {
       changePlaybackMutation.mutate(
-        { channel: roomChannelName, trackUri },
+        { channel: channelName, trackUri },
         {
           onSuccess: () => {
             toast.success('Playback changed successfully')
@@ -160,7 +138,11 @@ const Room = () => {
         </div>
         <div className="flex flex-1 flex-col gap-4 md:flex-row">
           <div className="flex w-full flex-1 flex-col justify-center md:w-2/3">
-            <Search onTrackSelection={onTrackSelection} />
+            <Search
+              channelName={channelName}
+              isRoomOwner={isRoomOwner}
+              onTrackSelection={onTrackSelection}
+            />
             <div className="grid flex-1 place-content-center py-10">
               New features coming soon! 🚀
             </div>

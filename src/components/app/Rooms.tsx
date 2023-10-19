@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { FolderPlusIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 
-import Spinner from '@/components/shared/Spinner'
-
 type RoomCardInfo = { name: string; roomId: string; imageUrl: string }
 
 const CreateRoomCard = () => {
@@ -20,6 +18,16 @@ const CreateRoomCard = () => {
         </div>
       </article>
     </Link>
+  )
+}
+
+const SkeletonCard = () => {
+  return (
+    <div className="group flex h-44 animate-pulse items-center justify-center gap-4 rounded-xl border border-white">
+      <div className="h-20 w-20 rounded-full bg-gray-400/30"></div>
+      <div className="h-4 w-20 rounded-full bg-gray-400/30"></div>
+      <span className="sr-only">Loading...</span>
+    </div>
   )
 }
 
@@ -63,10 +71,7 @@ const Rooms = ({
   isLoading: boolean
   showCreationCard: boolean
 }) => {
-  // TODO: Add skeleton loading
-  if (isLoading) return <Spinner variant="light" size="large" />
-
-  const showEmptyState = !data?.length && !showCreationCard
+  const showEmptyState = !isLoading && !data?.length && !showCreationCard
 
   return (
     <section className="p-2">
@@ -79,12 +84,18 @@ const Rooms = ({
             : 'md:grid-cols-2 lg:grid-cols-3',
         )}
       >
-        {data?.map((room) => <RoomCard key={room.roomId} room={room} />)}
+        {isLoading ? (
+          <SkeletonCard />
+        ) : (
+          <>
+            {data?.map((room) => <RoomCard key={room.roomId} room={room} />)}
 
-        {showCreationCard && <CreateRoomCard />}
+            {showCreationCard && <CreateRoomCard />}
 
-        {showEmptyState && (
-          <p className="text-center text-white">No rooms found</p>
+            {showEmptyState && (
+              <p className="text-center text-white">No rooms found</p>
+            )}
+          </>
         )}
       </div>
     </section>

@@ -5,5 +5,9 @@ export enum PusherEvents {
 }
 
 export enum RoomEvents {
+  // Server events
   ChangePlayback = 'room:change_playback',
+  // Client events
+  ClientRequestSearchTracks = 'client-room:request_search_tracks',
+  ClientSendSearchResults = 'client-room:send_search_results',
 }

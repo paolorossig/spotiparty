@@ -1,12 +1,16 @@
 import type { DefaultSession, Account as NextAuthAccount } from 'next-auth'
-import type { DefaultJWT } from 'next-auth/jwt'
+
+export type SupportedProviders = 'spotify' | 'google'
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
-    user: DefaultSession['user'] & {
+    user: {
+      name: string
+      email: string
+      image?: string | null
       id: string
     }
-    provider: string
+    provider: SupportedProviders
     accessToken: string
   }
 
@@ -17,9 +21,13 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
-  interface JWT extends Record<string, unknown>, DefaultJWT {
+  interface JWT extends Record<string, unknown> {
+    name: string
+    email: string
+    picture?: string | null
     sub: string
-    provider: string
+    // extra properties
+    provider: SupportedProviders
     accessToken: string
   }
 }
