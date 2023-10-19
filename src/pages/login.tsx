@@ -11,8 +11,30 @@ const ERROR_MESSAGES: Record<string, string> = {
   default: 'Try signing in with a different account.',
 }
 
+const LoginButton = ({ provider }: { provider: ClientSafeProvider }) => {
+  return (
+    <button
+      key={provider.id}
+      onClick={() => signIn(provider.id, { callbackUrl: '/app' })}
+      className="flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
+    >
+      <Image
+        src={`/static/logos/${provider.id}.png`}
+        alt={`${provider.name} Logo`}
+        width={40}
+        height={40}
+      />
+      <p className="pr-2">Login with {provider.name}</p>
+    </button>
+  )
+}
+
 const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
   const searchParams = useSearchParams()
+
+  const providersList = Object.values(providers)
+  const spotifyProvider = providersList.find((p) => p.id === 'spotify')!
+  const otherProviders = providersList.filter((p) => p.id !== 'spotify')
 
   const error = searchParams.get('error')
   const errorMessage = error
@@ -33,28 +55,22 @@ const Login = ({ providers }: { providers: ClientSafeProvider[] }) => {
             Spotiparty!
           </Link>
         </h1>
-        <p className="my-4 text-lg text-gray-300 lg:text-2xl">
-          Use the following auth providers
-        </p>
         {errorMessage && (
           <p className="mt-4 rounded-lg bg-red-500 px-4 py-2 font-medium">
             {errorMessage}
           </p>
         )}
-        {Object.values(providers).map((provider) => (
-          <button
-            key={provider.id}
-            onClick={() => signIn(provider.id, { callbackUrl: '/app' })}
-            className="mt-4 flex items-center space-x-4 rounded-full bg-gray-700 p-2 hover:bg-gray-500"
-          >
-            <Image
-              src={`/static/logos/${provider.id}.png`}
-              alt={`${provider.name} Logo`}
-              width={40}
-              height={40}
-            />
-            <p className="pr-2">Login with {provider.name}</p>
-          </button>
+        <p className="my-4 text-gray-300 lg:text-lg">
+          To enjoy all the Spotiparty features use
+        </p>
+        <LoginButton provider={spotifyProvider} />
+        <p className="my-4 flex space-x-2 text-gray-300">
+          <div className="w-[30px] border-y-[11px] border-black bg-gray-400/30"></div>
+          <span>or use</span>
+          <div className="w-[30px] border-y-[11px] border-black bg-gray-400/30"></div>
+        </p>
+        {otherProviders.map((provider) => (
+          <LoginButton key={provider.id} provider={provider} />
         ))}
       </main>
     </div>
